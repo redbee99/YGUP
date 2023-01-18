@@ -6,10 +6,10 @@ import json
 def create_user(data):
     """Given serialized data and create a ner User"""
     if not len(data['id']) >= 4 and len(data['id']) <= 10:
-        return 'please id rule check', 404
+        return 'please id rule check', 500
 
     if not len(data['password']) >= 5 and len(data['password']) <= 15:
-        return 'please password rule check', 404
+        return 'please password rule check', 500
 
     user = user_schema.load(data)
     db.session.add(user)
