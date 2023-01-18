@@ -3,7 +3,7 @@ from flask import request
 from backend.cover_letter.services import create_cover_letter, update_cover_letter,delete_cover_letter
 from pytz import timezone
 api = Namespace("cover_letter", description="Cover_letter API")
-import numpy as np
+
 
 cover_letter_fields = api.model(
     "Cover_letter", {"content_1": fields.String, "content_2": fields.String,
