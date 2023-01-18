@@ -4,11 +4,11 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "mysql://root:1234@localhost/ygup?charset=utf8"
+    SQLALCHEMY_DATABASE_URI = "mysql://root:12345678@localhost/ygup?charset=utf8"
 
 class TestConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "mysql://root:1234@localhost/ygup?charset=utf8"
+    SQLALCHEMY_DATABASE_URI = "mysql://root:12345678@localhost/ygup?charset=utf8"
 
 class ProductConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "mysql://root:1234@localhost/ygup?charset=utf8"
+    SQLALCHEMY_DATABASE_URI = "mysql://root:12345678@localhost/ygup?charset=utf8"
