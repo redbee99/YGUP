@@ -18,14 +18,14 @@ def create_user(data):
 
 def login_user(data):
     """Login User"""
-    if not (user := User.query.filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw') ))).all():
+    if not db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw') )).all():
         return 'fail', 404
 
     return 'OK', 200
 
-def delete_user(user_id, user_pw):
+def delete_user(data):
     """Delete User"""
-    res = db.session.query(User).filter(and_(User.id == user_id, User.password == user_pw )).all()
+    res = db.session.query(User).filter(and_(User.id == data['id'], User.password == data['password'])).all()
 
     if not res:
         return 'fail', 404
@@ -48,10 +48,9 @@ def update_user(data):
 
     return 'Update OK', 200
 
-def search_id(user_name, user_email):
+def search_id(data):
     """search id"""
-    res = db.session.query(User).filter(and_(User.name == user_name, User.email == user_email)).first()
-
+    res = db.session.query(User).filter(and_(User.name == data['body'].get('name'), User.email == data['body'].get('email'))).first()
     if not res:
         return 'fail', 404
 
@@ -60,9 +59,9 @@ def search_id(user_name, user_email):
     }
     return result, 200
 
-def search_pw(user_id,user_name, user_email):
+def search_pw(data):
     """search pw"""
-    res = db.session.query(User).filter(and_(User.id == user_id, User.name == user_name, User.email == user_email)).first()
+    res = db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.name == data['body'].get('name'), User.email == data['body'].get('email'))).first()
 
     if not res:
         return 'fail', 404
@@ -72,9 +71,9 @@ def search_pw(user_id,user_name, user_email):
     }
     return result, 200
 
-def check_overlap_id(user_id):
+def check_overlap_id(data):
     """Check Overlap Id"""
-    res = db.session.query(User).filter(User.id == user_id).first()
+    res = db.session.query(User).filter(User.id == data['body'].get('id')).first()
 
     if not res:
         return 'OK', 200
