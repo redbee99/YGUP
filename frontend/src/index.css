@@ -1,6 +1,9 @@
 .App{
   position: relative;
   margin-top: 72px;
+  display: flex;
+  max-width: 1500px;
+  height: 100%;
 }
 
 body {
@@ -15,4 +18,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+
+main {
+  min-height: calc(110vh - 190px);
 }

@@ -20,18 +20,17 @@ const Item = styled(Card)(({ theme }) => ({
 const Home: React.FC = () => {
     return (
         <div className='home'>
-            <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto'}}>
+            <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto' , mx:20, mb:15 }}>
                 <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 4, sm: 8, md: 8 }}>
                 {Array.from(Array(8)).map((_, index) => (
                     <Grid xs={2} sm={1} md={2} key={index}>
                     <Item>
-                        <CardContent>
+                        <CardContent >
                             <CardMedia
                                 component="img"
-                                sx={{ width: 300 }}
+                                sx={{ width: 250 }}
                                 image={Icon}
-                                alt="Paella dish"
-                            />
+                                alt="Paella dish"/>
                         </CardContent>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
