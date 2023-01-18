@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension'
+import Footer from './pages/footer';
 
 const theme = createTheme({
   palette: {
@@ -33,10 +34,15 @@ root.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-        <Header/>
-          <div className='App'>
-            <App />
-          </div>
+          <Header/>
+          <main>
+            <div className='App-wrapper'>
+              <div className='App'>
+                <App />
+              </div>
+            </div>
+          </main>
+          <Footer/>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
