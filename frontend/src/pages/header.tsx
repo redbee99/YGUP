@@ -76,13 +76,6 @@ const Header: React.FC = () => {
             </ul>
           </nav>
           <div className='App-header-profile-icons'>
-            <Button
-              sx={{ color: '#33ab9f' }}
-              disabled={false}
-              size="large"
-              onClick={() => { goJoin() }}>
-              Join
-            </Button>
             <IconButton size="large" onClick={() => { goUserinfo() }}>
               <PersonAddIcon fontSize="inherit"/>
             </IconButton>
