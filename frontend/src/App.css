@@ -103,12 +103,14 @@ footer {
 .company_basic_list {
   position: fixed;
   height: 100%;
+  width: 100%;
   overflow: scroll;
 }
 
 .user_list {
   position: fixed;
   height: 100%;
+  width: 100%;
   overflow: scroll;
 }
 /*Admin end*/

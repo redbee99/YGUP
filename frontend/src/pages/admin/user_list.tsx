@@ -284,9 +284,7 @@ const User_list: React.FC = () => {
   return (
     <div className='user_list'>
       <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs 
-          value={value} 
-          onChange={handleChange} >
+        <Tabs value={value} onChange={handleChange} >
           <Tab label="회원 목록" {...a11yProps(0)} onClick={() => { goUser_list(); }}/>
           <Tab label="기업 목록" {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }}/>
         </Tabs>
