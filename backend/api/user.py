@@ -1,11 +1,20 @@
 from flask_restx import Namespace, Resource, fields
-from flask import request
 from backend.user.services import create_user, login_user, delete_user, update_user, \
-    search_id, search_pw, check_overlap_id
+    search_id, search_pw, check_overlap_id, pwupdate_user, read_user, read_all_users, delete_user_admin
+
+
+from flask import request, session
+from flask import jsonify
+from backend.user.models import User
+
+
+
+
 api = Namespace("user", description="User API")
 user_fields = api.model(
     "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String}
 )
+
 login_fields = api.model(
     "User_Login", {"id": fields.String, "password": fields.String}
 )
@@ -17,6 +26,15 @@ pwsearch_fields = api.model(
 )
 coid_fields = api.model(
     "User_coid", {"id": fields.String}
+)
+pwupdate_fields = api.model(
+    "User_pwupdate", {"id": fields.String, "password": fields.String, "new_pwd": fields.String, "new_pwd_chk": fields.String, }
+)
+admin_fields = api.model(
+    "All_Users",{"user_type":fields.String}
+)
+delete_user_admin_fields = api.model(
+    "Delete_Users_Admin",{"id": fields.String, "user_type":fields.String}
 )
 
 @api.doc(body=user_fields)
@@ -58,10 +76,41 @@ class CheckOverlapId(Resource):
         """Check Overlap Id"""
         return check_overlap_id(request.get_json())
 
+@api.doc(body=pwupdate_fields)
+class User_pwupdate(Resource):
+    def post(self):
+        """update pw"""
+        return pwupdate_user(request.get_json())
+
+@api.doc(body=coid_fields)
+class User_read(Resource):
+    def post(self):
+        """read user"""
+        return read_user(request.get_json())
+
+@api.doc(body=admin_fields)
+class Read_all_users(Resource):
+    def post(self):
+        """read all users"""
+        return read_all_users(request.get_json())
+
+@api.doc(body=delete_user_admin_fields)
+class Admin_Delete(Resource):
+    def post(self):
+        """Delete user admin"""
+        return delete_user_admin(request.get_json())
+
+
+
+
 api.add_resource(SignUp, "/signup")
 api.add_resource(Login, "/login")
 api.add_resource(Delete, "/delete")
+api.add_resource(Admin_Delete, "/admin_delete")
 api.add_resource(UpdateUser, "/update")
 api.add_resource(SearchId, "/searchid")
 api.add_resource(SearchPw, "/searchpw")
 api.add_resource(CheckOverlapId, "/overlapid")
+api.add_resource(User_pwupdate, "/pwupdate")
+api.add_resource(User_read, "/readuser")
+api.add_resource(Read_all_users, "/read_all_users")
