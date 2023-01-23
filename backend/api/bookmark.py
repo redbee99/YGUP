@@ -1,11 +1,10 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from backend.bookmark.services import create_bookmark,delete_bookmark
-from pytz import timezone
 api = Namespace("bookmark", description="Bookmark API")
 
 bookmark_fields = api.model(
-    "Cover_letter", {"bkno": fields.Integer, "id": fields.String,
+    "BookMark", {"bkno": fields.Integer, "id": fields.String,
                 "cno": fields.String
                 }
 )

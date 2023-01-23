@@ -1,6 +1,6 @@
 import { Box, Stack } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -239,7 +239,7 @@ const [value, setValue] = React.useState(0);
 
   return (
     <div className='board_list'>  
-      <Box sx={{ backgroundColor:'#00897b', border: '#26a69a', height:60, pt:3 }}>
+      <Box sx={{ backgroundColor:'#009688', border: '#26a69a', height:60, pt:3 }}>
         <Stack direction="row">
           <Box sx={{ height:40, '& .MuiSvgIcon-root': { height:'3rem' } }}  >
             <SearchIcon sx={{ color: 'white' }}/>
