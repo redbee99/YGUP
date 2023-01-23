@@ -4,7 +4,7 @@ from backend.company.services import create_company, update_company, delete_comp
 api = Namespace("company", description="Company API")
 
 company_fields = api.model(
-    "Company", {"cno": fields.String, "cname": fields.String,
+    "Company", {"cname": fields.String,
                 "keyword": fields.String, "wcloud": fields.String,
                 "wcloud_url": fields.String, "address": fields.String,
                 "sales": fields.String,
@@ -12,7 +12,7 @@ company_fields = api.model(
                 "pay": fields.String, "courl": fields.String,
                 "logo": fields.String, "logo_url": fields.String,
                 "resign": fields.String,"form": fields.String,
-                "bookmark": fields.Integer, "readcnt": fields.Integer,
+                "bookmarkcnt": fields.Integer, "readcnt": fields.Integer,
                 "user_type": fields.String
                 }
 )

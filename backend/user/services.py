@@ -1,10 +1,8 @@
-from flask import jsonify
-
 from backend import db
 from backend.user.models import User
 from backend.user.schemas import user_schema
 from sqlalchemy import and_
-import json
+
 def create_user(data):
     """Given serialized data and create a ner User"""
     if not len(data['id']) >= 4 and len(data['id']) <= 10:
@@ -101,14 +99,12 @@ def check_overlap_id(data):
 
 def read_user(data):
     """Read User"""
-
     res = db.session.query(User).filter(User.id == data['id']).all()
-
+    info = res[0].id, res[0].name, res[0].email
     if not res:
         return 'fail', 404
 
-    return res[0].id, res[0].name, res[0].email, 200
-
+    return info, 200
 
 def read_all_users(data):
     """Read All Users"""
@@ -121,8 +117,15 @@ def read_all_users(data):
     if not res:
         return 'fail', 404
 
-    for i in User:
-        return res[i].id, res[i].name, res[i].email, 200
+    result = {}
+
+    for data in res:
+        temp = data.__dict__
+        del temp['_sa_instance_state']
+        del temp['password']
+        result[temp.get('id')] = temp
+
+    return result, 200
 
 def delete_user_admin(data):
     """Delete User Admin"""
@@ -140,6 +143,3 @@ def delete_user_admin(data):
         db.session.commit()
 
     return 'Delete OK', 200
-
-
-

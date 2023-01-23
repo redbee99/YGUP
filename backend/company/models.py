@@ -7,8 +7,8 @@ Model = db.Model
 class Company(Model):
     __tablename__ = "company"
 
-    cno = Column(db.String(50), primary_key=True)
-    cname = Column(db.String(100), unique=True)
+    cname = Column(db.String(100), primary_key=True)
+    cno = Column(db.String(50))
     keyword = Column(db.String(100))
     wcloud = Column(db.String(100))
     wcloud_url = Column(db.String(100))
@@ -22,13 +22,13 @@ class Company(Model):
     logo_url = Column(db.String(100))
     resign = Column(db.String(20))
     form = Column(db.String(100))
-    bookmark = Column(db.Integer)
+    bookmarkcnt = Column(db.Integer)
     readcnt = Column(db.Integer)
 
-    def __init__(self, cno, cname, keyword, wcloud, wcloud_url, address, sales, owner,
-                 info, pay, courl, logo, logo_url, resign, form, bookmark,readcnt):
-        self.cno = cno
+    def __init__(self, cname, cno, keyword, wcloud, wcloud_url, address, sales, owner,
+                 info, pay, courl, logo, logo_url, resign, form, bookmarkcnt, readcnt):
         self.cname = cname
+        self.cno = cno
         self.keyword = keyword
         self.wcloud = wcloud
         self.wcloud_url = wcloud_url
@@ -42,5 +42,5 @@ class Company(Model):
         self.logo_url = logo_url
         self.resign = resign
         self.form = form
-        self.bookmark = bookmark
+        self.bookmarkcnt = bookmarkcnt
         self.readcnt = readcnt

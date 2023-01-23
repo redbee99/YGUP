@@ -3,9 +3,7 @@ from backend.user.services import create_user, login_user, delete_user, update_u
     search_id, search_pw, check_overlap_id, pwupdate_user, read_user, read_all_users, delete_user_admin
 
 
-from flask import request, session
-from flask import jsonify
-from backend.user.models import User
+from flask import request
 
 
 
@@ -26,6 +24,9 @@ pwsearch_fields = api.model(
 )
 coid_fields = api.model(
     "User_coid", {"id": fields.String}
+)
+read_fields = api.model(
+    "User_read", {"id": fields.String}
 )
 pwupdate_fields = api.model(
     "User_pwupdate", {"id": fields.String, "password": fields.String, "new_pwd": fields.String, "new_pwd_chk": fields.String, }
@@ -82,7 +83,7 @@ class User_pwupdate(Resource):
         """update pw"""
         return pwupdate_user(request.get_json())
 
-@api.doc(body=coid_fields)
+@api.doc(body=read_fields)
 class User_read(Resource):
     def post(self):
         """read user"""
@@ -99,9 +100,6 @@ class Admin_Delete(Resource):
     def post(self):
         """Delete user admin"""
         return delete_user_admin(request.get_json())
-
-
-
 
 api.add_resource(SignUp, "/signup")
 api.add_resource(Login, "/login")

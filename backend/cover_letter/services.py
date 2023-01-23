@@ -20,7 +20,12 @@ def update_cover_letter(data):
 
     res = db.session.query(Cover_letter).filter(and_(Cover_letter.clno == data['clno'],
         User.id == data['id'], Company.cname == data['cname'])).update(
-        {"content_1": data['content_1'], "content_2": data['content_2'], "content_3": data['content_3'], "wdate": data['wdate'], "bkno": data['bkno'], "id": data['id'], "cno": data['cno'], "clno": data['clno']})
+        {
+        "clno": data['clno'], "id": data['id'],"cname": data['cname'],
+        "content_1": data['content_1'], "content_2": data['content_2'],
+        "content_3": data['content_3'], "wdate": data['wdate'],
+        "clname": data['clname']
+        })
 
     if not res:
         return 'fail', 404
