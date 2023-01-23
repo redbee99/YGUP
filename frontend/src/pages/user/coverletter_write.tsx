@@ -49,14 +49,6 @@ const CoverLetter_Write: React.FC = () => {
                     }}
             >
                 <Typography sx={{fontSize: 32, pb:3 }}>자기소개서</Typography>
-                <Stack  direction="row" spacing={2} alignItems="start" padding={5} marginTop={-3}>
-                    <Typography sx={{fontSize: 16, margin:'nomal'}}>글 제목 : </Typography>
-                    <TextField id="outlined-multiline-static"
-                               label='글 제목'
-                               size='small'
-                               sx={{ width: 600 }}
-                    />
-                </Stack>   
                 <FormControl sx={{ml:5, maxWidth: 240 }} size="small">
                     <InputLabel id="demo-select-small">기업명</InputLabel>
                         <Select
@@ -74,7 +66,15 @@ const CoverLetter_Write: React.FC = () => {
                             }
                         </Select>
                 </FormControl> 
-                <Stack  direction="column" spacing={2} alignItems="start" padding={5} marginTop={-3}>
+                <Stack  direction="row" spacing={2} alignItems="start" padding={5} >
+                    <Typography sx={{fontSize: 16, margin:'nomal'}}>글 제목 : </Typography>
+                    <TextField id="outlined-multiline-static"
+                               label='글 제목'
+                               size='small'
+                               sx={{ width: 600 }}
+                    />
+                </Stack>   
+                <Stack  direction="column" spacing={2} alignItems="start" padding={5} marginTop={-5}>
                     <Typography sx={{fontSize: 16, pb:3}}>1.지원 동기</Typography>
                     <TextField id="outlined-multiline-static"
                                label='지원동기를 작성해주세요.'

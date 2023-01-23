@@ -67,6 +67,23 @@ footer {
 
 /* home end */
 
+/*Admin start*/
+.info {
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+
+.info_update {
+    background-color: #E6EAF3;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+}
+
 /* write start */
 .Write {
   padding: 20px;
@@ -82,6 +99,21 @@ footer {
   margin-top: 30px;
   margin-left: 50px;
 }
+
+.company_basic_list {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+
+.user_list {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+/*Admin end*/
 
 #name {
   width: 60%;
@@ -128,7 +160,7 @@ footer {
 /* wirte end*/
 
 
-
+/*User start*/
 /* login start */
 
 .Login{
@@ -154,6 +186,7 @@ footer {
   color: black;
 }
 /* login end */
+
 /* idsearch start */
 .idsearch{
   background-color: #E6EAF3;
@@ -231,7 +264,7 @@ footer {
 }
 /*coverletter end*/
 
-
+/*board start*/
 .board_list {
   background-color: #E6EAF3;
   position: fixed;
@@ -250,7 +283,7 @@ footer {
   height: 100%;
   width: 100%; 
 }
-
+/*board end*/
 .userinfo {
   background-color: #E6EAF3;
   position: fixed;
@@ -279,21 +312,6 @@ footer {
   height: 100%;
   width: 100%;
   overflow: scroll;
-}
-.info {
-  background-color: #E6EAF3;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  overflow: scroll;
-}
-
-.info_update {
-    background-color: #E6EAF3;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    overflow: scroll;
 }
 
 .filebox label {
