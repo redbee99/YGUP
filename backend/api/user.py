@@ -26,16 +26,16 @@ coid_fields = api.model(
     "User_coid", {"id": fields.String}
 )
 read_fields = api.model(
-    "User_read", {"id": fields.String}
+    "User_read", {"uno": fields.Integer}
 )
 pwupdate_fields = api.model(
-    "User_pwupdate", {"id": fields.String, "password": fields.String, "new_pwd": fields.String, "new_pwd_chk": fields.String, }
+    "User_pwupdate", {"id": fields.String, "password": fields.String, "new_pwd": fields.String, "new_pwd_chk": fields.String }
 )
 admin_fields = api.model(
-    "All_Users",{"user_type":fields.String}
+    "All_Users",{"uno":fields.Integer}
 )
 delete_user_admin_fields = api.model(
-    "Delete_Users_Admin",{"id": fields.String, "user_type":fields.String}
+    "Delete_Users_Admin",{"id": fields.String, "uno":fields.Integer}
 )
 
 @api.doc(body=user_fields)

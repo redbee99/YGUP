@@ -12,12 +12,18 @@ company_fields = api.model(
                 "pay": fields.String, "courl": fields.String,
                 "logo": fields.String, "logo_url": fields.String,
                 "resign": fields.String,"form": fields.String,
-                "bookmarkcnt": fields.Integer, "readcnt": fields.Integer,
-                "user_type": fields.String
+                "bookmarkcnt": fields.Integer, "readcnt": fields.Integer
                 }
 )
-@api.doc(body=company_fields)
 
+company_delete_fields = api.model(
+    "CompanyDelete", {
+                    "cname": fields.String,
+                    "uno": fields.Integer
+                }
+)
+
+@api.doc(body=company_fields)
 class CreateCompany(Resource):
     def post(self):
         """Create Company"""
@@ -29,11 +35,16 @@ class UpdateCompany(Resource):
         """company Update"""
         return update_company(request.get_json())
 
-@api.doc(body=company_fields)
+@api.doc(body=company_delete_fields)
 class DeleteCompany(Resource):
-    def post(self, ):
+    def post(self):
         """Company Delete"""
         return delete_company(request.get_json())
+
+class ReadAllCompany(Resource):
+    def get(self):
+        """Get All Company"""
+
 
 api.add_resource(CreateCompany, "/create")
 api.add_resource(UpdateCompany, "/update")
