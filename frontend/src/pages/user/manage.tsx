@@ -152,7 +152,7 @@ interface EnhancedTableProps {
 interface EnhancedTableToolbarProps {
     numSelected: number;
   }
-  
+
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const { numSelected } = props;
     const navigate = useNavigate();
@@ -160,62 +160,47 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       navigate('/coverletter_write')
     };
 
-    return (
-        <Toolbar
-        sx={{
-            pl: { sm: 2 },
-            pr: { xs: 1, sm: 1 },
-            ...(numSelected > 0 && {
-            bgcolor: (theme) =>
-                alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-            }),
-        }}
-        >
-        {numSelected > 0 ? (
-            <Typography
-            sx={{ flex: '1 1 100%' }}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-            >
-            {numSelected} selected
-            </Typography>
-        ) : (
-            <Typography
-            sx={{ flex: '1 1 100%' }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-            >
-            내가 쓴 자소서
-            </Typography>
-        )}
-        {numSelected > 0 ? (
-            <Tooltip title="Delete">
-            <IconButton>
-                <DeleteIcon />
-            </IconButton>
-            </Tooltip>
-        ) : (
-            <Tooltip title=" 자기소개서 작성 ">
-              <Button variant="contained"  
-                      size="small" 
-                      sx={{ width: 100, 
-                            mt:3, 
-                            mx:'auto', 
-                            color:'#ffff', 
-                            backgroundColor: '#26a69a', 
-                            borderColor:'#434343',
-                          }}
-                          onClick={() => {
-                            goCoverLetter_Write();
-                          }}
-                >
-                  글쓰기
-                </Button>
-            </Tooltip>
-        )}
-    </Toolbar>
+return (
+    <Toolbar
+    sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+        bgcolor: (theme) =>
+            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+        }),
+    }}
+    >
+    <Typography
+      sx={{ flex: '1 1 100%' }}
+      color="inherit"
+      variant="subtitle1"
+      component="div"
+    >  
+    </Typography>    
+    {numSelected > 0 ? (
+    <Typography>
+        <IconButton>
+          <DeleteIcon />
+        </IconButton>
+    </Typography>
+  ):(
+    <Typography>
+       <Button variant="outlined" size="small" 
+                onClick={() => { goCoverLetter_Write()}}
+                sx={{ width: 100, 
+                      mt:3, 
+                      mx:'auto', 
+                      color:'#ffff', 
+                      backgroundColor: '#009688', 
+                      borderColor:'#434343'
+                    }} 
+               >
+                      글쓰기
+               </Button>
+    </Typography>
+  )}
+</Toolbar>
 );
 }
 
@@ -336,7 +321,17 @@ const Manage: React.FC = () => {
             </Box>
             <Box sx={{ width: '100%', mb:15}}>
               <Paper sx={{ width: '100%', mb: 2 }}>
-                  <EnhancedTableToolbar numSelected={selected.length}/>
+              <Typography
+            sx={{ flex: '1 1 100%' }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+            marginLeft={3}
+            paddingTop={4}
+            paddingBottom={3}
+            >
+            내가 쓴 자소서
+            </Typography>
                   <TableContainer>
                   <Table
                       sx={{ minWidth: 750 }}
@@ -409,7 +404,7 @@ const Manage: React.FC = () => {
                   </Table>
                   </TableContainer>
                   <TablePagination
-                      rowsPerPageOptions={[5, 10, 25]}
+                      rowsPerPageOptions={[5]}
                       component="div"
                       count={rows.length}
                       rowsPerPage={rowsPerPage}
@@ -418,6 +413,7 @@ const Manage: React.FC = () => {
                       onRowsPerPageChange={handleChangeRowsPerPage}
                   />
               </Paper>
+              <EnhancedTableToolbar numSelected={selected.length}/>
             </Box>
         </div>
     );

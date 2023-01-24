@@ -14,8 +14,8 @@ const Board_Predict: React.FC = () => {
     const goBoard_mylist_chek = () => {
        navigate('/board_mylist_chek')
     };
-    const goCoverletter_write = () => {
-        navigate('/coverletter_write')
+    const goPredict_write = () => {
+        navigate('/predict_write')
     };
         return (
         <div className='board_Predict'>  
@@ -26,10 +26,10 @@ const Board_Predict: React.FC = () => {
                 m: 1, 
                 marginTop:6,
                 marginBottom:4,
-                padding:3,
+                padding:1,
                 minwidth: 128, 
                 height: 150,
-                marginLeft:55,
+                marginLeft:35,
                 },
               }}
             >
@@ -48,7 +48,7 @@ const Board_Predict: React.FC = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                 <Button size="large" onClick={() => { goCoverletter_write()}}>자소서 작성</Button>
+                 <Button size="large" onClick={() => { goPredict_write()}}>자소서 작성</Button>
               </CardActions>
             </Card>
          </Box> 

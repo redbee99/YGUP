@@ -202,7 +202,15 @@ footer {
   width: 100%;
 }
 /* idsearch end */
+/*pwsearch start*/
+.pwsearch{
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
 
+/*pwsearch end*/
 /* join start */
 .join{
   background-color: #E6EAF3;
@@ -228,6 +236,14 @@ footer {
   margin-top: 5x;
   font-size: large;
 }
+
+.userinfo_update{
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
 /*info_delete start*/
 .info_delete_underline{
   width: 100%;
@@ -273,17 +289,25 @@ footer {
   overflow: scroll;
 }
 .board_MyList {
+  background-color: #E6EAF3;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .board_Predict{
+  background-color: #E6EAF3;
   position: fixed;
   height: 100%;
   width: 100%; 
 }
-/*board end*/
+.board_mylist_chek{
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
 .userinfo {
   background-color: #E6EAF3;
   position: fixed;

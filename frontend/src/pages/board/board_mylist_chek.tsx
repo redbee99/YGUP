@@ -3,7 +3,6 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
-import EditIcon from '@mui/icons-material/Edit';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -19,7 +18,6 @@ interface Data {
     name: string,
     time: string,
     title: string,
-    edit: string,
 }
 
 interface HeadCell {
@@ -34,18 +32,17 @@ function createData(
     name: string,
     title: string,
     time: string,
-    edit: string,
 ) {
-return { id, name, title, time, edit };
+return { id, name, title, time };
 }
 
 const rows = [
-    createData('1', 'Snow','이력서_센스있고 손이 빠릅니다',  '23년 01월 01일', 'Edit'),
-    createData('2', 'kakao', '카카오와 함께 도전하겠습니다.', '23년 01월 01일', 'Edit'),
-    createData('3', 'coopang','쿠팡의 성장 가능성에 주목하겠습니다', '23년 01월 02일', 'Edit' ),
-    createData('4', 'naver', '변화에 맞춰 도전하는 자세', '23년 01월 03일', 'Edit' ),
-    createData('5', 'toss', '소통과 신뢰로 목료달성하기', '23년 01월 04일', 'Edit' ),
-    createData('6', 'namu', '함께일 때 빛나는, 나무와 같은사람', '23년 01월 05일', 'Edit' ),
+    createData('1', 'Snow','이력서_센스있고 손이 빠릅니다',  '23년 01월 01일' ),
+    createData('2', 'kakao', '카카오와 함께 도전하겠습니다.', '23년 01월 01일' ),
+    createData('3', 'coopang','쿠팡의 성장 가능성에 주목하겠습니다', '23년 01월 02일' ),
+    createData('4', 'naver', '변화에 맞춰 도전하는 자세', '23년 01월 03일' ),
+    createData('5', 'toss', '소통과 신뢰로 목료달성하기', '23년 01월 04일' ),
+    createData('6', 'namu', '함께일 때 빛나는, 나무와 같은사람', '23년 01월 05일'),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -109,16 +106,10 @@ const headCells: readonly HeadCell[] = [
         disablePadding: false,
         label: '작성시간',
     },
-
-    {
-        id: 'edit',
-        numeric: true,
-        disablePadding: false,
-        label: '수정',
-    },
 ];
 
-interface EnhancedTableProps {
+
+  interface EnhancedTableProps {
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -174,7 +165,6 @@ interface EnhancedTableToolbarProps {
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const { numSelected } = props;
     const navigate = useNavigate();
-
     const goNewprdict = () => {
        navigate('/newpredict')
     };
@@ -225,10 +215,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 const Board_mylist_chek: React.FC = () => {
  
     const navigate = useNavigate();
-
-    const goCoverLetter_Update = () => {
-      navigate('/coverletter_update')
-    };
       
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
@@ -286,12 +272,12 @@ const Board_mylist_chek: React.FC = () => {
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
     return (
-        <div>
+        <div className='board_mylist_chek'>
                   <Box sx={{ width: '100%' }}>
                   <Paper sx={{ width: '100%', mb: 2 }}>
                   <TableContainer>
                   <Table
-                      sx={{ minWidth: 750 }}
+                      sx={{ Width: '100%'}}
                       aria-labelledby="tableTitle"
                   >
                     <EnhancedTableHead
@@ -340,20 +326,6 @@ const Board_mylist_chek: React.FC = () => {
                               </TableCell>
                               <TableCell align="center">{row.title}</TableCell>
                               <TableCell align="center">{row.time}</TableCell>
-                              <TableCell align="center">
-                                  <Button
-                                      color="primary"
-                                      size="medium"
-                                      variant="text"
-                                      onClick={() => { goCoverLetter_Update() } }
-                                      >
-                                      Edit
-                                      <IconButton aria-label="Edit" size="small" disabled color="primary" >
-                                      <EditIcon fontSize="small"/>
-                                      </IconButton>
-                                  </Button>
-                                  
-                              </TableCell>
                               </TableRow>
                           );
                           })}
