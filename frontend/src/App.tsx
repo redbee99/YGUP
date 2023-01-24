@@ -33,6 +33,7 @@ import CoverLetter_Update from './pages/user/coverletter_update';
 import PwValidation from './pages/user/pwvalidation';
 import NewPredict from './pages/user/newpredict';
 import Board_mylist_chek from './pages/board/board_mylist_chek';
+import Board_predict_write from './pages/board/board_predict_write';
 
 
 const App: React.FC = () => (
@@ -40,11 +41,14 @@ const App: React.FC = () => (
     <Route path='/' element={<Home />} />
     <Route path='/board_MyList' element={<Board_MyList/>} />
     <Route path='/board_Predict' element={<Board_Predict />} />
-    <Route path='/company_basic_list' element={<Company_Basic_List />} />
     <Route path='/board_list' element={<Board_List />} />
     <Route path='/board_like' element={<Board_Like />} />
     <Route path='/board_Fav' element={<Board_Fav />} />
+    <Route path='/newpredict' element={<NewPredict/>} />
+    <Route path='/predict_write' element={<Board_predict_write/>}/>
+    <Route path='/board_mylist_chek' element={<Board_mylist_chek/>}/>
     <Route path='/user_list' element={<User_list />} />
+    <Route path='/company_basic_list' element={<Company_Basic_List />} />
     <Route path='/write' element={<Write />} />
     <Route path='/login' element={<Login />} />
     <Route path='/idsearch' element={<IdSearch />} />
@@ -65,8 +69,6 @@ const App: React.FC = () => (
     <Route path='/coverletter_write' element={<CoverLetter_Write />} />
     <Route path='/coverletter_update' element={<CoverLetter_Update />} />
     <Route path='/pwvalidation' element={<PwValidation />} />
-    <Route path='/newpredict' element={<NewPredict/>} />
-    <Route path='/board_mylist_chek' element={<Board_mylist_chek/>}/>
   </Routes>
 )
 

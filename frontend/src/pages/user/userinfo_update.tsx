@@ -1,6 +1,7 @@
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Stack, TextField, Typography, FormControl, InputLabel, Select, SelectChangeEvent, MenuItem, } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router';
+
 
 const UserInfo_Update: React.FC = () => {
 
@@ -9,6 +10,17 @@ const UserInfo_Update: React.FC = () => {
     const goUserInfo = () => {
         navigate('/userinfo')
     };
+
+    const [email, setemail] = React.useState('');
+    const emailAdress = [
+        'gmail.com',
+        'naver.com',
+        'hanmail.net',
+        'nate.net',
+    ];
+    const handleChange = (event: SelectChangeEvent) => {
+      setemail(event.target.value as string);
+      };
 
     return (
         <div className='userinfo_update'>
@@ -30,6 +42,10 @@ const UserInfo_Update: React.FC = () => {
                 <Typography sx={{fontSize: 32, pb:3 }}>회원 정보 수정</Typography>
                 <Stack  direction="row" spacing={2} alignItems="center"sx={{px:5}}> 
                     <Stack  direction="column" >
+                    <Stack  direction="row" spacing={2} alignItems="center" sx={{py:1}}>
+                            <Typography sx={{fontSize: 20 }}>이름 :</Typography>
+                            <Typography sx={{fontSize: 20 }}>Test1</Typography>
+                        </Stack>
                         <Stack  direction="row" spacing={2} alignItems="center"sx={{py:1}}>
                             <Typography sx={{fontSize: 20 }}>아이디 :</Typography>
                             <Typography sx={{fontSize: 20 }}>Test1</Typography>
@@ -44,28 +60,30 @@ const UserInfo_Update: React.FC = () => {
                                        sx={{ width: 300 }}
                             />
                         </Stack>
-                        <Stack  direction="row" spacing={2} sx={{py:1}} >
-                            <Typography sx={{fontSize: 20 }}>비밀번호 확인 :</Typography>
-                            <TextField id="update-pw" 
-                                       label="비밀번호 확인" 
-                                       variant="outlined" 
-                                       size="small"  
-                                       margin="normal"  
-                                       sx={{ width: 300 }}
-                            />                        
-                            </Stack>
-                        <Stack  direction="row" spacing={2} alignItems="center" sx={{py:1}}>
-                            <Typography sx={{fontSize: 20 }}>이름 :</Typography>
-                            <Typography sx={{fontSize: 20 }}>Test1</Typography>
-                        </Stack>
                         <br/>
                         <Stack  direction="row" justifyContent="center" alignItems="center" spacing={4} sx={{  }}>
-                            <Typography sx={{fontSize: 20 , width: 110 }}>이메일 :</Typography>
-                            <TextField id="login-email" label="이메일아이디" variant="outlined" size="small"/>
-                            <Box sx={{ alignItems: 'center' , mx:-10}}>
-                                <Typography>@</Typography>
-                            </Box>
-                            <TextField id="login-email" label="이메일" variant="outlined" size="small" sx={{ width: 300 }}/>
+                        <Typography sx={{fontSize: 20 , width: 110 }}>이메일 :</Typography>
+                        <TextField id="login-email" label="이메일아이디" variant="outlined" size="small"/>
+                  <Box sx={{ display: 'flex', alignItems: 'center'}}>
+                      <Typography>@</Typography>
+                  </Box>
+                  <FormControl sx={{ m: 5, maxWidth: 240, width:200 }} size="small">
+                  <InputLabel id="emailadress">선택 이메일</InputLabel>
+                    <Select
+                        labelId="emailadress"
+                        id="login-email"
+                        value={email}
+                        onChange={handleChange}
+                        label="이메일주소"
+                        >
+                        {
+                        emailAdress.map(
+                            (row, index) => {
+                            return (<MenuItem value={row}>{row}</MenuItem>);
+                        })
+                        }
+                    </Select>
+                  </FormControl>
                         </Stack>
                     </Stack>                  
                 </Stack>
@@ -87,4 +105,5 @@ const UserInfo_Update: React.FC = () => {
         </div>
     );
 }
+
 export default UserInfo_Update;
