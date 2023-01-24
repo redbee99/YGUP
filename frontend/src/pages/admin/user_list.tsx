@@ -1,10 +1,21 @@
 import * as React from 'react';
 import { alpha } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Checkbox, IconButton, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Box, Checkbox, IconButton, Paper, styled, Tab, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Tooltip } from '@mui/material';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => {
+  return ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: '#009688',
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  });
+});
 
 interface Data {
   name: string;
@@ -115,7 +126,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+  const { onSelectAllClick, order, orderBy,  onRequestSort } =
     props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -125,29 +136,18 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
+        <StyledTableCell padding="checkbox" />
+
         {headCells.map((headCell) => (
-          <TableCell
+          <StyledTableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align='center'
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
+            sortDirection={orderBy === headCell.id ? order : false} >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
+              onClick={createSortHandler(headCell.id)} >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
@@ -155,7 +155,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 </Box>
               ) : null}
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -172,52 +172,42 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   return (
     <Toolbar
       sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography sx={{ flex: '1 1 100%', 
-                          backgroundColor:'#5856D6', 
-                          color:'#ffff'}} 
-                    variant="h6" 
-                    id="tableTitle" 
-                    component="div"
-        >
-          회원목록
-        </Typography>
-      )}
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(numSelected > 0 && {
+            bgcolor: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.activatedOpacity),
+          }),
+      }} >
+
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon /> //Filter 기능??
-          </IconButton>
-        </Tooltip>
+      ):(
+        <IconButton/>
       )}
     </Toolbar>
   );
 }
 
 const User_list: React.FC = () => {
+
+  const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const goUser_list = () => {
+        navigate('/user_list')
+  };
+  const goCompany_basic_list = (state: number) => {
+        navigate('/company_basic_list',  { state: state })
+  };
+  
+  const [value, setValue] = React.useState(state);
 
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('userid');
@@ -290,78 +280,60 @@ const User_list: React.FC = () => {
       setValue(newValue);
   };
 
-  const navigate = useNavigate();
-  const { state } = useLocation();
-
-  const goUser_list = () => {
-        navigate('/user_list')
-    };
-  const goCompany_basic_list = (state: number) => {
-        navigate('/company_basic_list',  { state: state })
-    };
-  
-  const [value, setValue] = React.useState(state);
 
   return (
-    <div>
-    <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                  <Tab label="회원 목록" {...a11yProps(0)} onClick={() => { goUser_list(); }}/>
-                  <Tab label="기업 목록" {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }}/>
-              </Tabs>
-    </Box>
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+    <div className='user_list'>
+      <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} >
+          <Tab label="회원 목록" {...a11yProps(0)} onClick={() => { goUser_list(); }}/>
+          <Tab label="기업 목록" {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }}/>
+        </Tabs>
+      </Box>
+      <Box sx={{ width: '100%' }}>
+        <Paper sx={{ width: '100%', mb: 2 }}>
+          <TableContainer>
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle" >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length} />
+              <TableBody>
+                {stableSort(rows, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const isItemSelected = isSelected(row.name);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
-                      selected={isItemSelected}
-                    >
+                      selected={isItemSelected} >
                       <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
+                          onClick={(event) => handleClick(event, row.name)}
                           checked={isItemSelected}
                           inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
+                            'aria-labelledby': labelId }}/>
                       </TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
-                      >
+                        align='center' >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.userid}</TableCell>
-                      <TableCell align="right">{row.email}</TableCell>
+                      <TableCell align="center">{row.userid}</TableCell>
+                      <TableCell align="center">{row.email}</TableCell>
                     </TableRow>
                   );
                 })}

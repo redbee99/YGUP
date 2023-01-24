@@ -1,8 +1,7 @@
 from backend import db
 from backend.bookmark.models import Bookmark
 from backend.bookmark.schemas import bookmark_schema
-from sqlalchemy import and_
-import json
+
 
 def create_bookmark(data):
     bookmark = bookmark_schema.load(data)

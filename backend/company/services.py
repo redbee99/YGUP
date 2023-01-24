@@ -13,11 +13,11 @@ def create_company(data):
 
     data['cno'] = str(uuid.uuid1())
     #북마크 테이블이 완성 되면 북마크 조회해서 값 채워 넣기
-    company = Company(cno=data['cno'],cname=data['cname'],keyword=data['keyword'],
+    company = Company(cname=data['cname'], cno=data['cno'], keyword=data['keyword'],
     wcloud=data['wcloud'],wcloud_url=data['wcloud_url'],address=data['address'],
     sales=data['sales'], owner=data['owner'],info=data['info'],pay=data['pay'],
     courl=data['courl'], logo=data['logo'], logo_url=data['logo_url'],
-    resign=data['resign'], form=data['form'], bookmark=data['bookmark'],
+    resign=data['resign'], form=data['form'], bookmarkcnt=data['bookmarkcnt'],
     readcnt=data['readcnt'])
     db.session.add(company)
     db.session.commit()
@@ -29,8 +29,8 @@ def update_company(data):
     if user is None or user.id != 'admin':
         return {"message": f"only admin can update"}, 202
 
-    res = db.session.query(Company).filter(Company.cno == data['cno']).update(
-        {"cno": data['cno'], "cname": data['cname'], "keyword": data['keyword'], "wcloud": data['wcloud'], "wcloud_url": data['wcloud_url'], "address": data['address'], "sales": data['sales'], "owner": data['owner'], "info": data['info'], "pay": data['pay'], "courl": data['courl'], "logo": data['logo'], "logo_url": data['logo_url'], "resign": data['resign'], "form": data['form'], "bookmark": data['bookmark'], "readcnt":data['readcnt'] })
+    res = db.session.query(Company).filter(Company.cname == data['cname']).update(
+        {"cname": data['cname'], "keyword": data['keyword'], "wcloud": data['wcloud'], "wcloud_url": data['wcloud_url'], "address": data['address'], "sales": data['sales'], "owner": data['owner'], "info": data['info'], "pay": data['pay'], "courl": data['courl'], "logo": data['logo'], "logo_url": data['logo_url'], "resign": data['resign'], "form": data['form'], "bookmark": data['bookmark'], "readcnt":data['readcnt'] })
 
     if not res:
         return 'fail', 404
@@ -45,7 +45,7 @@ def delete_company(data):
     if user is None or user.id != 'admin':
         return {"message": f"only admin can delete"}, 202
 
-    res = db.session.query(Company).filter(Company.cno == data['cno']).all()
+    res = db.session.query(Company).filter(Company.cname == data['cname']).all()
 
     if not res:
         return 'fail', 404

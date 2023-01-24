@@ -284,21 +284,19 @@ const [value, setValue] = React.useState(state);
           </Tabs>
         </Box>
       </Box>
-      <Box sx={{ width: '100%' }}>
-        <Paper sx={{ width: '100%', mb: 2 }}>
+      <Box sx={{ width: '100%' }} >
+        <Paper sx={{ width: '100%', mb: 2 }} >
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-            >
+              aria-labelledby="tableTitle" >
               <EnhancedTableHead
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
+                rowCount={rows.length} />
               <TableBody>
                 {stableSort(rows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -314,25 +312,20 @@ const [value, setValue] = React.useState(state);
                         aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.name}
-                        selected={isItemSelected}
-                      >
+                        selected={isItemSelected} >
                         <TableCell padding="checkbox">
                           <Checkbox
                             color="primary"
                             icon={<BookmarkBorderIcon />}
                             checkedIcon={<BookmarkIcon />}
                             checked={isItemSelected}
-                            inputProps={{
-                              'aria-labelledby': labelId,
-                            }}
-                          />
+                            inputProps={{ 'aria-labelledby': labelId }} />
                         </TableCell>
                         <TableCell
                           component="th"
                           id={labelId}
                           scope="row"
-                          align="center"
-                        >
+                          align="center" >
                           {row.name}
                         </TableCell>
                         <TableCell align="center">{row.location}</TableCell>
