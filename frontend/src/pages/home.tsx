@@ -2,7 +2,7 @@ import * as React from 'react';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import { CardActionArea, CardContent, CardMedia, Divider, Stack } from '@mui/material';
+import { CardContent, CardMedia } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Icon from '../img/logo.svg'
 import Typography from '@mui/material/Typography';
@@ -20,90 +20,27 @@ const Item = styled(Card)(({ theme }) => ({
 const Home: React.FC = () => {
     return (
         <div className='home'>
-            <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto' , mx:15, mb:15 }}>
-            <Typography sx={{fontSize:20, my:5}} textAlign='center'>실시간 급상승 검색 기업 top5 !</Typography>
-                <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                {Array.from(Array(5)).map((_, index) => (
-                    <Grid xs={2} sm={2} md={2} key={index}>
-                        <Card>
-                            <CardActionArea>
-                                <CardContent>
-                                    <CardMedia
-                                        component="img"
-                                        sx={{ width: 200 ,align:'center'}}
-                                        image={Icon}
-                                        alt="Paella dish"/>
-                                </CardContent>
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div" align="center">
-                                        기업설명
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        기업설명입니다.
-                                    </Typography>
-                                    <Divider/>
-                                    <Box sx={{ m: 2 }}>
-                                        <Typography gutterBottom variant="body1" sx={{ fontSize:15 }}>
-                                            기업정보
-                                        </Typography>
-                                        <Stack direction="row" spacing={3}>
-                                            <Box borderRadius={1} sx={{ width:50, height:30, backgroundColor:'grey.300'}}>매출</Box>
-                                            <Box borderRadius={1} sx={{ width:50, height:30, backgroundColor:'grey.300'}}>연봉</Box>
-                                            <Box borderRadius={1} sx={{ width:50, height:30, backgroundColor:'grey.300'}}>퇴사율</Box>
-                                        </Stack>
-                                    </Box>
-                                    <Divider/>
-                                    <Stack direction="row" spacing={3}>
-                                        <Typography sx={{fontSize:10}}>keyword</Typography>
-                                        <Typography sx={{fontSize:10}}>keyword</Typography>
-                                        <Typography sx={{fontSize:10}}>keyword</Typography>
-                                    </Stack>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    </Grid>
-                ))}
-                </Grid>
-                <Typography sx={{fontSize:20, my:5}} textAlign='center'>기업 랭킹 top5 !</Typography>
-                <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                {Array.from(Array(5)).map((_, index) => (
-                    <Grid xs={2} sm={2} md={2} key={index}>
-                        <Card>
-                            <CardActionArea>
-                                <CardContent>
-                                    <CardMedia
-                                        component="img"
-                                        sx={{ width: 200 ,align:'center'}}
-                                        image={Icon}
-                                        alt="Paella dish"/>
-                                </CardContent>
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div" align="center">
-                                        기업설명
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        기업설명입니다.
-                                    </Typography>
-                                    <Divider/>
-                                    <Box sx={{ m: 2 }}>
-                                        <Typography gutterBottom variant="body1" sx={{ fontSize:15 }}>
-                                            기업정보
-                                        </Typography>
-                                        <Stack direction="row" spacing={3}>
-                                            <Box borderRadius={1} sx={{ width:50, height:30, backgroundColor:'grey.300'}}>매출</Box>
-                                            <Box borderRadius={1} sx={{ width:50, height:30, backgroundColor:'grey.300'}}>연봉</Box>
-                                            <Box borderRadius={1} sx={{ width:50, height:30, backgroundColor:'grey.300'}}>퇴사율</Box>
-                                        </Stack>
-                                    </Box>
-                                    <Divider/>
-                                    <Stack direction="row" spacing={3}>
-                                        <Typography sx={{fontSize:10}}>keyword</Typography>
-                                        <Typography sx={{fontSize:10}}>keyword</Typography>
-                                        <Typography sx={{fontSize:10}}>keyword</Typography>
-                                    </Stack>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
+            <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto' , mx:20, mb:15 }}>
+                <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 4, sm: 8, md: 8 }}>
+                {Array.from(Array(8)).map((_, index) => (
+                    <Grid xs={2} sm={1} md={2} key={index}>
+                    <Item>
+                        <CardContent >
+                            <CardMedia
+                                component="img"
+                                sx={{ width: 250 }}
+                                image={Icon}
+                                alt="Paella dish"/>
+                        </CardContent>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                            기업설명
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                            기업설명입니다.
+                            </Typography>
+                        </CardContent>
+                    </Item>
                     </Grid>
                 ))}
                 </Grid>
@@ -111,5 +48,4 @@ const Home: React.FC = () => {
         </div>
     );
 }
-
 export default Home;
