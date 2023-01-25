@@ -10,10 +10,12 @@ class Bookmark(Model):
     bkno = Column(db.Integer, primary_key=True)
     id = Column(db.String(20), nullable=False)
     cname = Column(db.String(50), nullable=False)
+    state = Column(db.Integer, nullable=False)
 
 
-    def __init__(self, bkno, id, cname):
+    def __init__(self, bkno, id, cname, state):
         self.bkno = bkno
         self.id = id
         self.cname = cname
+        self.state = state
 
