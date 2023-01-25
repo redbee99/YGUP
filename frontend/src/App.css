@@ -209,8 +209,15 @@ footer {
   height: 100%;
   width: 100%;
 }
-
 /*pwsearch end*/
+/*pwupdate start*/
+.pwupdate{
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+/*pwupdate end*/
 /* join start */
 .join{
   background-color: #E6EAF3;
@@ -282,6 +289,20 @@ footer {
 
 /*board start*/
 .board_list {
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+.board_like{
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+.board_Fav{
   background-color: #E6EAF3;
   position: fixed;
   height: 100%;
