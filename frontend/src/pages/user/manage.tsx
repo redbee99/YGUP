@@ -1,10 +1,11 @@
-import { Box, Button, Checkbox, IconButton, Paper, styled, Tab, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Checkbox, IconButton, Paper, Stack, styled, Tab, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Tooltip, Typography } from '@mui/material';
 import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
+import User from './user';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -160,48 +161,47 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       navigate('/coverletter_write')
     };
 
-return (
+  return (
     <Toolbar
-    sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-        bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-    }}
-    >
-    <Typography
-      sx={{ flex: '1 1 100%' }}
-      color="inherit"
-      variant="subtitle1"
-      component="div"
-    >  
-    </Typography>    
-    {numSelected > 0 ? (
-    <Typography>
-        <IconButton>
-          <DeleteIcon />
-        </IconButton>
-    </Typography>
-  ):(
-    <Typography>
-       <Button variant="outlined" size="small" 
-                onClick={() => { goCoverLetter_Write()}}
-                sx={{ width: 100, 
-                      mt:3, 
-                      mx:'auto', 
-                      color:'#ffff', 
-                      backgroundColor: '#009688', 
-                      borderColor:'#434343'
-                    }} 
-               >
-                      글쓰기
-               </Button>
-    </Typography>
-  )}
-</Toolbar>
-);
+      sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(numSelected > 0 && {
+          bgcolor: (theme) =>
+              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          }),
+      }} >
+      <Typography
+        sx={{ flex: '1 1 100%' }}
+        color="inherit"
+        variant="subtitle1"
+        component="div"
+      >  
+      </Typography>    
+      {numSelected > 0 ? (
+      <Typography>
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+      </Typography>
+      ):(
+      <Typography>
+        <Button 
+            variant="outlined" size="small" 
+            onClick={() => { goCoverLetter_Write()}}
+            sx={{ width: 100, 
+                    mt:3, 
+                    mx:'auto', 
+                    color:'#ffff', 
+                    backgroundColor: '#009688', 
+                    borderColor:'#434343'
+            }} >
+            글쓰기
+        </Button>
+      </Typography>
+    )}
+    </Toolbar> 
+  );
 }
 
 const Manage: React.FC = () => {
@@ -259,7 +259,7 @@ const Manage: React.FC = () => {
     const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(25);
   
     const handleRequestSort = (
       event: React.MouseEvent<unknown>,
@@ -312,109 +312,111 @@ const Manage: React.FC = () => {
 
     return (
         <div className='manage'>
-            <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
+            <Box className='mypageheader' sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab value={0} label="회원정보" {...a11yProps(0)} onClick={() => { goUserInfo(); } }/>
                     <Tab value={1} label="북마크" {...a11yProps(1)} onClick={() => { goBookmark(1); } }/>
                     <Tab value={2} label="자소서 관리" {...a11yProps(2)} onClick={() => { goManage(2); } } />
                 </Tabs>
-            </Box>
-            <Box sx={{ width: '100%', mb:15}}>
-              <Paper sx={{ width: '100%', mb: 2 }}>
-              <Typography
-            sx={{ flex: '1 1 100%' }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-            marginLeft={3}
-            paddingTop={4}
-            paddingBottom={3}
-            >
-            내가 쓴 자소서
-            </Typography>
+            </Box>          
+            <Stack direction={'row'} spacing={2} className='mypagecontents' >
+              <User />
+              <Box sx={{ width: '100%', mb:15}}>
+                <Paper sx={{ width: '100%', mb: 2 }}>
+                  <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                    marginLeft={3}
+                    paddingTop={4}
+                    paddingBottom={3}
+                    >
+                    내가 쓴 자소서
+                  </Typography>
                   <TableContainer>
-                  <Table
-                      sx={{ minWidth: 750 }}
-                      aria-labelledby="tableTitle"
-                  >
-                      <EnhancedTableHead
-                          numSelected={selected.length}
-                          order={order}
-                          orderBy={orderBy}
-                          onSelectAllClick={handleSelectAllClick}
-                          onRequestSort={handleRequestSort}
-                          rowCount={rows.length}
-                      />
-                      <TableBody>
-                      {stableSort(rows, getComparator(order, orderBy))
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((row, index) => {
-                          const isItemSelected = isSelected(row.id);
-                          const labelId = `enhanced-table-checkbox-${index}`;
+                    <Table
+                        sx={{ minWidth: 750 }}
+                        aria-labelledby="tableTitle"
+                    >
+                        <EnhancedTableHead
+                            numSelected={selected.length}
+                            order={order}
+                            orderBy={orderBy}
+                            onSelectAllClick={handleSelectAllClick}
+                            onRequestSort={handleRequestSort}
+                            rowCount={rows.length}
+                        />
+                        <TableBody>
+                        {stableSort(rows, getComparator(order, orderBy))
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, index) => {
+                            const isItemSelected = isSelected(row.id);
+                            const labelId = `enhanced-table-checkbox-${index}`;
 
-                          return (
-                              <TableRow
-                                  hover
-                                  onClick={(event) => handleClick(event, row.id)}
-                                  role="checkbox"
-                                  aria-checked={isItemSelected}
-                                  tabIndex={-1}
-                                  key={row.id}
-                                  selected={isItemSelected}
-                              >
-                              <TableCell padding="checkbox">
-                                  <Checkbox
-                                      color="primary"
-                                      icon={<Checkbox/>}
-                                      checkedIcon={<Checkbox/>}
-                                      checked={isItemSelected}
-                                      inputProps={{
-                                          'aria-labelledby': labelId,
-                                      }}
-                                  />
-                              </TableCell>
-                              <TableCell
-                                  component="th"
-                                  id={labelId}
-                                  scope="row"
-                                  align="center"
-                              >
-                                  {row.name}
-                              </TableCell>
-                              <TableCell align="center">{row.title}</TableCell>
-                              <TableCell align="center">{row.time}</TableCell>
-                              <TableCell align="center">
-                                  <Button
-                                      color="primary"
-                                      size="medium"
-                                      variant="text"
-                                      onClick={() => { goCoverLetter_Update() } }
-                                      >
-                                      Edit
-                                      <IconButton aria-label="Edit" size="small" disabled color="primary" >
-                                      <EditIcon fontSize="small"/>
-                                      </IconButton>
-                                  </Button>
-                                  
-                              </TableCell>
-                              </TableRow>
-                          );
-                          })}
-                      </TableBody>
-                  </Table>
-                  </TableContainer>
-                  <TablePagination
-                      rowsPerPageOptions={[5]}
-                      component="div"
-                      count={rows.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-              </Paper>
-              <EnhancedTableToolbar numSelected={selected.length}/>
-            </Box>
+                            return (
+                                <TableRow
+                                    hover
+                                    onClick={(event) => handleClick(event, row.id)}
+                                    role="checkbox"
+                                    aria-checked={isItemSelected}
+                                    tabIndex={-1}
+                                    key={row.id}
+                                    selected={isItemSelected}
+                                >
+                                <TableCell padding="checkbox">
+                                    <Checkbox
+                                        color="primary"
+                                        icon={<Checkbox/>}
+                                        checkedIcon={<Checkbox/>}
+                                        checked={isItemSelected}
+                                        inputProps={{
+                                            'aria-labelledby': labelId,
+                                        }}
+                                    />
+                                </TableCell>
+                                <TableCell
+                                    component="th"
+                                    id={labelId}
+                                    scope="row"
+                                    align="center"
+                                >
+                                    {row.name}
+                                </TableCell>
+                                <TableCell align="center">{row.title}</TableCell>
+                                <TableCell align="center">{row.time}</TableCell>
+                                <TableCell align="center">
+                                    <Button
+                                        color="primary"
+                                        size="medium"
+                                        variant="text"
+                                        onClick={() => { goCoverLetter_Update() } }
+                                        >
+                                        Edit
+                                        <IconButton aria-label="Edit" size="small" disabled color="primary" >
+                                        <EditIcon fontSize="small"/>
+                                        </IconButton>
+                                    </Button>               
+                                </TableCell>
+                                </TableRow>
+                            );
+                            })}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[25]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+                <EnhancedTableToolbar numSelected={selected.length}/>
+              </Box>
+            </Stack>
         </div>
     );
 };
