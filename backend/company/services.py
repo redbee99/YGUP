@@ -152,3 +152,20 @@ def rank_company(data):
             i += 1
 
     return result, 200
+
+def read_company(data) :
+    """Read Company"""
+    company = db.session.query(Company).filter(Company.cname == data['cname']).all()
+
+    if not company:
+        return 'fail', 505
+
+    result = {}
+
+    for data in company:
+        temp = data.__dict__
+        del temp['_sa_instance_state']
+        del temp['cno']
+        result[temp.get('cname')] = temp
+
+    return result, 200
