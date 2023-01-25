@@ -49,7 +49,7 @@ const Login: React.FC = () => {
             body: { id: id, pw: pw }
         })
         .then(function(response) {
-            dispatch(set('admin'))
+            dispatch(set({type: 'admin', id: id}))
             goHome()
         })
         .catch(function(error) {

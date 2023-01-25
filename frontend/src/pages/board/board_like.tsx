@@ -265,13 +265,13 @@ const handleChange = (event: React.SyntheticEvent, newValue: number) => {
 const [value, setValue] = React.useState(state);
 
   return (
-    <div>  
+    <div className='board_like'>  
       <Box sx={{ backgroundColor:'#009688', border: '1px solid grey', height:60, pt:3}}>
         <Stack direction="row">
           <Box sx={{ height:40, '& .MuiSvgIcon-root': { height:'3rem' } }}>
             <SearchIcon sx={{ color: 'white' }}/>
           </Box>
-          <input type="text" className='company_input' placeholder="기업명을 입력하세요."/>
+          <input type="text" className='company_input' placeholder=""/>
         </Stack>
       </Box>
       <Box sx={{ width: '100%' }}>

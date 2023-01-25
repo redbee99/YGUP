@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
+import { Select } from '@mui/material';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
@@ -21,6 +22,8 @@ import Tab from '@mui/material/Tab';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../reducers';
 import { set } from '../../reducers/headerReducer';
+
+
 
 interface Data {
   location: string;
@@ -132,15 +135,12 @@ interface EnhancedTableProps {
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { order, orderBy, onRequestSort } =
     props;
-  const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox"/>
+        <TableCell padding="checkbox">
+        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -151,7 +151,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -176,20 +176,23 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-
 const Board_List: React.FC = () => {
   
+  const [email, setemail] = React.useState('');
+    const emailAdress = [
+        'gmail.com',
+        'naver.com',
+        'hanmail.net',
+        'nate.net',
+    ];
+
   const currentPage = useSelector((state: RootState) => state.headerReducer.page);
   console.log(currentPage);
   const dispatch = useDispatch();
   dispatch(set('company'));
 
   const navigate = useNavigate();
-  const { state } = useLocation();
 
-  const goList = () => {
-    navigate('/board_list', { state: state })
-  };
   const goLike = (state: number) => {
     navigate('/board_like', { state: state })
   };
@@ -211,7 +214,7 @@ const Board_List: React.FC = () => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
+  
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n.name);
@@ -219,26 +222,6 @@ const Board_List: React.FC = () => {
       return;
     }
     setSelected([]);
-  };
-
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -252,7 +235,7 @@ const Board_List: React.FC = () => {
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-  function a11yProps(index: number) {
+function a11yProps(index: number) {
     return {
         id: `simple-tab-${index}`,
         'aria-controls': `simple-tabpanel-${index}`,
@@ -263,40 +246,40 @@ const handleChange = (event: React.SyntheticEvent, newValue: number) => {
   setValue(newValue);
 };
 
-const [value, setValue] = React.useState(state);
+const [value, setValue] = React.useState(0);
 
   return (
-    <div>  
-      <Box sx={{ backgroundColor:'#009688', border: '1px solid grey', height:60, pt:3}}>
+    <div className='board_list'>  
+      <Box sx={{ backgroundColor:'#009688', border: '#26a69a', height:60, pt:3 }}>
         <Stack direction="row">
-          <Box sx={{ height:40, '& .MuiSvgIcon-root': { height:'3rem' } }}>
+          <Box sx={{ height:40, '& .MuiSvgIcon-root': { height:'3rem' } }}  >
             <SearchIcon sx={{ color: 'white' }}/>
           </Box>
-          <input type="text" className='company_input' placeholder="기업명을 입력하세요."/>
+          <input type="text" className='company_input'/>
         </Stack>
       </Box>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 2,borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="전체" {...a11yProps(0)} onClick={() => { goList(); }}/>
-            <Tab label="실시간 급상승" {...a11yProps(1)} onClick={() => { goLike(1); }}/>
-            <Tab label="인기 기업" {...a11yProps(2)} onClick={() => { goFav(2); }}/>
-          </Tabs>
-        </Box>
+      <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="전체" {...a11yProps(0)} onClick={() => {  }}/>
+          <Tab label="실시간 급상승" {...a11yProps(1)} onClick={() => { goLike(1); }}/>
+          <Tab label="인기 기업" {...a11yProps(2)} onClick={() => { goFav(2); }}/>
+        </Tabs>
       </Box>
-      <Box sx={{ width: '100%' }} >
-        <Paper sx={{ width: '100%', mb: 2 }} >
+      <Box sx={{ width: '100%' }}>
+        <Paper sx={{ width: '100%', mb: 2 }}>
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle" >
+              aria-labelledby="tableTitle"
+            >
               <EnhancedTableHead
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rows.length} />
+                rowCount={rows.length}
+              />
               <TableBody>
                 {stableSort(rows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -307,25 +290,29 @@ const [value, setValue] = React.useState(state);
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.name)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.name}
-                        selected={isItemSelected} >
+                        selected={isItemSelected}
+                      >
                         <TableCell padding="checkbox">
                           <Checkbox
                             color="primary"
                             icon={<BookmarkBorderIcon />}
                             checkedIcon={<BookmarkIcon />}
                             checked={isItemSelected}
-                            inputProps={{ 'aria-labelledby': labelId }} />
+                            inputProps={{
+                              'aria-labelledby': labelId,
+                            }}
+                          />
                         </TableCell>
                         <TableCell
                           component="th"
                           id={labelId}
                           scope="row"
-                          align="center" >
+                          align="center"
+                        >
                           {row.name}
                         </TableCell>
                         <TableCell align="center">{row.location}</TableCell>

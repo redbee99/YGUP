@@ -1,10 +1,23 @@
 import { Box, Button, Stack, Tab, Tabs, Typography } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers'
 
 const UserInfo: React.FC = () => {
     const navigate = useNavigate();
     
+    const currentUser = useSelector((state: RootState) => state.userReducer.id);
+
+    const [id, setIdValue] = React.useState(currentUser);
+
+    React.useEffect(()=>{
+        if(id == ''){
+            alert('로그인 후  이용해주세요')
+            navigate('/')
+        }
+    })
+
     const goPwUpdate = () => {
         navigate('/pwupdate')
     };

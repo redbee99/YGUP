@@ -2,8 +2,55 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { Button, TextField, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
+import { BaseUrl } from '../../util/axiosApi';
+import axios from "axios"
+import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers'
 
 const PwUpdate: React.FC = () => {
+    const navigate = useNavigate();
+    const goUserinfo = () => {
+        navigate('/userinfo')
+    };
+
+    const currentUser = useSelector((state: RootState) => state.userReducer.id);
+
+    const [id, setIdValue] = React.useState(currentUser);
+
+    React.useEffect(()=>{
+        if(id == ''){
+            alert('로그인 후  이용해주세요')
+            navigate('/')
+        }
+    })
+
+    const idChange = (newValue: string) => {
+        setIdValue(newValue);
+    };
+
+    const [pw, setPwValue] = React.useState('');
+    const pwChange = (newValue: string) => {
+        setPwValue(newValue);
+    };
+
+    const pwupdate = () => {
+        const url = BaseUrl + "/user/pwupdate"
+        axios.post(url, {
+            headers:
+            {
+                "Content-Type": "application/json"
+            },
+            body: { id: id, pw: pw }
+        })
+        .then(function(response) {
+            goUserinfo()
+        })
+        .catch(function(error) {
+            alert('비밀번호를 확인해주세요')
+        })
+    };
+
     return (
         <div className='pwupdate'>
             <br/>
@@ -42,6 +89,7 @@ const PwUpdate: React.FC = () => {
                               backgroundColor: '#26a68a', 
                               borderColor:'#434343'
                             }} 
+                            onClick={(event) => pwupdate()}
                 >
                     확인
                 </Button>
