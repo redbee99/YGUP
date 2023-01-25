@@ -4,17 +4,27 @@ import { Button, TextField, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import { BaseUrl } from '../../util/axiosApi';
 import axios from "axios"
-import { useDispatch } from 'react-redux';
-import { set } from '../../reducers/userReducer'
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers'
+
 const PwUpdate: React.FC = () => {
     const navigate = useNavigate();
     const goUserinfo = () => {
         navigate('/userinfo')
     };
 
-    const dispatch = useDispatch();
-    const [id, setIdValue] = React.useState('');
+    const currentUser = useSelector((state: RootState) => state.userReducer.id);
+
+    const [id, setIdValue] = React.useState(currentUser);
+
+    React.useEffect(()=>{
+        if(id == ''){
+            alert('로그인 후  이용해주세요')
+            navigate('/')
+        }
+    })
+
     const idChange = (newValue: string) => {
         setIdValue(newValue);
     };
@@ -23,17 +33,17 @@ const PwUpdate: React.FC = () => {
     const pwChange = (newValue: string) => {
         setPwValue(newValue);
     };
+
     const pwupdate = () => {
         const url = BaseUrl + "/user/pwupdate"
         axios.post(url, {
-            headers: 
+            headers:
             {
                 "Content-Type": "application/json"
             },
             body: { id: id, pw: pw }
         })
         .then(function(response) {
-            dispatch(set('id'))
             goUserinfo()
         })
         .catch(function(error) {

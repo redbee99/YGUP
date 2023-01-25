@@ -37,7 +37,7 @@ const Header: React.FC = () => {
   const dispatch = useDispatch();
 
   const doLogOut = () => {
-    dispatch(set(''));
+    dispatch(set({type: '', id: ''}));
   };
 
   const currentUser = useSelector((state: RootState) => state.userReducer.type);
