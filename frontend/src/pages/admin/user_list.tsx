@@ -262,12 +262,7 @@ const User_list: React.FC = () => {
     setPage(0);
   };
 
-
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
 
   function a11yProps(index: number) {
       return {
@@ -337,11 +332,7 @@ const User_list: React.FC = () => {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+
             </TableBody>
           </Table>
         </TableContainer>

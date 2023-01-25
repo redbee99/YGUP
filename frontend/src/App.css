@@ -359,6 +359,9 @@ footer {
 }
 .mypagecontents {
   margin-top: 50px;
+  position: fixed;
+  height: 100%;
+  width: 100%;
   overflow: scroll;
 }
 /*user end*/

@@ -168,7 +168,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           pr: { xs: 1, sm: 1 },
           ...(numSelected > 0 && {
           bgcolor: (theme) =>
-              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+              alpha(
+                theme.palette.primary.main, 
+                theme.palette.action.activatedOpacity),
           }),
       }} >
       <Typography
@@ -187,7 +189,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       ):(
       <Typography>
         <Button 
-            variant="outlined" size="small" 
+            variant="contained" size="small" 
             onClick={() => { goCoverLetter_Write()}}
             sx={{ width: 100, 
                     mt:3, 
@@ -221,18 +223,6 @@ const Manage: React.FC = () => {
     const goCoverLetter_Update = () => {
       navigate('/coverletter_update')
     };
-    
- 
-    function a11yProps(index: number) {
-        return {
-            id: `simple-tab-${index}`,
-            'aria-controls': `simple-tabpanel-${index}`,
-        };
-    }
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
 
     const [value, setValue] = React.useState(state);
       
@@ -259,7 +249,7 @@ const Manage: React.FC = () => {
     const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(25);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
     const handleRequestSort = (
       event: React.MouseEvent<unknown>,
@@ -309,6 +299,18 @@ const Manage: React.FC = () => {
     };
   
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
+    
+    function a11yProps(index: number) {
+      return {
+          id: `simple-tab-${index}`,
+          'aria-controls': `simple-tabpanel-${index}`,
+      };
+    }
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
 
     return (
         <div className='manage'>
@@ -322,31 +324,28 @@ const Manage: React.FC = () => {
             <Stack direction={'row'} spacing={2} className='mypagecontents' >
               <User />
               <Box sx={{ width: '100%', mb:15}}>
-                <Paper sx={{ width: '100%', mb: 2 }}>
+                <Paper sx={{ width: '100%' }}>
                   <Typography
                     sx={{ flex: '1 1 100%' }}
                     variant="h6"
                     id="tableTitle"
                     component="div"
                     marginLeft={3}
-                    paddingTop={4}
-                    paddingBottom={3}
-                    >
+                    paddingTop={2}
+                    paddingBottom={2}>
                     내가 쓴 자소서
                   </Typography>
                   <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
-                        aria-labelledby="tableTitle"
-                    >
+                        aria-labelledby="tableTitle" >
                         <EnhancedTableHead
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
-                        />
+                            rowCount={rows.length} />
                         <TableBody>
                         {stableSort(rows, getComparator(order, orderBy))
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -357,7 +356,6 @@ const Manage: React.FC = () => {
                             return (
                                 <TableRow
                                     hover
-                                    onClick={(event) => handleClick(event, row.id)}
                                     role="checkbox"
                                     aria-checked={isItemSelected}
                                     tabIndex={-1}
@@ -370,6 +368,7 @@ const Manage: React.FC = () => {
                                         icon={<Checkbox/>}
                                         checkedIcon={<Checkbox/>}
                                         checked={isItemSelected}
+                                        onClick={(event) => handleClick(event, row.id)}
                                         inputProps={{
                                             'aria-labelledby': labelId,
                                         }}
@@ -386,17 +385,17 @@ const Manage: React.FC = () => {
                                 <TableCell align="center">{row.title}</TableCell>
                                 <TableCell align="center">{row.time}</TableCell>
                                 <TableCell align="center">
-                                    <Button
-                                        color="primary"
-                                        size="medium"
-                                        variant="text"
-                                        onClick={() => { goCoverLetter_Update() } }
-                                        >
-                                        Edit
-                                        <IconButton aria-label="Edit" size="small" disabled color="primary" >
-                                        <EditIcon fontSize="small"/>
-                                        </IconButton>
-                                    </Button>               
+                                  <Button
+                                    color = "primary"
+                                    size = "small"
+                                    variant = "text"
+                                    onClick = {() => { goCoverLetter_Update() }}
+                                    sx={{ height:20 }} >
+                                    Edit
+                                    <IconButton aria-label="Edit" size="small" disabled color="primary" >
+                                      <EditIcon fontSize="small"/>
+                                    </IconButton>
+                                  </Button>        
                                 </TableCell>
                                 </TableRow>
                             );
@@ -405,7 +404,7 @@ const Manage: React.FC = () => {
                       </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[25]}
+                        rowsPerPageOptions={[5]}
                         component="div"
                         count={rows.length}
                         rowsPerPage={rowsPerPage}

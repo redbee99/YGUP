@@ -196,7 +196,7 @@ const Bookmark: React.FC = () => {
     const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(25);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
     const handleRequestSort = (
       event: React.MouseEvent<unknown>,
@@ -259,15 +259,15 @@ const Bookmark: React.FC = () => {
             <Stack direction={'row'} spacing={2} className='mypagecontents'>
               <User />
               <Box sx={{ width: '100%', mb:10 }}>
-                <Paper sx={{ width: '100%', mb: 2 }}>
+                <Paper sx={{ width: '100%' }}>
                   <Typography
                       sx={{ flex: '1 1 100%' }}
                       variant="h6"
                       id="tableTitle"
                       component="div"
                       marginLeft={3}
-                      paddingTop={4}
-                      paddingBottom={3} >
+                      paddingTop={2}
+                      paddingBottom={2} >
                       북마크 기업
                     </Typography>
                     <TableContainer>
@@ -292,7 +292,6 @@ const Bookmark: React.FC = () => {
                             return (
                                 <TableRow
                                     hover
-                                    onClick={(event) => handleClick(event, row.id)}
                                     role="checkbox"
                                     aria-checked={isItemSelected}
                                     tabIndex={-1}
@@ -304,6 +303,7 @@ const Bookmark: React.FC = () => {
                                         icon={<BookmarkBorderIcon />}
                                         checkedIcon={<BookmarkIcon />}
                                         checked={isItemSelected}
+                                        onClick={(event) => handleClick(event, row.id)}
                                         inputProps={{
                                             'aria-labelledby': labelId,
                                         }} />
@@ -324,7 +324,7 @@ const Bookmark: React.FC = () => {
                       </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[25]}
+                        rowsPerPageOptions={[5]}
                         component="div"
                         count={rows.length}
                         rowsPerPage={rowsPerPage}
