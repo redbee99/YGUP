@@ -10,7 +10,7 @@ from flask import request
 
 api = Namespace("user", description="User API")
 user_fields = api.model(
-    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String}
+    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String, "uno": fields.Integer}
 )
 
 login_fields = api.model(

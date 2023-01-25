@@ -3,8 +3,7 @@ from backend.company.models import Company
 from backend.company.schemas import company_schema
 import uuid
 from backend.user_type.models import UserType
-
-
+from sqlalchemy import desc
 def create_company(data):
     """Given serialized data and create a ner Company"""
     usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
@@ -56,11 +55,11 @@ def delete_company(data):
 
 def read_all_company(data):
     """Read All Company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.uno == data['uno']).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can read"}, 505
 
-    company = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword)
+    company = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).all()
 
     if not company:
         return 'fail', 505
@@ -68,7 +67,88 @@ def read_all_company(data):
     result = {}
 
     for data in company:
-        temp = data.__dict__
-        result[temp.get('id')] = temp
+        temp = {}
+        temp['cname'] = data[0]
+        temp['address'] = data[1]
+        temp['keyword'] = data[2]
+        result[data[0]] = temp
+
+    return result, 200
+
+def search_company(data):
+    """Search Company"""
+    cname_result = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).filter(Company.cname.like('%' + data['searchData'] + '%')).all()
+    address_result = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).filter(Company.address.like('%' + data['searchData'] + '%')).all()
+    keyword_result = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).filter(Company.keyword.like('%' + data['searchData'] + '%')).all()
+
+    if not cname_result:
+        cname_result = ""
+
+    if not address_result:
+        address_result = ""
+
+    if not keyword_result:
+        keyword_result = ""
+
+    result = {}
+
+    if cname_result != "":
+        i = 0
+        for data in cname_result:
+            temp = {}
+            temp['cname'] = data[0]
+            temp['address'] = data[1]
+            temp['keyword'] = data[2]
+            result['cname_result' + str(i)] = temp
+            i+=1
+
+    if address_result != "":
+        i = 0
+        for data in address_result:
+            temp = {}
+            temp['cname'] = data[0]
+            temp['address'] = data[1]
+            temp['keyword'] = data[2]
+            result['address_result' + str(i)] = temp
+            i += 1
+
+    if keyword_result != "":
+        i = 0
+        for data in keyword_result:
+            temp = {}
+            temp['cname'] = data[0]
+            temp['address'] = data[1]
+            temp['keyword'] = data[2]
+            result['keyword_result' + str(i)] = temp
+            i += 1
+
+    return result, 200
+
+def rank_company(data):
+    """Rank Company"""
+    if data['type'] == "bookmark":
+        company_list = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).order_by(desc(Company.bookmarkcnt)).all()
+    else:
+        company_list = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).order_by(desc(Company.readcnt)).all()
+
+    result = {}
+    i = 0
+
+    for company in company_list:
+        if data['f_all'] == 0:
+            if i < 5:
+                temp = {}
+                temp['cname'] = company[0]
+                temp['address'] = company[1]
+                temp['keyword'] = company[2]
+                result['rank' + str(i)] = temp
+                i += 1
+        else:
+            temp = {}
+            temp['cname'] = company[0]
+            temp['address'] = company[1]
+            temp['keyword'] = company[2]
+            result['rank' + str(i)] = temp
+            i += 1
 
     return result, 200
