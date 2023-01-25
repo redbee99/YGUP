@@ -83,7 +83,7 @@ class User_pwupdate(Resource):
         """update pw"""
         return pwupdate_user(request.get_json())
 
-@api.doc(body=read_fields)
+@api.doc(body=coid_fields)
 class User_read(Resource):
     def post(self):
         """read user"""

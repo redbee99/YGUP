@@ -101,11 +101,19 @@ def check_overlap_id(data):
 def read_user(data):
     """Read User"""
     res = db.session.query(User).filter(User.id == data['id']).all()
-    info = res[0].id, res[0].name, res[0].email
     if not res:
         return 'fail', 505
 
-    return info, 200
+    result = {}
+
+    for data in res:
+        temp = data.__dict__
+        del temp['_sa_instance_state']
+        del temp['password']
+        del temp['uno']
+        result[temp.get('id')] = temp
+
+    return result, 200
 
 def read_all_users(data):
     """Read All Users"""

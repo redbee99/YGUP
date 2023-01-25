@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from backend.company.services import create_company, update_company, delete_company, read_all_company, search_company, \
-    rank_company
+    rank_company, read_company
 
 api = Namespace("company", description="Company API")
 
@@ -45,6 +45,12 @@ rank_company_fields = api.model(
                 }
 )
 
+company_info_fields = api.model(
+    "Companyinfo", {
+        "cname": fields.String
+    }
+)
+
 @api.doc(body=company_fields)
 class CreateCompany(Resource):
     def post(self):
@@ -80,6 +86,12 @@ class RankCompany(Resource):
         """Search Company"""
         return rank_company(request.get_json())
 
+@api.doc(body=company_info_fields)
+class ReadCompany(Resource):
+    def post(self):
+        """Read Company"""
+        return read_company(request.get_json())
+
 
 api.add_resource(CreateCompany, "/create")
 api.add_resource(UpdateCompany, "/update")
@@ -87,3 +99,4 @@ api.add_resource(DeleteCompany, "/delete")
 api.add_resource(ReadAllCompany, "/readall")
 api.add_resource(SearchCompany, "/search")
 api.add_resource(RankCompany, "/rank")
+api.add_resource(ReadCompany, "/readcompany")
