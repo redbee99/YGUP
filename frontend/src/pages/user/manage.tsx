@@ -1,11 +1,11 @@
-import { Box, Button, Checkbox, IconButton, Paper, Stack, styled, Tab, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Tooltip, Typography } from '@mui/material';
-import * as React from 'react';
+import { Box, Button, Checkbox, IconButton, Paper, Stack, styled, Tab, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Typography } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import User from './user';
+import React from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -365,10 +365,10 @@ const Manage: React.FC = () => {
                                 <TableCell padding="checkbox">
                                     <Checkbox
                                         color="primary"
-                                        icon={<Checkbox/>}
+                                        icon={<Checkbox/>}//user_list에서 없어도 돌아감
                                         checkedIcon={<Checkbox/>}
                                         checked={isItemSelected}
-                                        onClick={(event) => handleClick(event, row.id)}
+                                        onClick={(event) => handleClick(event, row.id)}//tablerow에서 옮겨옴
                                         inputProps={{
                                             'aria-labelledby': labelId,
                                         }}

@@ -18,7 +18,6 @@ import IdSearch_Result from './pages/user/idsearch_result';
 import PwSearch from './pages/user/pwsearch';
 import PwSearch_Result from './pages/user/pwsearch_result';
 import Join from './pages/user/join';
-import IdCheck from './pages/user/idcheck';
 import Info from './pages/admin/info';
 import Info_Update from './pages/admin/info_update'
 import Info_Delete from './pages/admin/info_delete';
@@ -57,7 +56,6 @@ const App: React.FC = () => {
       <Route path='/pwsearch' element={<PwSearch />} />
       <Route path='/pwsearch_result' element={<PwSearch_Result />} />
       <Route path='/join' element={<Join />} />
-      <Route path='/idcheck' element={<IdCheck />} />
       <Route path='/info' element={<Info />} />
       <Route path='/info_update' element={<Info_Update />} />
       <Route path='/info_delete' element={<Info_Delete />} />
