@@ -382,3 +382,15 @@ footer {
   clip:rect(0,0,0,0);
   border: 0;
 }
+
+.join_modal{
+  position: fixed;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999999;
+}
