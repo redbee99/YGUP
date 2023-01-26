@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
 import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Table from '@mui/material/Table';
@@ -15,6 +15,7 @@ import { visuallyHidden } from '@mui/utils';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { styled } from '@mui/material/styles';
+import User from './user';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -128,13 +129,11 @@ interface EnhancedTableProps {
               key={headCell.id}
               align='center'
               padding={headCell.disablePadding ? 'none' : 'normal'}
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
+              sortDirection={orderBy === headCell.id ? order : false} >
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={createSortHandler(headCell.id)}
-              >
+                onClick={createSortHandler(headCell.id)} >
                 {headCell.label}
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
@@ -250,84 +249,93 @@ const Bookmark: React.FC = () => {
 
     return (
         <div className='bookmark'>
-            <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
+            <Box className='mypageheader' sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab value={0} label="회원정보" {...a11yProps(0)} onClick={() => { goUserInfo(); } }/>
                     <Tab value={1} label="북마크" {...a11yProps(1)} onClick={() => { goBookmark(1); } }/>
                     <Tab value={2} label="자소서 관리" {...a11yProps(2)} onClick={() => { goManage(2); } } />
                 </Tabs>
             </Box>
-            <Box sx={{ width: '100%', mb:10 }}>
-              <Paper sx={{ width: '100%', mb: 2 }}>
-                  <TableContainer>
-                    <Table
-                        sx={{ minWidth: 750 }}
-                        aria-labelledby="tableTitle"
-                    >
-                      <EnhancedTableHead
-                          numSelected={selected.length}
-                          order={order}
-                          orderBy={orderBy}
-                          onSelectAllClick={handleSelectAllClick}
-                          onRequestSort={handleRequestSort}
-                          rowCount={rows.length}
-                      />
-                      <TableBody>
-                      {stableSort(rows, getComparator(order, orderBy))
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((row, index) => {
-                          const isItemSelected = isSelected(row.id);
-                          const labelId = `enhanced-table-checkbox-${index}`;
-
-                          return (
-                              <TableRow
-                                  hover
-                                  onClick={(event) => handleClick(event, row.id)}
-                                  role="checkbox"
-                                  aria-checked={isItemSelected}
-                                  tabIndex={-1}
-                                  key={row.id}
-                                  selected={isItemSelected}
-                              >
-                              <TableCell padding="checkbox">
-                                  <Checkbox
-                                      color="primary"
-                                      icon={<BookmarkBorderIcon />}
-                                      checkedIcon={<BookmarkIcon />}
-                                      checked={isItemSelected}
-                                      inputProps={{
-                                          'aria-labelledby': labelId,
-                                      }}
-                                  />
-                              </TableCell>
-                              <TableCell
-                                  component="th"
-                                  id={labelId}
-                                  scope="row"
-                                  align="center"
-                              >
-                                  {row.name}
-                              </TableCell>
-                              <TableCell align="center">{row.location}</TableCell>
-                              <TableCell align="center">{row.keyword}</TableCell>
-                              </TableRow>
-                          );
-                          })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <TablePagination
-                      rowsPerPageOptions={[5, 10, 25]}
+            <Stack direction={'row'} spacing={2} className='mypagecontents'>
+              <User />
+              <Box sx={{ width: '100%', mb:10 }}>
+                <Paper sx={{ width: '100%' }}>
+                  <Typography
+                      sx={{ flex: '1 1 100%' }}
+                      variant="h6"
+                      id="tableTitle"
                       component="div"
-                      count={rows.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-              </Paper>
-            </Box>
+                      marginLeft={3}
+                      paddingTop={2}
+                      paddingBottom={2} >
+                      북마크 기업
+                    </Typography>
+                    <TableContainer>
+                      <Table
+                          sx={{ minWidth: 750 }}
+                          aria-labelledby="tableTitle">
+                        <EnhancedTableHead
+                            numSelected={selected.length}
+                            order={order}
+                            orderBy={orderBy}
+                            onSelectAllClick={handleSelectAllClick}
+                            onRequestSort={handleRequestSort}
+                            rowCount={rows.length}
+                        />
+                        <TableBody>
+                        {stableSort(rows, getComparator(order, orderBy))
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, index) => {
+                            const isItemSelected = isSelected(row.id);
+                            const labelId = `enhanced-table-checkbox-${index}`;
+
+                            return (
+                                <TableRow
+                                    hover
+                                    role="checkbox"
+                                    aria-checked={isItemSelected}
+                                    tabIndex={-1}
+                                    key={row.id}
+                                    selected={isItemSelected} >
+                                <TableCell padding="checkbox">
+                                    <Checkbox
+                                        color="primary"
+                                        icon={<BookmarkBorderIcon />}
+                                        checkedIcon={<BookmarkIcon />}
+                                        checked={isItemSelected}
+                                        onClick={(event) => handleClick(event, row.id)}
+                                        inputProps={{
+                                            'aria-labelledby': labelId,
+                                        }} />
+                                </TableCell>
+                                <TableCell
+                                    component="th"
+                                    id={labelId}
+                                    scope="row"
+                                    align="center" >
+                                    {row.name}
+                                </TableCell>
+                                <TableCell align="center">{row.location}</TableCell>
+                                <TableCell align="center">{row.keyword}</TableCell>
+                                </TableRow>
+                            );
+                            })}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage} />
+                </Paper>
+              </Box>
+            </Stack>
         </div>
     );
 };
+
 export default Bookmark;
