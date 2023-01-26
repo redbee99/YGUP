@@ -168,4 +168,9 @@ def read_company(data) :
         del temp['cno']
         result[temp.get('cname')] = temp
 
+    #########################조회수 + 1#########################
+    # readcnt = data.__dict__['readcnt'] + 1
+    # db.session.query(Company).filter(Company.cname == data['cname']).update({"readcnt":readcnt})
+    # db.session.commit()
+
     return result, 200
