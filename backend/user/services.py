@@ -3,6 +3,7 @@ from backend.user.models import User
 from backend.user_type.models import UserType
 from backend.user.schemas import user_schema
 from sqlalchemy import and_
+import re
 
 def create_user(data):
     """Given serialized data and create a ner User"""
@@ -10,8 +11,19 @@ def create_user(data):
         return 'please id rule check', 505
 
     if not len(data['password']) >= 5 and len(data['password']) <= 15:
+        return 'Check the password length', 505
+
+    if not re.findall('[0-9]+', data['password']) and not re.findall('[a-z]', data['password']) or not re.findall('[A-Z]', data['password']) :
         return 'please password rule check', 505
 
+    if not re.findall('[`~!@#$%^&*(),<.>/?]+', data['password']):
+        return 'At least 1 special character required', 505
+
+    if not data['password'] == data['chk_pwd'] :
+        return 'password and chk_pwd do not match', 505
+
+    del data["chk_pwd"]
+    data["uno"] = 1
     user = user_schema.load(data)
     db.session.add(user)
     db.session.commit()
@@ -19,7 +31,7 @@ def create_user(data):
 
 def login_user(data):
     """Login User"""
-    if not db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw') )).all():
+    if not db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw'))).all():
         return 'fail', 505
 
     return 'OK', 200
@@ -57,8 +69,20 @@ def update_user(data):
 def pwupdate_user(data):
     """Pwupdate User"""
     res = db.session.query(User).filter(and_(User.id == data['id'], User.password == data['password'],
-                                             data['new_pwd'] == data['new_pwd_chk'])).update(
-        {"password": data['new_pwd']})
+                                             data['new_pwd'] == data['new_pwd_chk'])).update({"password": data['new_pwd']}, synchronize_session=False)
+
+    if not len(data['new_pwd']) >= 5 and len(data['new_pwd']) <= 15:
+        return 'Check the password length', 505
+
+    if not re.findall('[0-9]+', data['new_pwd']) and not re.findall('[a-z]', data['new_pwd']) or not re.findall('[A-Z]', data['new_pwd']) :
+        return 'please password rule check', 505
+
+    if not re.findall('[`~!@#$%^&*(),<.>/?]+', data['new_pwd']):
+        return 'At least 1 special character required', 505
+
+    if not data['new_pwd'] == data['new_pwd_chk'] :
+        return 'new_pwd and new_pwd_chk do not match', 505
+
     if not res:
         return 'fail', 505
 

@@ -6,10 +6,10 @@ api = Namespace("cover_letter", description="Cover_letter API")
 
 cl_fields = api.model(
     "Cover_letter", {"clno": fields.Integer, "id": fields.String,
-                "cname": fields.String, "content_1": fields.String,
-                "content_2": fields.String, "content_3": fields.String,
-                "wdate": fields.DateTime, "clname" : fields.String
-                }
+                     "cname": fields.String, "content_1": fields.String,
+                     "content_2": fields.String, "content_3": fields.String,
+                     "wdate": fields.DateTime, "clname" : fields.String
+                     }
 )
 
 @api.doc(body=cl_fields)

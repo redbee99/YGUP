@@ -10,7 +10,7 @@ from flask import request
 
 api = Namespace("user", description="User API")
 user_fields = api.model(
-    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String, "uno": fields.Integer}
+    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String, "chk_pwd" : fields.String, "uno": fields.Integer}
 )
 
 login_fields = api.model(
@@ -25,9 +25,7 @@ pwsearch_fields = api.model(
 coid_fields = api.model(
     "User_coid", {"id": fields.String}
 )
-read_fields = api.model(
-    "User_read", {"uno": fields.Integer}
-)
+
 pwupdate_fields = api.model(
     "User_pwupdate", {"id": fields.String, "password": fields.String, "new_pwd": fields.String, "new_pwd_chk": fields.String }
 )
