@@ -4,6 +4,8 @@ from backend.company.schemas import company_schema
 import uuid
 from backend.user_type.models import UserType
 from sqlalchemy import desc
+from werkzeug.utils import secure_filename
+from flask import request
 def create_company(data):
     """Given serialized data and create a ner Company"""
     usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
@@ -13,9 +15,9 @@ def create_company(data):
     data['cno'] = str(uuid.uuid1())
     #북마크 테이블이 완성 되면 북마크 조회해서 값 채워 넣기
     company = Company(cname=data['cname'], cno=data['cno'], keyword=data['keyword'],
-    wcloud=data['wcloud'],wcloud_url=data['wcloud_url'],address=data['address'],
+    wcloud_url=data['wcloud_url'],address=data['address'],
     sales=data['sales'], owner=data['owner'],info=data['info'],pay=data['pay'],
-    courl=data['courl'], logo=data['logo'], logo_url=data['logo_url'],
+    courl=data['courl'], logo_url=data['logo_url'],
     resign=data['resign'], form=data['form'], bookmarkcnt=data['bookmarkcnt'],
     readcnt=data['readcnt'])
     db.session.add(company)
@@ -29,7 +31,7 @@ def update_company(data):
         return {"message": f"only admin can update"}, 505
 
     res = db.session.query(Company).filter(Company.cname == data['cname']).update(
-        {"cname": data['cname'], "keyword": data['keyword'], "wcloud": data['wcloud'], "wcloud_url": data['wcloud_url'], "address": data['address'], "sales": data['sales'], "owner": data['owner'], "info": data['info'], "pay": data['pay'], "courl": data['courl'], "logo": data['logo'], "logo_url": data['logo_url'], "resign": data['resign'], "form": data['form'], "bookmark": data['bookmark'], "readcnt":data['readcnt'] })
+        {"cname": data['cname'], "keyword": data['keyword'], "wcloud_url": data['wcloud_url'], "address": data['address'], "sales": data['sales'], "owner": data['owner'], "info": data['info'], "pay": data['pay'], "courl": data['courl'], "logo_url": data['logo_url'], "resign": data['resign'], "form": data['form'], "bookmark": data['bookmark'], "readcnt":data['readcnt'] })
 
     if not res:
         return 'fail', 505
@@ -127,9 +129,14 @@ def search_company(data):
 def rank_company(data):
     """Rank Company"""
     if data['type'] == "bookmark":
-        company_list = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).order_by(desc(Company.bookmarkcnt)).all()
+        company_list = db.session.query(Company).with_entities(Company.cname,
+        Company.address, Company.keyword).order_by(desc(Company.bookmarkcnt)).all()
+    elif data['type'] == "cname":
+        company_list = db.session.query(Company).with_entities(Company.cname,
+        Company.address, Company.keyword).order_by((Company.cname)).all()
     else:
-        company_list = db.session.query(Company).with_entities(Company.cname, Company.address, Company.keyword).order_by(desc(Company.readcnt)).all()
+        company_list = db.session.query(Company).with_entities(Company.cname,
+        Company.address, Company.keyword).order_by(desc(Company.readcnt)).all()
 
     result = {}
     i = 0
@@ -168,9 +175,12 @@ def read_company(data) :
         del temp['cno']
         result[temp.get('cname')] = temp
 
-    #########################조회수 + 1#########################
-    # readcnt = data.__dict__['readcnt'] + 1
-    # db.session.query(Company).filter(Company.cname == data['cname']).update({"readcnt":readcnt})
-    # db.session.commit()
 
-    return result, 200
+    #########################조회수 + 1#########################
+    readcnt = data.__dict__['readcnt'] + 1
+    #db.session.close()
+    #db.session.query(Company).filter(Company.cname == data['cname']).update({"readcnt":readcnt})
+    #db.session.commit()
+
+    return {'result':result, 'readcnt':readcnt}, 200
+
