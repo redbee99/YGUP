@@ -3,20 +3,23 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../reducers/index'
 import { set } from '../../reducers/modalReducer'
 import { BaseUrl } from '../../util/axiosApi';
 
 
 type Props = {
     content: string,
-    _id: string
+    _cashe: string
 }
 
-const BasicModal: React.FC<Props> = ({ content, _id }) => {
+const BasicModal: React.FC<Props> = ({ content, _cashe }) => {
     const dispatch = useDispatch();
 
-    const [id, setIdValue] = useState(_id);
+    const [cashe,] = useState(_cashe);
+    const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
+    const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
 
     const confirm = () => {
         if(content == "아이디"){
@@ -26,15 +29,33 @@ const BasicModal: React.FC<Props> = ({ content, _id }) => {
                 {
                     "Content-Type": "application/json"
                 },
-                body: { id: id }
+                body: { id: cashe }
             })
             .then(function(response) {
                 alert('사용 가능한 아이디입니다.')
-                dispatch(set({state:'off', cashe1: id}))
+                dispatch(set({state:'off', cashe1: cashe, cashe2: currentModalCashe2}))
             })
             .catch(function(error) {
                 alert('중복 가입자 입니다.')
-                dispatch(set({state:'off', cashe1: ''}))
+                dispatch(set({state:'off', cashe1: '', cashe2: currentModalCashe2}))
+            })
+        }
+        else if(content == "이메일"){
+            const url = BaseUrl + "/user/overlapemail"
+            axios.post(url, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { email: cashe }
+            })
+            .then(function(response) {
+                alert('사용 가능한 이메일입니다.')
+                dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: cashe}))
+            })
+            .catch(function(error) {
+                alert('중복 가입자 입니다.')
+                dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: ''}))
             })
         }
     }
@@ -42,11 +63,19 @@ const BasicModal: React.FC<Props> = ({ content, _id }) => {
     const DynamicContent = () => {
         if(content == "아이디"){
             return  <Box sx={{ mt:10, mb:15 }} >
-            <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
-                {content} 중복확인
-            </Typography>
-            <TextField value={id} label={content} sx={{ mt:2, width:300, height:10, '& .MuiInputBase-root': { borderRadius: 15} }}/>
-        </Box>
+                <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
+                    {content} 중복확인
+                </Typography>
+                <TextField value={cashe} label={content} sx={{ mt:2, width:300, height:10, '& .MuiInputBase-root': { borderRadius: 15} }}/>
+            </Box>
+        }
+        else if(content == "이메일"){
+            return  <Box sx={{ mt:10, mb:15 }} >
+                <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
+                    {content} 중복확인
+                </Typography>
+                <TextField value={cashe} label={content} sx={{ mt:2, width:300, height:10, '& .MuiInputBase-root': { borderRadius: 15} }}/>
+            </Box>
         }
         else{
             return <div/>

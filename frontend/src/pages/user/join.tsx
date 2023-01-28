@@ -21,28 +21,42 @@ const Join: React.FC = (props) => {
   };
 
   const currentModal = useSelector((state: RootState) => state.modalReducer.state);
-  const currentModalCashe = useSelector((state: RootState) => state.modalReducer.cashe1);
+  const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
+  const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
 
-  //currentModalCashe 변화 감지시 훅킹
+  //currentModalCashe1 변화 감지시 훅킹
   useEffect(() => {
-    setIdValue(currentModalCashe)
-  }, [currentModalCashe]);
+    setIdValue(currentModalCashe1)
+  }, [currentModalCashe1]);
+
+  useEffect(() => {
+    if(currentModalCashe2 == ''){
+      setEmailValue(initialEmail)
+    }
+  }, [currentModalCashe2]);
 
   const dispatch = useDispatch();
   
-  const [id, setIdValue] = useState(currentModalCashe);
-  const [name, setNameValue] = useState('');
-  const [email, setEmailValue] = React.useState('');
+  type email_type = {
+    emailid?: string,
+    address?: string
+  }
 
+  const initialEmail: email_type = {
+    emailid: '',
+    address: ''
+}
+
+  const [id, setIdValue] = useState(currentModalCashe1);
+  const [name, setNameValue] = useState('');
+  const [email, setEmailValue] = React.useState(initialEmail);
+  const [modalType, setModalType] = React.useState('');
   const emailAdress = [
       'gmail.com',
       'naver.com',
       'hanmail.net',
       'nate.net',
   ];
-
-  const [pw, setPwValue] = useState('');
-  const [pw2, setPw2Value] = useState('');
   
   const idChange = (newValue: string) => {
     setIdValue(newValue);
@@ -52,37 +66,53 @@ const Join: React.FC = (props) => {
     setIdValue(newValue);
   }
 
-  const emailChange = (newValue: string) => {
-    setEmailValue(newValue);
+  const emailIdChange = (newValue: string)=> {
+    setEmailValue({ emailid:newValue, address:email.address });
   }
 
-  const pwChange = (newValue: string) => {
-    setPwValue(newValue);
-  };
-
-  const pw2Change = (newValue: string) => {
-    setPwValue(newValue);
-  };
-  
   const handleChange = (event: SelectChangeEvent) => {
-    setEmailValue(event.target.value as string);
+    setEmailValue({ emailid:email.emailid ,address:event.target.value as string });
   };
 
   //idcheckmodal
   const idOverlapCheck = () => {
     if(id != ''){
-      dispatch(set({state:'on', cashe1:id}));
+      setModalType('id')
+      const totalEmail = email.emailid + '@' + email.address
+      dispatch(set({state:'on', cashe1:id, cashe2:totalEmail}));
     }
     else{
       alert('아이디를 입력해주세요')
     }
   }
-  
+
+  //emailcheckmodal
+  const emailOverlapCheck = () => {
+    if(email.emailid != '' && email.address != ''){
+      setModalType('email')
+      const totalEmail = email.emailid + '@' + email.address
+      dispatch(set({state:'on', cashe1:id, cashe2:totalEmail}));
+    }
+    else{
+      alert('이메일을 입력해주세요')
+    }
+  }
+
   const ModalShow = () => {
     if(currentModal == "on"){
-      return <div className='join_modal'>
-              <BasicModal content='아이디' _id={currentModalCashe}/>
-            </div>
+      if(modalType == 'id'){
+        return <div className='join_modal'>
+          <BasicModal content='아이디' _cashe={currentModalCashe1} />
+        </div>
+      }
+      else if(modalType == 'email'){
+        return <div className='join_modal'>
+          <BasicModal content='이메일' _cashe={currentModalCashe2} />
+        </div>
+      }
+      else{
+        return <div/>
+      }
     }
     else{
       return <div/>
@@ -105,7 +135,7 @@ const Join: React.FC = (props) => {
                        padding: 5
                     }}>
                 <Typography sx={{fontSize: 32, pb:3 }}>회원 가입</Typography>
-                <Stack  direction="row" spacing={2} alignItems="center" >
+                <Stack  direction="row" spacing={3} alignItems="center" >
                     <TextField value={id} id="join-id" label="아이디" variant="outlined" size="small" margin="normal" onChange={(newValue) => idChange(newValue.target.value)}/>
                     <Button 
                       variant="contained"
@@ -123,25 +153,37 @@ const Join: React.FC = (props) => {
                 <TextField id="join-name" label="이름" variant="outlined" size="small" margin="normal" sx={{ width: 200 }} onChange={(newValue) => nameChange(newValue.target.value)}/>
                 <br/>
                 <Stack  direction="row" spacing={3} >
-                  <TextField id="login-emailid" label="이메일아이디" variant="outlined" size="small" />
+                  <TextField value={email.emailid} id="login-emailid" label="이메일아이디" variant="outlined" size="small" sx={{ maxWidth: 150 }} onChange={(newValue) => emailIdChange(newValue.target.value)}/>
                   <Box sx={{ display: 'flex', alignItems: 'center'}}>
                       <Typography>@</Typography>
                   </Box>
-                  <FormControl sx={{ m: 5, maxWidth: 240, width:200 }} size="small">
+                  <FormControl sx={{ m: 5, maxWidth: 150, width:200 }} size="small">
                   <InputLabel id="emailadress">선택 이메일</InputLabel>
                     <Select
                         labelId="emailadress"
                         id="login-emailadress"
-                        value={email}
+                        value={email.address}
                         onChange={handleChange}
                         label="이메일주소"
                         >
                         { emailAdress.map(
                             (row, index) => {
-                            return (<MenuItem value={row}>{row}</MenuItem>);
+                            return (<MenuItem key={index} value={row}>{row}</MenuItem>);
                         })}
                     </Select>
                   </FormControl>
+                  <Button 
+                      variant="contained"
+                      onClick={emailOverlapCheck}
+                      size="small" 
+                      sx={{ color:'#ffff', 
+                            backgroundColor: '#26A689', 
+                            borderColor:'#434343',
+                            maxHeight: 30
+                          }} 
+                    >
+                      중복 확인
+                    </Button>
                 </Stack>
                 <br/>
                 <Button variant="contained"  
