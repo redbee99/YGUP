@@ -5,14 +5,10 @@ from backend.user.services import create_user, login_user, delete_user, update_u
 
 from flask import request
 
-
-
-
 api = Namespace("user", description="User API")
 user_fields = api.model(
-    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String, "chk_pwd" : fields.String, "uno": fields.Integer}
+    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String, "chk_pwd" : fields.String}
 )
-
 login_fields = api.model(
     "User_Login", {"id": fields.String, "password": fields.String}
 )
@@ -99,14 +95,14 @@ class Admin_Delete(Resource):
         """Delete user admin"""
         return delete_user_admin(request.get_json())
 
-api.add_resource(SignUp, "/signup")
+api.add_resource(SignUp, "/join")
 api.add_resource(Login, "/login")
 api.add_resource(Delete, "/delete")
 api.add_resource(Admin_Delete, "/admin_delete")
-api.add_resource(UpdateUser, "/update")
-api.add_resource(SearchId, "/searchid")
-api.add_resource(SearchPw, "/searchpw")
+api.add_resource(UpdateUser, "/userinfo_update")
+api.add_resource(SearchId, "/idsearch")
+api.add_resource(SearchPw, "/pwsearch")
 api.add_resource(CheckOverlapId, "/overlapid")
 api.add_resource(User_pwupdate, "/pwupdate")
-api.add_resource(User_read, "/readuser")
-api.add_resource(Read_all_users, "/read_all_users")
+api.add_resource(User_read, "/userinfo")
+api.add_resource(Read_all_users, "/user_list")
