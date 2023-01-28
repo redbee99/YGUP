@@ -33,7 +33,6 @@ const Info: React.FC = () => {
       navigate('/info_delete')
     };
 
-
     return (
         <div className='info'>
             <Box sx={{ display: 'flex',position:'relative', width:550, height: 700, margin:'auto', textAlign:'center', border: 1, borderRadius: 5, backgroundColor:'#ffffff', flexDirection: 'column',mt:5, padding: 5 }} >

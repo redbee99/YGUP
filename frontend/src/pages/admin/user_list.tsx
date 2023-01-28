@@ -3,7 +3,7 @@ import { alpha } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Checkbox, IconButton, Paper, styled, Tab, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Tooltip } from '@mui/material';
+import { Box, IconButton, Paper, styled, Tab, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Toolbar, Tooltip } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => {
   return ({
@@ -21,34 +21,37 @@ interface Data {
   name: string;
   userid : string;
   email: string;
+  del: string,
 }
 
 function createData(
   name: string,
   userid : string,
   email: string,
+  del: string
 ): Data {
   return {
     name,
     userid,
     email,
+    del
   };
 }
 
 const rows = [
-  createData('Cupcake', '세훈','naver'),
-  createData('Donut', '세훈2','google'),
-  createData('Eclair', '세훈3','daum'),
-  createData('Frozen yoghurt', '세훈4','kakao'),
-  createData('Gingerbread', '세훈5','nate'),
-  createData('Honeycomb', '세훈6','naver'),
-  createData('Ice cream sandwich', '세훈7','daum'),
-  createData('Jelly Bean', '세훈8','nexon'),
-  createData('KitKat', '세훈9','hanmail'),
-  createData('Lollipop', '세훈10','naver'),
-  createData('Marshmallow', '세훈11','naver'),
-  createData('Nougat', '세훈12','naver'),
-  createData('Oreo', '세훈13','naver'),
+  createData('Cupcake', '세훈','naver','del'),
+  createData('Donut', '세훈2','google','del'),
+  createData('Eclair', '세훈3','daum','del'),
+  createData('Frozen yoghurt', '세훈4','kakao','del'),
+  createData('Gingerbread', '세훈5','nate','del'),
+  createData('Honeycomb', '세훈6','naver','del'),
+  createData('Ice cream sandwich', '세훈7','daum','del'),
+  createData('Jelly Bean', '세훈8','nexon','del'),
+  createData('KitKat', '세훈9','hanmail','del'),
+  createData('Lollipop', '세훈10','naver','del'),
+  createData('Marshmallow', '세훈11','naver','del'),
+  createData('Nougat', '세훈12','naver','del'),
+  createData('Oreo', '세훈13','naver','del'),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -100,7 +103,7 @@ const headCells: readonly HeadCell[] = [
     id: 'name',
     numeric: false,
     disablePadding: true,
-    label: '이름',
+    label: 'name',
   },
   {
     id: 'userid',
@@ -114,6 +117,12 @@ const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'email',
   },
+  {
+    id: 'del',
+    numeric: true,
+    disablePadding: false,
+    label: ' ',
+},
 ];
 
 interface EnhancedTableProps {
@@ -126,7 +135,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy,  onRequestSort } =
+  const { order, orderBy,  onRequestSort } =
     props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -136,8 +145,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <StyledTableCell padding="checkbox" />
-
         {headCells.map((headCell) => (
           <StyledTableCell
             key={headCell.id}
@@ -159,39 +166,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         ))}
       </TableRow>
     </TableHead>
-  );
-}
-
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-}
-
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-          ...(numSelected > 0 && {
-            bgcolor: (theme) =>
-              alpha(
-                theme.palette.primary.main,
-                theme.palette.action.activatedOpacity),
-          }),
-      }} >
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ):(
-        <IconButton/>
-      )}
-    </Toolbar>
   );
 }
 
@@ -233,37 +207,6 @@ const User_list: React.FC = () => {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
-
   function a11yProps(index: number) {
       return {
           id: `simple-tab-${index}`,
@@ -301,25 +244,10 @@ const User_list: React.FC = () => {
                 {stableSort(rows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected} >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          onClick={(event) => handleClick(event, row.name)}
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId }}/>
-                      </TableCell>
+                    <TableRow>
                       <TableCell
                         component="th"
                         id={labelId}
@@ -329,6 +257,11 @@ const User_list: React.FC = () => {
                       </TableCell>
                       <TableCell align="center">{row.userid}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
+                      <TableCell align="center">
+                        <IconButton>
+                          <DeleteIcon fontSize="small"/>
+                        </IconButton>   
+                      </TableCell>        
                     </TableRow>
                   );
                 })}
@@ -336,15 +269,6 @@ const User_list: React.FC = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
     </Box>
     </div>

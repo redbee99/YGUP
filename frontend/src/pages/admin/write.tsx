@@ -59,7 +59,7 @@ const Write: React.FC = () => {
 
     const [logofile, setLogoFile] = React.useState<File>();
     const [wcfile, setWcFile] = React.useState<File>();
-
+/*
     const removeFileName = (originalFileName:string):string => {
         const lastIndex = originalFileName.lastIndexOf(".");
       
@@ -123,7 +123,7 @@ const Write: React.FC = () => {
         }
     
         setWcFile(files);
-    };
+    };*/
 
     const complete = (event: React.MouseEvent) => {
         if(logofile && wcfile){
@@ -140,19 +140,20 @@ const Write: React.FC = () => {
                 'user_type': 'admin'
             }
         
-            const formData = new FormData();
+            /*const formData = new FormData();
             formData.append('companyLogo', logofile);
             formData.append('wcloud', wcfile);
             formData.append('data', new Blob([JSON.stringify(data)], {
                 type: "application/json"
             }));
-        
-            axios.post( BaseUrl+'/company/create'
-                , formData
-                , {
+        */
+            axios.post( BaseUrl +'/company/create',
+               // , formData
+                 {
                     headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
+                        "Content-Type": "application/json"
+                    },
+                    body : {'data':data}
                 }
             ).then(res => {
                 navigate('/info',  { state: companyName })
@@ -189,7 +190,7 @@ const Write: React.FC = () => {
                 <TextField id="company-adress" label="주소" onChange={(newValue) => adrChange(newValue.target.value)} variant="outlined" size="small" sx={{ width:700, }} margin="dense"/>
                 <TextField id="company-content" label="기업내용" onChange={(newValue) => contentChange(newValue.target.value)} variant="outlined" size="small" sx={{ width:700, height:200 }} margin="dense"/>
                 
-                <Button
+             {/* <Button
                     variant="contained"
                     component="label"
                     sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', mt:-19, mb:5, maxWidth:700  }}
@@ -212,7 +213,7 @@ const Write: React.FC = () => {
                         hidden
                         onChange={loadWcloudImage}
                     />
-                </Button>
+                </Button> */}  
                 <Button onClick={(event) => complete(event)} variant="contained" component="label" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', maxWidth:700}}>
                         작성
                 </Button>
