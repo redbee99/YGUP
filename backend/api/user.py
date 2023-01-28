@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from backend.user.services import create_user, login_user, delete_user, update_user, \
-    search_id, search_pw, check_overlap_id, pwupdate_user, read_user, read_all_users, delete_user_admin
+    search_id, search_pw, check_overlap_id, pwupdate_user, read_user, read_all_users, \
+    delete_user_admin, check_overlap_email
 
 
 from flask import request
@@ -21,7 +22,9 @@ pwsearch_fields = api.model(
 coid_fields = api.model(
     "User_coid", {"id": fields.String}
 )
-
+coemail_fields = api.model(
+    "User_Email", {"email":fields.String}
+)
 pwupdate_fields = api.model(
     "User_pwupdate", {"id": fields.String, "password": fields.String, "new_pwd": fields.String, "new_pwd_chk": fields.String }
 )
@@ -70,6 +73,11 @@ class CheckOverlapId(Resource):
     def post(self):
         """Check Overlap Id"""
         return check_overlap_id(request.get_json())
+@api.doc(body=coemail_fields)
+class CheckOverlapEmail(Resource) :
+    def post(self):
+        """Check Overlap Email"""
+        return check_overlap_email(request.get_json())
 
 @api.doc(body=pwupdate_fields)
 class User_pwupdate(Resource):
@@ -106,3 +114,4 @@ api.add_resource(CheckOverlapId, "/overlapid")
 api.add_resource(User_pwupdate, "/pwupdate")
 api.add_resource(User_read, "/userinfo")
 api.add_resource(Read_all_users, "/user_list")
+api.add_resource(CheckOverlapEmail, "/overlapemail")

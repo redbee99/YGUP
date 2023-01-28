@@ -19,7 +19,7 @@ def create_user(data):
     if not re.findall('[`~!@#$%^&*(),<.>/?]+', data['password']):
         return 'At least 1 special character required', 505
 
-    if not data['password'] == data['chk_pwd'] :
+    if not data['password'] == data['chk_pwd']:
         return 'password and chk_pwd do not match', 505
 
     del data["chk_pwd"]
@@ -38,7 +38,7 @@ def login_user(data):
 
 def delete_user(data):
     """Delete User"""
-    res = db.session.query(User).filter(and_(User.id == data['id'], User.password == data['password'])).all()
+    res = db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw'))).all()
 
     if not res:
         return 'fail', 505
@@ -92,7 +92,7 @@ def pwupdate_user(data):
 
 def search_id(data):
     """search id"""
-    res = db.session.query(User).filter(and_(User.name == data['name'], User.email == data['email'])).first()
+    res = db.session.query(User).filter(and_(User.name == data['body'].get('name'), User.email == data['body'].get('email'))).first()
     if not res:
         return 'fail', 505
 
@@ -103,7 +103,7 @@ def search_id(data):
 
 def search_pw(data):
     """search pw"""
-    res = db.session.query(User).filter(and_(User.id == data['id'], User.name == data['name'], User.email == data['email'])).first()
+    res = db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.name == data['body'].get('name'), User.email == data['body'].get('email'))).first()
 
     if not res:
         return 'fail', 505
@@ -115,7 +115,7 @@ def search_pw(data):
 
 def check_overlap_id(data):
     """Check Overlap Id"""
-    res = db.session.query(User).filter(User.id == data['id']).all()
+    res = db.session.query(User).filter(User.id == data['body'].get('id')).all()
 
     if not res:
         return 'OK', 200
@@ -124,7 +124,7 @@ def check_overlap_id(data):
 
 def read_user(data):
     """Read User"""
-    res = db.session.query(User).filter(User.id == data['id']).all()
+    res = db.session.query(User).filter(User.id == data['body'].get('id')).all()
     if not res:
         return 'fail', 505
 
@@ -176,3 +176,12 @@ def delete_user_admin(data):
         db.session.commit()
 
     return 'Delete OK', 200
+
+def check_overlap_email(data):
+    """Check Overlap Email"""
+    res = db.session.query(User).filter(User.email == data['email']).all()
+
+    if not res :
+        return 'OK', 505
+
+    return 'fail', 200
