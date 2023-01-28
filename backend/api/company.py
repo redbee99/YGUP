@@ -7,12 +7,12 @@ api = Namespace("company", description="Company API")
 
 company_fields = api.model(
     "Company", {"cname": fields.String,
-                "keyword": fields.String, "wcloud": fields.String,
+                "keyword": fields.String,
                 "wcloud_url": fields.String, "address": fields.String,
                 "sales": fields.String,
                 "owner": fields.String, "info": fields.String,
                 "pay": fields.String, "courl": fields.String,
-                "logo": fields.String, "logo_url": fields.String,
+                "logo_url": fields.String,
                 "resign": fields.String,"form": fields.String,
                 "bookmarkcnt": fields.Integer, "readcnt": fields.Integer,
                 "uno": fields.Integer
@@ -91,7 +91,6 @@ class ReadCompany(Resource):
     def post(self):
         """Read Company"""
         return read_company(request.get_json())
-
 
 api.add_resource(CreateCompany, "/create")
 api.add_resource(UpdateCompany, "/update")
