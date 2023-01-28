@@ -4,7 +4,8 @@ type ModalAction =
     | ReturnType<typeof set>
 
 type ModalState = {
-    state : String
+    state : string,
+    cashe1 : string
 }
 
 export const set = (state: ModalState) => ({
@@ -13,7 +14,8 @@ export const set = (state: ModalState) => ({
 });
 
 const initialState: ModalState = {
-    state : ''
+    state : '',
+    cashe1 : ''
 }
 
 export default function modalReducer(state: ModalState = initialState, action: ModalAction) {

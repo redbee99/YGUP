@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
-import User from './user';
+import User from '../components/user';
 import React from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
