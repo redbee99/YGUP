@@ -122,6 +122,15 @@ def check_overlap_id(data):
 
     return 'fail', 505
 
+def check_overlap_email(data):
+    """Check Overlap Email"""
+    res = db.session.query(User).filter(User.email == data['email']).all()
+
+    if not res :
+        return 'OK', 200
+
+    return 'fail', 505
+
 def read_user(data):
     """Read User"""
     res = db.session.query(User).filter(User.id == data['body'].get('id')).all()
@@ -177,11 +186,3 @@ def delete_user_admin(data):
 
     return 'Delete OK', 200
 
-def check_overlap_email(data):
-    """Check Overlap Email"""
-    res = db.session.query(User).filter(User.email == data['email']).all()
-
-    if not res :
-        return 'OK', 505
-
-    return 'fail', 200

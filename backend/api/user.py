@@ -46,6 +46,7 @@ class Login(Resource):
     def post(self):
         """login user"""
         return login_user(request.get_json())
+
 @api.doc(body=login_fields)
 class Delete(Resource):
     def post(self):
@@ -57,11 +58,13 @@ class UpdateUser(Resource):
     def post(self):
         """user Update"""
         return update_user(request.get_json())
+
 @api.doc(body=idsearch_fields)
 class SearchId(Resource):
     def post(self):
         """search Id"""
         return search_id(request.get_json())
+
 @api.doc(body=pwsearch_fields)
 class SearchPw(Resource):
     def post(self):
@@ -73,6 +76,7 @@ class CheckOverlapId(Resource):
     def post(self):
         """Check Overlap Id"""
         return check_overlap_id(request.get_json())
+
 @api.doc(body=coemail_fields)
 class CheckOverlapEmail(Resource) :
     def post(self):
