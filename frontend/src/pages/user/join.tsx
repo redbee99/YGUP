@@ -10,26 +10,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../reducers/index'
 import { set } from '../../reducers/modalReducer'
 import BasicModal from '../components/basicModal';
-import { useState } from 'react';
-
-
-
-
+import { useState, useEffect } from 'react';
 
 const Join: React.FC = (props) => {
-
   const navigate = useNavigate();
+  
   const goLogin = () => {
+    
     navigate('/login')
   };
-  
+
   const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+  const currentModalCashe = useSelector((state: RootState) => state.modalReducer.cashe1);
+
+  //currentModalCashe 변화 감지시 훅킹
+  useEffect(() => {
+    setIdValue(currentModalCashe)
+  }, [currentModalCashe]);
+
   const dispatch = useDispatch();
   
-  const [id, setIdValue] = useState('');
+  const [id, setIdValue] = useState(currentModalCashe);
   const [name, setNameValue] = useState('');
-  const [email, setEmailValue] = React.useState(''
-  );
+  const [email, setEmailValue] = React.useState('');
+
   const emailAdress = [
       'gmail.com',
       'naver.com',
@@ -37,34 +41,47 @@ const Join: React.FC = (props) => {
       'nate.net',
   ];
 
+  const [pw, setPwValue] = useState('');
+  const [pw2, setPw2Value] = useState('');
   
   const idChange = (newValue: string) => {
     setIdValue(newValue);
-  };
+  }
+
   const nameChange = (newValue: string) => {
     setIdValue(newValue);
-  };
+  }
+
   const emailChange = (newValue: string) => {
     setEmailValue(newValue);
+  }
+
+  const pwChange = (newValue: string) => {
+    setPwValue(newValue);
+  };
+
+  const pw2Change = (newValue: string) => {
+    setPwValue(newValue);
   };
   
-  
   const handleChange = (event: SelectChangeEvent) => {
-    setEmailValue(event.target.value);
+    setEmailValue(event.target.value as string);
   };
 
   //idcheckmodal
   const idOverlapCheck = () => {
-    dispatch(set({
-      state: 'on',
-      cashe1: ''
-    }));
+    if(id != ''){
+      dispatch(set({state:'on', cashe1:id}));
+    }
+    else{
+      alert('아이디를 입력해주세요')
+    }
   }
   
   const ModalShow = () => {
     if(currentModal == "on"){
       return <div className='join_modal'>
-              <BasicModal content='아이디' _id={''}/>
+              <BasicModal content='아이디' _id={currentModalCashe}/>
             </div>
     }
     else{
@@ -89,7 +106,7 @@ const Join: React.FC = (props) => {
                     }}>
                 <Typography sx={{fontSize: 32, pb:3 }}>회원 가입</Typography>
                 <Stack  direction="row" spacing={2} alignItems="center" >
-                    <TextField id="join-id" label="아이디" variant="outlined" size="small" margin="normal" onChange={(newValue) => idChange(newValue.target.value)}/>
+                    <TextField value={id} id="join-id" label="아이디" variant="outlined" size="small" margin="normal" onChange={(newValue) => idChange(newValue.target.value)}/>
                     <Button 
                       variant="contained"
                       onClick={idOverlapCheck}
