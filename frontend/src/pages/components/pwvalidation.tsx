@@ -1,5 +1,5 @@
-import { TextField } from '@mui/material';
-import { Stack } from '@mui/system';
+import { List, ListItem, TextField, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/system';
 import { useState, useEffect, ReactElement } from 'react';
 
 
@@ -14,7 +14,7 @@ function PwValidation(): ReactElement {
   const [lowerCase, setLowerCase] = useState(false);
   const [specialChar, setSpecialChar] = useState(false);
   const [match, setMatch] = useState(false);
-  const [requiredLength, setRequiredLength] = useState(8)
+  const [requiredLength, setRequiredLength] = useState(5)
 
   const inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
     const { value, name } = event.target;
@@ -57,26 +57,27 @@ function PwValidation(): ReactElement {
                      name="secondPassword"
           /> 
         </Stack>
-        <br />
-        <ul className='ul'>
-          <li>
-            8자리 이상: {validLength ? <span color='blue'>만족</span> : <span color='red'>불만족</span>}
-          </li>
-          <li>
-            숫자 유무: {hasNumber ? <span color='blue'>만족</span> : <span color='red'>불만족</span>}
-          </li>
-          <li>
-            대문자: {upperCase ? <span color='blue'>만족</span> : <span color='red'>불만족</span>}
-          </li>
-          <li>
-            소문자: {lowerCase ? <span color='blue'>만족</span> : <span color='red'>불만족</span>}
-          </li>
-          <li>비밀번호 일치: {match ? <span color='blue'>일치</span> : <span color='red'>불일치</span>}
-          </li>
-          <li>
-            특수문자: {specialChar ? <span color='blue'>만족</span> : <span color='red'>불만족</span>}
-          </li>
-        </ul>
+        <Box sx={{ width:150, height:100}}>
+          <List className='validationdesign' dense sx={{ fontSize:'10px' }}>
+            <ListItem>
+              5자리 이상: {validLength ? <Typography color='blue' sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+            </ListItem>
+            <ListItem>
+              숫자 유무: {hasNumber ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+            </ListItem>
+            <ListItem>
+              대문자: {upperCase ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+            </ListItem>
+            <ListItem>
+              소문자: {lowerCase ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+            </ListItem>
+            <ListItem>비밀번호 일치: {match ? <Typography color='blue'sx={{ fontSize:'10px' }}>일치</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불일치</Typography>}
+            </ListItem>
+            <ListItem>
+              특수문자: {specialChar ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+            </ListItem>
+          </List>
+        </Box>
       </Stack>
     </div>
   );
