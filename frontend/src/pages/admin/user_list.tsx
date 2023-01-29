@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import User from '../components/user';
+import { useNavigate } from 'react-router-dom';
+import { BaseUrl } from '../../util/axiosApi';   
+import axios from 'axios';
+import { useQuery } from 'react-query';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, 
          Tab, 
          Tabs,
          IconButton, 
          Paper, 
+         Stack,
          styled, 
          Table, 
          TableBody, 
@@ -13,7 +18,8 @@ import { Box,
          tableCellClasses, 
          TableContainer, 
          TableHead, 
-         TableRow,} from '@mui/material';
+         TableRow,
+         CircularProgress } from '@mui/material';
          
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
@@ -24,7 +30,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
      fontSize: 14,
    },
    }));
-         
+
  const StyledTableRow = styled(TableRow)(({ theme }) => ({
    '&:nth-of-type(odd)': {
      backgroundColor: theme.palette.action.hover,
@@ -34,34 +40,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
      border: 0,
          },
            }));
-         
-function createData(
-   id: string,
-   name: string,
-   email: string,
-   del: string,
-   ) { return { id, name, email, del }; }
-         
-   const rows = [
-    createData('Cupcake', '세훈','naver', ' '),
-    createData('Donut', '세훈2','google', ' '),
-    createData('Eclair', '세훈3','daum', ' '),
-    createData('Frozen yoghurt', '세훈4','kakao', ' '),
-    createData('Gingerbread', '세훈5','nate', ' '),
-    createData('Honeycomb', '세훈6','naver', ' '),
-    createData('Ice cream sandwich', '세훈7','daum', ' '),
-    createData('Jelly Bean', '세훈8','nexon', ' '),
-    createData('KitKat', '세훈9','hanmail', ' '),
-    createData('Lollipop', '세훈10','naver', ' '),
-    createData('Marshmallow', '세훈11','naver', ' '),
-    createData('Nougat', '세훈12','naver', ' '),
-    createData('Oreo', '세훈13','naver', ' '),
-  ];
+                    
 const User_list: React.FC = () => {
 
+  const [value, setValue] = React.useState(0); 
+
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const [value, setValue] = React.useState(state); 
 
   const goUser_list = () => {
         navigate('/user_list')
@@ -73,10 +57,6 @@ const User_list: React.FC = () => {
   const goUser_delete = () => {
     navigate('/User_delete')
   }
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-};
-
 
   function a11yProps(index: number) {
       return {
@@ -85,47 +65,78 @@ const User_list: React.FC = () => {
       };
   }
 
-  return (
-    <div className='company_basic_list'>
-      <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }} >
-        <Tabs value={value} onChange={handleChange} >
-          <Tab label="회원 목록" {...a11yProps(0)} onClick={() => { goUser_list(); }} />
-          <Tab label="기업 목록" {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }} />
-        </Tabs>
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const getUserList = async ()=>{
+   const url = BaseUrl + "/user/read_all_users"
+   const { data } = await axios.post(url, {
+      headers: 
+      {
+          "Content-Type": "application/json"
+      },
+      body: { uno: 0 }
+   })
+  return data
+  }
+
+  const { isLoading, data, error } = useQuery('getUserList', getUserList);
+
+  if(isLoading){
+    return <CircularProgress /> 
+  }
+  else {
+    return (
+       <div className='user_list'>
+         <Stack direction={'row'} spacing={2} className='mypagecontents'>
+           <User/>   
+         <Box sx={{ flexGrow: 2, bgcolor: 'background.paper', display: 'flex', height: 224 }}>
+           <Tabs
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, borderColor: 'divider' }}>
+             <Tab label="회원 목록" value={0}  {...a11yProps(0)} onClick={() => { goUser_list(); }} />
+             <Tab label="기업 목록" value={1}  {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }} />
+           </Tabs>
+        </Box>
+        <Box sx={{ width: '100%', marginTop:20  }}>
+          <Paper sx={{ width: '100%', mb: 2, marginTop:5 }} >
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>아이디</StyledTableCell>
+                    <StyledTableCell>이름</StyledTableCell>
+                    <StyledTableCell>이메일</StyledTableCell>
+                    <StyledTableCell> </StyledTableCell>
+                   </TableRow>
+                </TableHead>
+                <TableBody>
+                   {Object.keys(data).map((value:any, index:any) => (
+                     <StyledTableRow key={data[value]['id']}>
+                      <StyledTableCell component="th" scope="row">{data[value]['id']}</StyledTableCell>
+                      <StyledTableCell>{data[value]['name']}</StyledTableCell>
+                      <StyledTableCell>{data[value]['email']}</StyledTableCell>
+                      <StyledTableCell>
+                        <IconButton>
+                           <DeleteIcon fontSize="small"  onClick={() => { goUser_delete(); }}/>
+                        </IconButton>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    ))}
+                </TableBody>
+             </Table>
+           </TableContainer>
+         </Paper>
       </Box>
-      <Box sx={{ width: '100%' }} >
-        <Paper sx={{ width: '100%', mb: 2 }} >
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>id</StyledTableCell>
-            <StyledTableCell>name</StyledTableCell>
-            <StyledTableCell>email</StyledTableCell>
-            <StyledTableCell> </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.id}>
-              <StyledTableCell component="th" scope="row">{row.id} </StyledTableCell>
-              <StyledTableCell>{row.name}</StyledTableCell>
-              <StyledTableCell>{row.email}</StyledTableCell>
-              <StyledTableCell>
-                <IconButton>
-                  <DeleteIcon fontSize="small"  onClick={() => { goUser_delete(); }}/>
-                </IconButton>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-        </Paper>
-      </Box>
+      </Stack>  
     </div>
-  );
+   );
+  }
 }
 
 export default User_list;
