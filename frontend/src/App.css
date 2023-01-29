@@ -397,3 +397,10 @@ footer {
   clip:rect(0,0,0,0);
   border: 0;
 }
+
+.idsearchModal{
+  position: absolute;
+  top: 20px;
+  left: 550px;
+  z-index: 99999999;
+}

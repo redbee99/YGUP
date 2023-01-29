@@ -21,6 +21,18 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
     const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
 
+    const [name,setNameValue] = useState('');
+
+    const onChangeName = (newValue:string) => {
+        setNameValue(newValue)
+    }
+
+    const [email,setEmailValue] = useState('');
+
+    const onChangeEmail = (newValue:string) => {
+        setEmailValue(newValue)
+    }
+
     const confirm = () => {
         if(content == "아이디"){
             const url = BaseUrl + "/user/overlapid"
@@ -58,6 +70,24 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: ''}))
             })
         }
+        else if(content == "아이디 찾기"){
+            const url = BaseUrl + "/user/idsearch"
+            axios.post(url, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { name: name, email: email }
+            })
+            .then(function(response) {
+                alert('사용 가능한 이메일입니다.')
+                dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
+            })
+            .catch(function(error) {
+                alert('중복 가입자 입니다.')
+                dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
+            })
+        }
     }
 
     const DynamicContent = () => {
@@ -77,71 +107,17 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                 <TextField value={cashe} label={content} sx={{ mt:2, width:300, height:10, '& .MuiInputBase-root': { borderRadius: 15} }}/>
             </Box>
         }
-        else if (content == "아이디찾기") {
-            const emailAdress = [
-                'gmail.com',
-                'naver.com',
-                'hanmail.net',
-                'nate.net',
-            ];
-            type email_type = {
-                emailid?: string,
-                address?: string
-            }
-            const initialEmail: email_type = {
-                emailid: '',
-                address: ''
-            }
-            const [email, setEmailValue] = useState(initialEmail);
-            const handleChange = (event: SelectChangeEvent) => {
-                setEmailValue({ emailid:email.emailid ,address:event.target.value as string });
-            };
-            const emailIdChange = (newValue: string)=> {
-                setEmailValue({ emailid:newValue, address:email.address });
-            }
-              
-            return (
-                <Box sx={{ display: 'flex',
-                       position:'relative', 
-                       width:400, 
-                       height:400, 
-                       margin:'auto', 
-                       textAlign:'center', 
-                       border: 1, 
-                       borderRadius: 5, 
-                       backgroundColor:'#ffffff', 
-                       flexDirection: 'column', 
-                       mt:5 }}>               
-                <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
-                    아이디 찾기
-                </Typography>
-                <br/>
-                <Box>
-                    <Stack  direction="column" spacing={2} sx={{ pr:3, pl:3 }}>
-                        <TextField id="login-id" label="아이디" variant="outlined" size="small" margin="normal"/>
-                        <Stack  direction="row" spacing={3} >
-                            <TextField value={email.emailid} id="login-emailid" label="이메일아이디" variant="outlined" size="small" sx={{ maxWidth: 150 }} onChange={(newValue) => emailIdChange(newValue.target.value)}/>
-                            <Box sx={{ display: 'flex', alignItems: 'center'}}>
-                                <Typography>@</Typography>
-                            </Box>
-                            <FormControl sx={{ m: 5, maxWidth: 150, width:200 }} size="small">
-                            <InputLabel id="emailadress">선택 이메일</InputLabel>
-                                <Select
-                                    labelId="emailadress"
-                                    id="login-emailadress"
-                                    value={email.address}
-                                    onChange={handleChange}
-                                    label="이메일주소"
-                                    >
-                                    { emailAdress.map(
-                                        (row, index) => {
-                                        return (<MenuItem key={index} value={row}>{row}</MenuItem>);
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </Stack>
-                    </Stack>
-                </Box>
+        else if (content == "아이디 찾기") {
+            return (   
+                <Box sx={{ mt:10, mb:15 }} >
+                    <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
+                        아이디 찾기
+                    </Typography>
+                    <br/>
+                    <Box>
+                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" sx={{ mt:2, width:300, height:10}}/>
+                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" sx={{ mt:2, width:300, height:10 }}/>
+                    </Box>
                 </Box>
             )
         } else {
