@@ -19,8 +19,8 @@ def create_company(data):
     address=data['body'].get('data').get('address'),
     sales=data['body'].get('data').get('sales'), owner=data['body'].get('data').get('owner'),info=data['body'].get('data').get('cname'),pay=data['body'].get('data').get('pay'),
     courl=data['body'].get('data').get('courl'),
-    resign=data['body'].get('data').get('resign'), form=data['body'].get('data').get('form'), bookmarkcnt=data['body'].get('data').get('bookmarkcnt'),
-    readcnt=data['body'].get('data').get('readcnt'))
+    resign=data['body'].get('data').get('resign'), form=data['body'].get('data').get('form'), bookmarkcnt=0,
+    readcnt=0)
     db.session.add(company)
     db.session.commit()
     return company_schema.dump(company), 201
@@ -129,26 +129,28 @@ def search_company(data):
 
 def rank_company(data):
     """Rank Company"""
-    if data['type'] == "bookmark":
+    if data['body'].get('type') == "bookmark":
         company_list = db.session.query(Company).with_entities(Company.cname,
-        Company.address, Company.keyword).order_by(desc(Company.bookmarkcnt)).all()
-    elif data['type'] == "cname":
+        Company.address, Company.keyword,Company.form,Company.logo_url).order_by(desc(Company.bookmarkcnt)).all()
+    elif data['body'].get('type') == "cname":
         company_list = db.session.query(Company).with_entities(Company.cname,
-        Company.address, Company.keyword).order_by((Company.cname)).all()
+        Company.address, Company.keyword,Company.form,Company.logo_url).order_by((Company.cname)).all()
     else:
         company_list = db.session.query(Company).with_entities(Company.cname,
-        Company.address, Company.keyword).order_by(desc(Company.readcnt)).all()
+        Company.address, Company.keyword,Company.form,Company.logo_url).order_by(desc(Company.readcnt)).all()
 
     result = {}
     i = 0
 
     for company in company_list:
-        if data['f_all'] == 0:
+        if data['body'].get('f_all') == 0:
             if i < 5:
                 temp = {}
                 temp['cname'] = company[0]
                 temp['address'] = company[1]
                 temp['keyword'] = company[2]
+                temp['form'] = company[3]
+                temp['logo_url'] = company[4]
                 result['rank' + str(i)] = temp
                 i += 1
         else:
@@ -156,6 +158,8 @@ def rank_company(data):
             temp['cname'] = company[0]
             temp['address'] = company[1]
             temp['keyword'] = company[2]
+            temp['form'] = company[3]
+            temp['logo_url'] = company[4]
             result['rank' + str(i)] = temp
             i += 1
 
@@ -163,22 +167,22 @@ def rank_company(data):
 
 def read_company(data) :
     """Read Company"""
-    company = db.session.query(Company).filter(Company.cname == data['cname']).all()
+    company = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
     if not company:
         return 'fail', 505
 
     result = {}
-
+    readcnt = company[0].readcnt
     for data in company:
         temp = data.__dict__
         del temp['_sa_instance_state']
         del temp['cno']
-        result[temp.get('cname')] = temp
-
+        result['company'] = temp
+        readcnt += 1
 
     #########################조회수 + 1#########################
-    readcnt = data.__dict__['readcnt'] + 1
+
     #db.session.close()
     #db.session.query(Company).filter(Company.cname == data['cname']).update({"readcnt":readcnt})
     #db.session.commit()
