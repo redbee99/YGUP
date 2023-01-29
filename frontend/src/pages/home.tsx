@@ -11,7 +11,7 @@ import { useQuery } from 'react-query';
 
 const Home: React.FC = () => {
 
-    const getBookmarkCompanyList = async ()=>{
+    const getRank1CompanyList = async ()=>{
         const url = BaseUrl + "/company/rank"
         const { data } = await axios.post(url, {
             headers: 
@@ -23,7 +23,7 @@ const Home: React.FC = () => {
         return data
     }
 
-    const { isLoading, data, error } = useQuery('getCompany', getBookmarkCompanyList);
+    const { isLoading, data, error } = useQuery('getRank1CompanyList', getRank1CompanyList);
 
     if(isLoading){
         return <CircularProgress />
