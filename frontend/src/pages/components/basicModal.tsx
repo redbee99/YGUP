@@ -1,4 +1,4 @@
-import { Stack, TextField, Typography } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from 'axios';
@@ -14,7 +14,7 @@ type Props = {
     _cashe: string
 }
 
-const BasicModal: React.FC<Props> = ({ content, _cashe }) => {
+const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     const dispatch = useDispatch();
 
     const [cashe,] = useState(_cashe);
@@ -77,8 +77,75 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }) => {
                 <TextField value={cashe} label={content} sx={{ mt:2, width:300, height:10, '& .MuiInputBase-root': { borderRadius: 15} }}/>
             </Box>
         }
-        else{
-            return <div/>
+        else if (content == "아이디찾기") {
+            const emailAdress = [
+                'gmail.com',
+                'naver.com',
+                'hanmail.net',
+                'nate.net',
+            ];
+            type email_type = {
+                emailid?: string,
+                address?: string
+            }
+            const initialEmail: email_type = {
+                emailid: '',
+                address: ''
+            }
+            const [email, setEmailValue] = useState(initialEmail);
+            const handleChange = (event: SelectChangeEvent) => {
+                setEmailValue({ emailid:email.emailid ,address:event.target.value as string });
+            };
+            const emailIdChange = (newValue: string)=> {
+                setEmailValue({ emailid:newValue, address:email.address });
+            }
+              
+            return (
+                <Box sx={{ display: 'flex',
+                       position:'relative', 
+                       width:400, 
+                       height:400, 
+                       margin:'auto', 
+                       textAlign:'center', 
+                       border: 1, 
+                       borderRadius: 5, 
+                       backgroundColor:'#ffffff', 
+                       flexDirection: 'column', 
+                       mt:5 }}>               
+                <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
+                    아이디 찾기
+                </Typography>
+                <br/>
+                <Box>
+                    <Stack  direction="column" spacing={2} sx={{ pr:3, pl:3 }}>
+                        <TextField id="login-id" label="아이디" variant="outlined" size="small" margin="normal"/>
+                        <Stack  direction="row" spacing={3} >
+                            <TextField value={email.emailid} id="login-emailid" label="이메일아이디" variant="outlined" size="small" sx={{ maxWidth: 150 }} onChange={(newValue) => emailIdChange(newValue.target.value)}/>
+                            <Box sx={{ display: 'flex', alignItems: 'center'}}>
+                                <Typography>@</Typography>
+                            </Box>
+                            <FormControl sx={{ m: 5, maxWidth: 150, width:200 }} size="small">
+                            <InputLabel id="emailadress">선택 이메일</InputLabel>
+                                <Select
+                                    labelId="emailadress"
+                                    id="login-emailadress"
+                                    value={email.address}
+                                    onChange={handleChange}
+                                    label="이메일주소"
+                                    >
+                                    { emailAdress.map(
+                                        (row, index) => {
+                                        return (<MenuItem key={index} value={row}>{row}</MenuItem>);
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Stack>
+                    </Stack>
+                </Box>
+                </Box>
+            )
+        } else {
+            return(<div/>)
         }
     }
 
