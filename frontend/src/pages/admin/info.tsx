@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { CircularProgress, Stack } from '@mui/material';
 import { CardMedia } from '@mui/material'
-import Icon from '../../img/logo.svg'
 import Card from '@mui/material/Card';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
@@ -14,8 +13,6 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from "react-query";
 import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
-import { width } from '@mui/system';
-
 
 const Item = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
