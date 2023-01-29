@@ -43,11 +43,11 @@ def update_company(data):
 
 def delete_company(data):
     """Delete Company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('uno')).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can delete"}, 505
 
-    res = db.session.query(Company).filter(Company.cname == data['cname']).all()
+    res = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
     if not res:
         return 'fail', 505
@@ -58,7 +58,7 @@ def delete_company(data):
 
 def read_all_company(data):
     """Read All Company"""
-    usertype = db.session.query(UserType).filter(UserType.uno == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.uno == data['body'].get('uno')).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can read"}, 505
 
