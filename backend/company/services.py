@@ -8,18 +8,19 @@ from werkzeug.utils import secure_filename
 from flask import request
 def create_company(data):
     """Given serialized data and create a ner Company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('data').get('uno')).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can create"}, 505
-
-    data['cno'] = str(uuid.uuid1())
+    cno = {'cno': str(uuid.uuid1())}
+    data['body'].get('data').update(cno)
     #북마크 테이블이 완성 되면 북마크 조회해서 값 채워 넣기
-    company = Company(cname=data['cname'], cno=data['cno'], keyword=data['keyword'],
-    wcloud_url=data['wcloud_url'],address=data['address'],
-    sales=data['sales'], owner=data['owner'],info=data['info'],pay=data['pay'],
-    courl=data['courl'], logo_url=data['logo_url'],
-    resign=data['resign'], form=data['form'], bookmarkcnt=data['bookmarkcnt'],
-    readcnt=data['readcnt'])
+    company = Company(cname=data['body'].get('data').get('cname'), cno=data['body'].get('data').get('cno'),
+    keyword=data['body'].get('data').get('keyword'),
+    address=data['body'].get('data').get('address'),
+    sales=data['body'].get('data').get('sales'), owner=data['body'].get('data').get('owner'),info=data['body'].get('data').get('cname'),pay=data['body'].get('data').get('pay'),
+    courl=data['body'].get('data').get('courl'),
+    resign=data['body'].get('data').get('resign'), form=data['body'].get('data').get('form'), bookmarkcnt=0,
+    readcnt=0)
     db.session.add(company)
     db.session.commit()
     return company_schema.dump(company), 201
@@ -42,11 +43,11 @@ def update_company(data):
 
 def delete_company(data):
     """Delete Company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('uno')).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can delete"}, 505
 
-    res = db.session.query(Company).filter(Company.cname == data['cname']).all()
+    res = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
     if not res:
         return 'fail', 505
@@ -57,7 +58,7 @@ def delete_company(data):
 
 def read_all_company(data):
     """Read All Company"""
-    usertype = db.session.query(UserType).filter(UserType.uno == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.uno == data['body'].get('uno')).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can read"}, 505
 
@@ -128,26 +129,28 @@ def search_company(data):
 
 def rank_company(data):
     """Rank Company"""
-    if data['type'] == "bookmark":
+    if data['body'].get('type') == "bookmark":
         company_list = db.session.query(Company).with_entities(Company.cname,
-        Company.address, Company.keyword).order_by(desc(Company.bookmarkcnt)).all()
-    elif data['type'] == "cname":
+        Company.address, Company.keyword,Company.form,Company.logo_url).order_by(desc(Company.bookmarkcnt)).all()
+    elif data['body'].get('type') == "cname":
         company_list = db.session.query(Company).with_entities(Company.cname,
-        Company.address, Company.keyword).order_by((Company.cname)).all()
+        Company.address, Company.keyword,Company.form,Company.logo_url).order_by((Company.cname)).all()
     else:
         company_list = db.session.query(Company).with_entities(Company.cname,
-        Company.address, Company.keyword).order_by(desc(Company.readcnt)).all()
+        Company.address, Company.keyword,Company.form,Company.logo_url).order_by(desc(Company.readcnt)).all()
 
     result = {}
     i = 0
 
     for company in company_list:
-        if data['f_all'] == 0:
+        if data['body'].get('f_all') == 0:
             if i < 5:
                 temp = {}
                 temp['cname'] = company[0]
                 temp['address'] = company[1]
                 temp['keyword'] = company[2]
+                temp['form'] = company[3]
+                temp['logo_url'] = company[4]
                 result['rank' + str(i)] = temp
                 i += 1
         else:
@@ -155,6 +158,8 @@ def rank_company(data):
             temp['cname'] = company[0]
             temp['address'] = company[1]
             temp['keyword'] = company[2]
+            temp['form'] = company[3]
+            temp['logo_url'] = company[4]
             result['rank' + str(i)] = temp
             i += 1
 
@@ -162,25 +167,24 @@ def rank_company(data):
 
 def read_company(data) :
     """Read Company"""
-    company = db.session.query(Company).filter(Company.cname == data['cname']).all()
+    company = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
     if not company:
         return 'fail', 505
 
     result = {}
-
+    readcnt = company[0].readcnt
     for data in company:
         temp = data.__dict__
         del temp['_sa_instance_state']
         del temp['cno']
-        result[temp.get('cname')] = temp
-
+        result['company'] = temp
+        readcnt += 1
 
     #########################조회수 + 1#########################
-    readcnt = data.__dict__['readcnt'] + 1
+
     #db.session.close()
     #db.session.query(Company).filter(Company.cname == data['cname']).update({"readcnt":readcnt})
     #db.session.commit()
 
     return {'result':result, 'readcnt':readcnt}, 200
-
