@@ -85,14 +85,15 @@ const PwUpdate: React.FC = () => {
                         <TextField id="update-newpw_chk" label="새 비밀번호 확인" onChange={(newValue) => newpw_chkChange(newValue.target.value)} variant="outlined" size="small" margin="normal"/>
                     </Stack>
                 </Box>
-                <hr className='login-idsearch-underline'/>
+                <hr className='underline'/>
                 <Button variant="contained"  
                         size="small" 
                         sx={{ width: 100, 
                               mx:'auto', 
                               color:'#ffff', 
                               backgroundColor: '#26a68a', 
-                              borderColor:'#434343'
+                              borderColor:'#434343',
+                              mt:2
                             }} 
                             onClick={(event) => pwupdate()}
                 >

@@ -36,6 +36,9 @@ const Login: React.FC = () => {
         if(currentModal == "on"){
             return <div className='idsearchModal'><BasicModal content="아이디 찾기" _cashe='' /></div>
         }
+        else if(currentModal =="on1"){
+            return <div className='pwsearchModal'><BasicModal content="비밀번호 찾기" _cashe='' /></div>
+        }
         else{
             return <div/>
         }
@@ -55,6 +58,10 @@ const Login: React.FC = () => {
     //idsearchModalopen<=reducer이용
     const IdsearchModal = () => {
         dispatch(setModal.set({state:'on', cashe1:'', cashe2:''}));
+    }
+
+    const PwsearchModal = () => {
+        dispatch(setModal.set({state:'on1', cashe1:'', cashe2:''}));
     }
     
     const login = () => {
@@ -105,6 +112,7 @@ const Login: React.FC = () => {
 
                 <Button variant="contained" 
                         onClick={(event) => login()}
+
                         sx={{ color:'#ffff', 
                               backgroundColor: '#26a68a', 
                               borderColor:'#434343'
@@ -116,7 +124,7 @@ const Login: React.FC = () => {
                 <br/>
                 <Stack direction="row" spacing={2} sx={{ marginLeft:'auto', marginRight:'auto'}}>
                     <Button onClick={() => { IdsearchModal() }}>아이디 찾기</Button>
-                    <Button onClick={() => { goPwsearch() }}>비밀번호 찾기</Button>
+                    <Button onClick={() => { PwsearchModal() }}>비밀번호 찾기</Button>
                 </Stack>
                 <hr className='login-underline'/>
                 <Stack direction="row" spacing={2} sx={{ marginLeft:'auto', marginRight:'auto' }}>
