@@ -109,15 +109,15 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
         }
         else if (content == "아이디 찾기") {
             return (   
-                <Box sx={{ mt:10, mb:15 }} >
+                <Box sx={{ mt:5, mb:15 }} >
                     <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
                         아이디 찾기
                     </Typography>
                     <br/>
-                    <Box>
-                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" sx={{ mt:2, width:300, height:10}}/>
-                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" sx={{ mt:2, width:300, height:10 }}/>
-                    </Box>
+                    <Stack  direction="column" spacing={2} sx={{ pr:3, pl:3 }}>
+                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" />
+                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" />
+                    </Stack>
                 </Box>
             )
         } else {
