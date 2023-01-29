@@ -23,19 +23,17 @@ class Company(Model):
     bookmarkcnt = Column(db.Integer)
     readcnt = Column(db.Integer)
 
-    def __init__(self, cname, cno, keyword, wcloud_url, address, sales, owner,
-                 info, pay, courl, logo_url, resign, form, bookmarkcnt, readcnt):
+    def __init__(self, cname, cno, keyword, address, sales, owner,
+                 info, pay, courl, resign, form, bookmarkcnt, readcnt):
         self.cname = cname
         self.cno = cno
         self.keyword = keyword
-        self.wcloud_url = wcloud_url
         self.address = address
         self.sales = sales
         self.owner = owner
         self.info = info
         self.pay = pay
         self.courl = courl
-        self.logo_url = logo_url
         self.resign = resign
         self.form = form
         self.bookmarkcnt = bookmarkcnt

@@ -8,18 +8,19 @@ from werkzeug.utils import secure_filename
 from flask import request
 def create_company(data):
     """Given serialized data and create a ner Company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('data').get('uno')).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can create"}, 505
-
-    data['cno'] = str(uuid.uuid1())
+    cno = {'cno': str(uuid.uuid1())}
+    data['body'].get('data').update(cno)
     #북마크 테이블이 완성 되면 북마크 조회해서 값 채워 넣기
-    company = Company(cname=data['cname'], cno=data['cno'], keyword=data['keyword'],
-    wcloud_url=data['wcloud_url'],address=data['address'],
-    sales=data['sales'], owner=data['owner'],info=data['info'],pay=data['pay'],
-    courl=data['courl'], logo_url=data['logo_url'],
-    resign=data['resign'], form=data['form'], bookmarkcnt=data['bookmarkcnt'],
-    readcnt=data['readcnt'])
+    company = Company(cname=data['body'].get('data').get('cname'), cno=data['body'].get('data').get('cno'),
+    keyword=data['body'].get('data').get('keyword'),
+    address=data['body'].get('data').get('address'),
+    sales=data['body'].get('data').get('sales'), owner=data['body'].get('data').get('owner'),info=data['body'].get('data').get('cname'),pay=data['body'].get('data').get('pay'),
+    courl=data['body'].get('data').get('courl'),
+    resign=data['body'].get('data').get('resign'), form=data['body'].get('data').get('form'), bookmarkcnt=data['body'].get('data').get('bookmarkcnt'),
+    readcnt=data['body'].get('data').get('readcnt'))
     db.session.add(company)
     db.session.commit()
     return company_schema.dump(company), 201
@@ -183,4 +184,3 @@ def read_company(data) :
     #db.session.commit()
 
     return {'result':result, 'readcnt':readcnt}, 200
-

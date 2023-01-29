@@ -8,11 +8,10 @@ api = Namespace("company", description="Company API")
 company_fields = api.model(
     "Company", {"cname": fields.String,
                 "keyword": fields.String,
-                "wcloud_url": fields.String, "address": fields.String,
+                "address": fields.String,
                 "sales": fields.String,
                 "owner": fields.String, "info": fields.String,
                 "pay": fields.String, "courl": fields.String,
-                "logo_url": fields.String,
                 "resign": fields.String,"form": fields.String,
                 "bookmarkcnt": fields.Integer, "readcnt": fields.Integer,
                 "uno": fields.Integer
