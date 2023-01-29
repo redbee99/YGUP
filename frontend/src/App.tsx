@@ -11,6 +11,7 @@ import Board_Fav from './pages/board/board_Fav';
 import Login from './pages/user/login';
 import { Route, Routes } from 'react-router-dom'
 import User_list from './pages/admin/user_list';
+import USer_delte from './pages/admin/user_delete'
 import Company_Basic_List from './pages/admin/company_basic_list'
 import Write from './pages/admin/write';
 import IdSearch from './pages/user/idsearch';
@@ -48,6 +49,7 @@ const App: React.FC = () => {
       <Route path='/predict_write' element={<Board_predict_write />} />
       <Route path='/board_mylist_chek' element={<Board_mylist_chek />} />
       <Route path='/user_list' element={<User_list />} />
+      <Route path='user_delete' element={<USer_delte/>}/>
       <Route path='/company_basic_list' element={<Company_Basic_List />} />
       <Route path='/write' element={<Write />} />
       <Route path='/login' element={<Login />} />

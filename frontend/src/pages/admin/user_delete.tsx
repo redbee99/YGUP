@@ -5,16 +5,16 @@ import Button from '@mui/material/Button';
 import { Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom'
 
-const Info_Delete: React.FC = () => {
+const User_Delete: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const goCompany_Basic_list = () => {
-      navigate('/company_basic_list')
+    const goUser_list = () => {
+      navigate('/user_list')
     };
 
     return (
-        <div className='info_delete'>
+        <div className='user_delete'>
             <Box sx={{ display: 'flex',
                        position:'relative', 
                        width:400, 
@@ -30,10 +30,10 @@ const Info_Delete: React.FC = () => {
             >
                 <Box sx={{ my:10 }} >
                     <Typography sx={{ fontSize: 20, fontWeight:'bold'}}>
-                        정말 삭제 하시겠습니까?
+                        정말 탈퇴 시키겠습니까?
                     </Typography>
                 </Box>
-                <hr className='info_delete_underline'/>
+                <hr className='user_delete_underline'/>
                 <Stack direction="row" spacing={1} sx={{ margin:'auto' }} >
                     <Button variant="outlined"  
                             size="small" 
@@ -41,7 +41,7 @@ const Info_Delete: React.FC = () => {
                                   backgroundColor: '#5856D6', 
                                   borderColor:'#434343'
                                 }} 
-                            onClick={() => { goCompany_Basic_list() }}
+                            onClick={() => { goUser_list() }}
                      >
                         삭제
                     </Button>
@@ -51,4 +51,4 @@ const Info_Delete: React.FC = () => {
         </div>
     );
 }
-export default Info_Delete;
+export default User_Delete;

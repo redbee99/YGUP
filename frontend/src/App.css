@@ -69,7 +69,6 @@ footer {
 
 /*Admin start*/
 .info {
-  background-color: #E6EAF3;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -77,7 +76,6 @@ footer {
 }
 
 .info_update {
-    background-color: #E6EAF3;
     position: fixed;
     height: 100%;
     width: 100%;
@@ -92,7 +90,6 @@ footer {
   padding-bottom: 30px;
   border: none;
   font-size: 22px;
-  border: solid 1px #ababab;
 }
 
 .Write div {
@@ -252,11 +249,30 @@ footer {
 }
 
 /*info_delete start*/
+.info_delete {
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
 .info_delete_underline{
   width: 100%;
   color: black;
 }
 /*info_delete end*/
+
+/*user_delete start*/
+.user_delete {
+  background-color: #E6EAF3;
+  position: fixed;
+  height: 100%;
+  width: 100%; 
+}
+.user_delete_underline{
+  width: 100%;
+  color: black;
+}
+/*user_delete end*/
 
 /*coverletter start*/
 .predicttest{
@@ -329,8 +345,6 @@ footer {
   width: 100%;
   overflow: scroll;
 }
-
-/*user start*/
 .userinfo {
   background-color: #E6EAF3;
   position: fixed;
@@ -352,21 +366,8 @@ footer {
   width: 100%;
   overflow: scroll;
 }
-.mypageheader {
-  position: fixed;
-  width: 100%;
-  height: 7%;
-}
-.mypagecontents {
-  margin-top: 50px;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  overflow: scroll;
-}
-/*user end*/
+
 .writeform {
-  background-color: #E6EAF3;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -395,16 +396,4 @@ footer {
   overflow: hidden;
   clip:rect(0,0,0,0);
   border: 0;
-}
-
-.join_modal{
-  position: fixed;
-  top: 100px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999999;
 }
