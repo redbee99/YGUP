@@ -125,18 +125,22 @@ const Write: React.FC = () => {
         setWcFile(files);
     };*/
 
+    const debugInfo = () => {
+        navigate('/info',  { state: '삼성' })
+    }
+
     const complete = (event: React.MouseEvent) => {
             const data = {
-                'cname': companyName,
-                'address': companyAdr,
-                'sales': companySales,
-                'owner': companyCeo,
-                'info': companyContent,
-                'pay': companyPay,
-                'resign': companyResign,
-                'form': companyInfo,
-                'courl': companyUrl,
-                'uno': 0
+                cname: companyName,
+                address: companyAdr,
+                sales: companySales,
+                owner: companyCeo,
+                info: companyContent,
+                pay: companyPay,
+                resign: companyResign,
+                form: companyInfo,
+                courl: companyUrl,
+                uno: 0
             }
         
             /*const formData = new FormData();
@@ -158,7 +162,7 @@ const Write: React.FC = () => {
                     }
                 }
             ).then(res => {
-                navigate('/info',  { state: companyName })
+                navigate('/info',  { state: data['cname'] })
             }).catch(err => {
                 alert('정보를 다시 입력해 주세요')
             });
@@ -215,7 +219,10 @@ const Write: React.FC = () => {
                         hidden
                         onChange={loadWcloudImage}
                     />
-                </Button> */}  
+                </Button> */}
+                <Button onClick={debugInfo}variant="contained" component="label" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', maxWidth:700}}>
+                        디버그
+                </Button>
                 <Button onClick={(event) => complete(event)} variant="contained" component="label" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', maxWidth:700}}>
                         작성
                 </Button>
