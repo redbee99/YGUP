@@ -1,18 +1,15 @@
 from flask_restx import Namespace, Resource, fields
 from backend.user.services import create_user, login_user, delete_user, update_user, \
-    search_id, search_pw, check_overlap_id, pwupdate_user, read_user, read_all_users, delete_user_admin
+    search_id, search_pw, check_overlap_id, pwupdate_user, read_user, read_all_users, \
+    delete_user_admin, check_overlap_email
 
 
 from flask import request
 
-
-
-
 api = Namespace("user", description="User API")
 user_fields = api.model(
-    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String, "uno": fields.Integer}
+    "User", {"id": fields.String, "email": fields.String, "name": fields.String, "password": fields.String, "chk_pwd" : fields.String}
 )
-
 login_fields = api.model(
     "User_Login", {"id": fields.String, "password": fields.String}
 )
@@ -25,8 +22,8 @@ pwsearch_fields = api.model(
 coid_fields = api.model(
     "User_coid", {"id": fields.String}
 )
-read_fields = api.model(
-    "User_read", {"uno": fields.Integer}
+coemail_fields = api.model(
+    "User_Email", {"email":fields.String}
 )
 pwupdate_fields = api.model(
     "User_pwupdate", {"id": fields.String, "password": fields.String, "new_pwd": fields.String, "new_pwd_chk": fields.String }
@@ -49,6 +46,7 @@ class Login(Resource):
     def post(self):
         """login user"""
         return login_user(request.get_json())
+
 @api.doc(body=login_fields)
 class Delete(Resource):
     def post(self):
@@ -60,11 +58,13 @@ class UpdateUser(Resource):
     def post(self):
         """user Update"""
         return update_user(request.get_json())
+
 @api.doc(body=idsearch_fields)
 class SearchId(Resource):
     def post(self):
         """search Id"""
         return search_id(request.get_json())
+
 @api.doc(body=pwsearch_fields)
 class SearchPw(Resource):
     def post(self):
@@ -76,6 +76,12 @@ class CheckOverlapId(Resource):
     def post(self):
         """Check Overlap Id"""
         return check_overlap_id(request.get_json())
+
+@api.doc(body=coemail_fields)
+class CheckOverlapEmail(Resource) :
+    def post(self):
+        """Check Overlap Email"""
+        return check_overlap_email(request.get_json())
 
 @api.doc(body=pwupdate_fields)
 class User_pwupdate(Resource):
@@ -101,14 +107,15 @@ class Admin_Delete(Resource):
         """Delete user admin"""
         return delete_user_admin(request.get_json())
 
-api.add_resource(SignUp, "/signup")
+api.add_resource(SignUp, "/join")
 api.add_resource(Login, "/login")
 api.add_resource(Delete, "/delete")
 api.add_resource(Admin_Delete, "/admin_delete")
-api.add_resource(UpdateUser, "/update")
-api.add_resource(SearchId, "/searchid")
-api.add_resource(SearchPw, "/searchpw")
+api.add_resource(UpdateUser, "/userinfo_update")
+api.add_resource(SearchId, "/idsearch")
+api.add_resource(SearchPw, "/pwsearch")
 api.add_resource(CheckOverlapId, "/overlapid")
 api.add_resource(User_pwupdate, "/pwupdate")
-api.add_resource(User_read, "/readuser")
-api.add_resource(Read_all_users, "/read_all_users")
+api.add_resource(User_read, "/userinfo")
+api.add_resource(Read_all_users, "/user_list")
+api.add_resource(CheckOverlapEmail, "/overlapemail")
