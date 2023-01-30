@@ -99,16 +99,20 @@ footer {
 
 .company_basic_list {
   position: fixed;
-  height: 100%;
+  height: 650px;
   width: 100%;
   overflow: scroll;
 }
 
 .user_list {
   position: fixed;
-  height: 100%;
+  height: 650px;
   width: 100%;
   overflow: scroll;
+}
+
+.admin_appbar {
+  background-color: #ffffff;
 }
 /*Admin end*/
 
@@ -371,7 +375,7 @@ footer {
 
 .writeform {
   position: fixed;
-  height: 100%;
+  height: 650px;
   width: 100%;
   overflow: scroll;
 }

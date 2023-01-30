@@ -17,6 +17,7 @@ type Props = {
 const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     const dispatch = useDispatch();
 
+    const [modal, setModal] = useState(false);
     const [cashe,] = useState(_cashe);
     const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
     const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
@@ -132,7 +133,7 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
         }
         else if (content == "아이디 찾기") {
             return (   
-                <Box sx={{ mt:10, mb:15 }} >
+                <Box sx={{ mt:10, mb:1 }} >
                     <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
                         아이디 찾기
                     </Typography>
@@ -165,37 +166,39 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
 
     return(
         <Box sx={{ display: 'flex',
-            position:'relative', 
-            width:400, 
-            height:400, 
-            margin:'auto', 
-            textAlign:'center', 
-            border: 1, 
-            borderRadius: 5, 
-            backgroundColor:'#ffffff', 
-            flexDirection: 'column', 
-            mt:5 
+                    position:'relative', 
+                    width:400, 
+                    height:400, 
+                    margin:'auto', 
+                    textAlign:'center', 
+                    border: 1, 
+                    borderRadius: 5, 
+                    backgroundColor:'#ffffff', 
+                    flexDirection: 'column', 
+                    mt:5 
             }}
         >
         <DynamicContent/>
         <hr className='login-idsearch_result-underline'/>
         <Stack direction="row" spacing={2} sx={{ margin:'auto' }} >
-            <Button variant="outlined"  
+            <Button variant="contained"  
                     size="small"
                     onClick={confirm}
                     sx={{ color:'#ffff', 
-                            backgroundColor: '#5856D6', 
+                            backgroundColor: '#26A689', 
                             borderColor:'#434343'
                         }} 
             >
                 확인
             </Button>
-            <Button variant="outlined"  
-                    size="small" 
-                    sx={{ color:'#ffff', 
-                            backgroundColor: '#5856D6', 
-                            borderColor:'#434343'
-                        }} 
+            <Button
+                onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
+                variant="contained"  
+                size="small" 
+                sx={{ color:'#ffff', 
+                      backgroundColor: '#26A689',
+                      borderColor:'#434343'
+                    }} 
             >
                 취소
             </Button>

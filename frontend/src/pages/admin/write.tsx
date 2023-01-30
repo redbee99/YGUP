@@ -8,9 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import { BaseUrl } from '../../util/axiosApi';
 
-const ALLOW_FILE_EXTENSION = "jpg,jpeg,png";
-const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;  // 5MB
-
 const Write: React.FC = () => {
     const navigate = useNavigate();
     
@@ -57,8 +54,6 @@ const Write: React.FC = () => {
         setContentValue(newValue);
     };
 
-    const [logofile, setLogoFile] = React.useState<File>();
-    const [wcfile, setWcFile] = React.useState<File>();
 /*
     const removeFileName = (originalFileName:string):string => {
         const lastIndex = originalFileName.lastIndexOf(".");
@@ -148,7 +143,6 @@ const Write: React.FC = () => {
             formData.append('wcloud', wcfile);
             formData.append('data', new Blob([JSON.stringify(data)], {
                 type: "application/json"
-<<<<<<< HEAD
             }));*/
         
             axios.post( BaseUrl+'/company/create'
@@ -195,8 +189,8 @@ const Write: React.FC = () => {
                 <TextField id="company-adress" label="주소" onChange={(newValue) => adrChange(newValue.target.value)} variant="outlined" size="small" sx={{ width:700, }} margin="dense"/>
                 <TextField id="company-content" label="기업내용" onChange={(newValue) => contentChange(newValue.target.value)} variant="outlined" size="small" sx={{ width:700, height:200 }} margin="dense"/>
                 
-             {/* <Button
->>>>>>> dab0b3596f7e03dec684ca9347c9fd0f07ad69c7
+             {
+             /* <Button
                     variant="contained"
                     component="label"
                     sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', mt:-19, mb:5, maxWidth:700  }}
@@ -227,8 +221,6 @@ const Write: React.FC = () => {
                         작성
                 </Button>
             </Stack>
-            
-
         </Box>
     </div>
 
