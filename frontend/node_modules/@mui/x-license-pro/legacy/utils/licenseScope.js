@@ -1,1 +1,0 @@
-export var LICENSE_SCOPES = ['pro', 'premium'];
