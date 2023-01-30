@@ -1,7 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+<<<<<<< HEAD
 import { CardActionArea, CardContent, CardMedia, CircularProgress, Divider, Stack } from '@mui/material';
+=======
+import { CardContent, CardMedia } from '@mui/material';
+>>>>>>> main
 import Grid from '@mui/material/Unstable_Grid2';
 import Icon from '../img/logo.svg'
 import Typography from '@mui/material/Typography';
@@ -10,6 +14,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 
 const Home: React.FC = () => {
+<<<<<<< HEAD
 
     const getRank1CompanyList = async ()=>{
         const url = BaseUrl + "/company/rank"
@@ -86,6 +91,31 @@ const Home: React.FC = () => {
                             </Card>
                         </Grid>
                     ))}
+=======
+    return (
+        <div className='home'>
+            <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto' , mx:20, mb:15 }}>
+                <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 4, sm: 8, md: 8 }}>
+                {Array.from(Array(8)).map((_, index) => (
+                    <Grid xs={2} sm={1} md={2} key={index}>
+                    <Item>
+                        <CardContent >
+                            <CardMedia
+                                component="img"
+                                sx={{ width: 250 }}
+                                image={Icon}
+                                alt="Paella dish"/>
+                        </CardContent>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                            기업설명
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                            기업설명입니다.
+                            </Typography>
+                        </CardContent>
+                    </Item>
+>>>>>>> main
                     </Grid>
                     <Typography sx={{fontSize:20, my:5}} textAlign='center'>기업 랭킹 top5 !</Typography>
                     <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
@@ -135,5 +165,4 @@ const Home: React.FC = () => {
         );
     }
 }
-
 export default Home;
