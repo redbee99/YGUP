@@ -7,9 +7,12 @@ import LoginIcon from '@mui/icons-material/LoginRounded';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router';
 import { BaseUrl } from '../../util/axiosApi';
-import { useDispatch } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { set } from '../../reducers/userReducer'
+import * as setModal from '../../reducers/modalReducer'
 import axios from "axios"
+import BasicModal from '../components/basicModal';
+import { RootState } from '../../reducers/index'
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
@@ -17,7 +20,6 @@ const Login: React.FC = () => {
     const goHome = () => {
         navigate('/')
     };
-
     const goIdsearch = () => {
         navigate('/Idsearch')
     };
@@ -27,6 +29,17 @@ const Login: React.FC = () => {
     const goJoin = () => {
         navigate('/Join')
     };
+
+    const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+
+    const ModalShow = () => {
+        if(currentModal == "on"){
+            return <div className='idsearchModal'><BasicModal content="아이디 찾기" _cashe='' /></div>
+        }
+        else{
+            return <div/>
+        }
+    }
 
     const [id, setIdValue] = React.useState('');
     const idChange = (newValue: string) => {
@@ -39,6 +52,11 @@ const Login: React.FC = () => {
     };
     const dispatch = useDispatch();
 
+    //idsearchModalopen<=reducer이용
+    const IdsearchModal = () => {
+        dispatch(setModal.set({state:'on', cashe1:'', cashe2:''}));
+    }
+    
     const login = () => {
         const url = BaseUrl + "/user/login"
         axios.post(url, {
@@ -87,7 +105,6 @@ const Login: React.FC = () => {
 
                 <Button variant="contained" 
                         onClick={(event) => login()}
-
                         sx={{ color:'#ffff', 
                               backgroundColor: '#26a68a', 
                               borderColor:'#434343'
@@ -98,7 +115,7 @@ const Login: React.FC = () => {
                 </Button>
                 <br/>
                 <Stack direction="row" spacing={2} sx={{ marginLeft:'auto', marginRight:'auto'}}>
-                    <Button onClick={() => { goIdsearch() }}>아이디 찾기</Button>
+                    <Button onClick={() => { IdsearchModal() }}>아이디 찾기</Button>
                     <Button onClick={() => { goPwsearch() }}>비밀번호 찾기</Button>
                 </Stack>
                 <hr className='login-underline'/>
@@ -118,8 +135,8 @@ const Login: React.FC = () => {
                         회원 가입
                     </Button>
                 </Stack>
-                
             </Box>
+            <ModalShow/>
         </div>
     );
 }

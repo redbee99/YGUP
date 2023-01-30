@@ -117,10 +117,9 @@ footer {
 /*Admin end*/
 
 #name {
-  width: 60%;
-  padding-bottom: 30px;
+  width: 100%;
   border: none;
-  font-size: 22px;
+  font-size: 20px;
   border: solid 1px #ababab;
 }
 #url{
@@ -400,4 +399,11 @@ footer {
   overflow: hidden;
   clip:rect(0,0,0,0);
   border: 0;
+}
+
+.idsearchModal{
+  position: absolute;
+  top: 20px;
+  left: 550px;
+  z-index: 99999999;
 }
