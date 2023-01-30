@@ -1,6 +1,7 @@
 from flask import Flask
 from backend.extensions import db, ma
 from flask_cors import CORS
+
 def create_app(script_info=None):
     app = Flask(__name__)
     app.config.from_object("backend.config.DevConfig")
@@ -16,3 +17,4 @@ def create_app(script_info=None):
 def register_extensions(app):
     db.init_app(app)
     ma.init_app(app)
+
