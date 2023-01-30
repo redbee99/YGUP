@@ -1,13 +1,12 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from 'axios';
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../reducers/index'
 import { set } from '../../reducers/modalReducer'
 import { BaseUrl } from '../../util/axiosApi';
-
+import React from "react";
 
 type Props = {
     content: string,
@@ -17,27 +16,25 @@ type Props = {
 const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     const dispatch = useDispatch();
 
-    const [modal, setModal] = useState(false);
-    const [cashe,] = useState(_cashe);
+    const [modal, setModal] = React.useState(false);
+    const [cashe,] = React.useState(_cashe);
     const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
     const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
 
-    const [id,setIdValue] = useState('');
+    let id = ''
+    let name = ''
+    let email = ''
 
     const onChangeId = (newValue:string) => {
-        setIdValue(newValue)
+        id = newValue
     }
 
-    const [name,setNameValue] = useState('');
-
-    const onChangeName = (newValue:string) => {
-        setNameValue(newValue)
+    const onChangeName = (newValue:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        name = newValue.target.value
     }
 
-    const [email,setEmailValue] = useState('');
-
-    const onChangeEmail = (newValue:string) => {
-        setEmailValue(newValue)
+    const onChangeEmail = (newValue:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        email = newValue.target.value
     }
 
     const confirm = () => {
@@ -139,8 +136,8 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                     </Typography>
                     <br/>
                     <Box>
-                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" sx={{ mb:8, width:300, height:8}}/>
-                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" sx={{ mt:2, width:300, height:10 }}/>
+                        <TextField variant="outlined" id="search-name" onChange={(newValue) => onChangeName(newValue)} label="이름" sx={{ mb:8, width:300, height:8}}/>
+                        <TextField variant="outlined" id="search-email" onChange={(newValue) => onChangeEmail(newValue)} label="이메일" sx={{ mt:2, width:300, height:10 }}/>
                     </Box>
                 </Box>
             )
@@ -152,9 +149,9 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                     </Typography>
                     <br/>
                     <Box>
-                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" sx={{ mb:8, width:300, height:10}}/>
-                        <TextField value={id} onChange={(newValue) => onChangeId(newValue.target.value)} id="id" label="아이디" sx={{ mb:8, width:300, height:10 }}/>
-                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" sx={{  width:300, height:10 }}/>
+                        <TextField onChange={(newValue) => onChangeName(newValue)} id="name" label="이름" sx={{ mb:8, width:300, height:10}}/>
+                        <TextField onChange={(newValue) => onChangeId(newValue.target.value)} id="id" label="아이디" sx={{ mb:8, width:300, height:10 }}/>
+                        <TextField onChange={(newValue) => onChangeEmail(newValue)} id="email" label="이메일" sx={{  width:300, height:10 }}/>
                     </Box>
                 </Box>
             )
