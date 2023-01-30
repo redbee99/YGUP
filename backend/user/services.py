@@ -152,7 +152,7 @@ def read_user(data):
 
 def read_all_users(data):
     """Read All Users"""
-    user_type = db.session.query(UserType).filter(UserType.uno == data['uno']).first()
+    user_type = db.session.query(UserType).filter(UserType.uno == data['body'].get('uno')).first()
     if user_type is None or user_type.type != 'admin':
         return {"message": f"only admin can read"}, 505
 

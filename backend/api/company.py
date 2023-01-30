@@ -5,14 +5,25 @@ from backend.company.services import create_company, update_company, delete_comp
 
 api = Namespace("company", description="Company API")
 
-company_fields = api.model(
+create_company_fields = api.model(
     "Company", {"cname": fields.String,
-                "keyword": fields.String, "wcloud": fields.String,
-                "wcloud_url": fields.String, "address": fields.String,
+                "keyword": fields.String,
+                "address": fields.String,
                 "sales": fields.String,
                 "owner": fields.String, "info": fields.String,
                 "pay": fields.String, "courl": fields.String,
-                "logo": fields.String, "logo_url": fields.String,
+                "resign": fields.String,"form": fields.String,
+                "bookmarkcnt": fields.Integer, "readcnt": fields.Integer,
+                "uno": fields.Integer
+                }
+)
+company_fields = api.model(
+    "Company", {"cname": fields.String,
+                "keyword": fields.String,
+                "address": fields.String,
+                "sales": fields.String,
+                "owner": fields.String, "info": fields.String,
+                "pay": fields.String, "courl": fields.String,
                 "resign": fields.String,"form": fields.String,
                 "bookmarkcnt": fields.Integer, "readcnt": fields.Integer,
                 "uno": fields.Integer
@@ -51,7 +62,7 @@ company_info_fields = api.model(
     }
 )
 
-@api.doc(body=company_fields)
+@api.doc(body=create_company_fields)
 class CreateCompany(Resource):
     def post(self):
         """Create Company"""
@@ -91,7 +102,6 @@ class ReadCompany(Resource):
     def post(self):
         """Read Company"""
         return read_company(request.get_json())
-
 
 api.add_resource(CreateCompany, "/create")
 api.add_resource(UpdateCompany, "/update")
