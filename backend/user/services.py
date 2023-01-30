@@ -156,7 +156,7 @@ def read_all_users(data):
     if user_type is None or user_type.type != 'admin':
         return {"message": f"only admin can read"}, 505
 
-    res = db.session.query(User).all()
+    res = db.session.query(User).filter(User.uno == 1).all()
 
     if not res:
         return 'fail', 505
