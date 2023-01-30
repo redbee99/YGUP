@@ -407,6 +407,13 @@ footer {
 .idsearchModal{
   position: absolute;
   top: 20px;
-  left: 550px;
+  left: 40%;
+  z-index: 99999999;
+}
+
+.pwsearchModal{
+  position: absolute;
+  top: 20px;
+  left: 40%;
   z-index: 99999999;
 }

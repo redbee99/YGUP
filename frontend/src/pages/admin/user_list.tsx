@@ -70,7 +70,7 @@ const User_list: React.FC = () => {
   };
 
   const getUserList = async ()=>{
-   const url = BaseUrl + "/user/read_all_users"
+   const url = BaseUrl + "/user/user_list"
    const { data } = await axios.post(url, {
       headers: 
       {
