@@ -11,6 +11,7 @@ import { createStore } from 'redux';
 import rootReducer from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension'
 import Footer from './pages/footer';
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const theme = createTheme({
   palette: {
@@ -28,24 +29,28 @@ const root = ReactDOM.createRoot(
 );
 
 const store = createStore(rootReducer, composeWithDevTools());
+const queryClient = new QueryClient();
+
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Header/>
-          <main>
-            <div className='App-wrapper'>
-              <div className='App'>
-                <App />
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Header/>
+            <main>
+              <div className='App-wrapper'>
+                <div className='App'>
+                  <App />
+                </div>
               </div>
-            </div>
-          </main>
-          <Footer/>
-        </BrowserRouter>
-      </ThemeProvider>
-    </Provider>
+            </main>
+            <Footer/>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

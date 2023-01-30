@@ -2,11 +2,19 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Stack, TextField } from '@mui/material';
+import { Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom'
 
-const IdCheck: React.FC = () => {
+const User_Delete: React.FC = () => {
+
+    const navigate = useNavigate();
+
+    const goUser_list = () => {
+      navigate('/user_list')
+    };
+
     return (
-        <div className='idcheck'>
+        <div className='user_delete'>
             <Box sx={{ display: 'flex',
                        position:'relative', 
                        width:400, 
@@ -20,28 +28,22 @@ const IdCheck: React.FC = () => {
                        mt:5 
                     }}
             >
-                <Box sx={{ mt:10, mb:15 }} >
-                    <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
-                        아이디 중복확인
+                <Box sx={{ my:10 }} >
+                    <Typography sx={{ fontSize: 20, fontWeight:'bold'}}>
+                        정말 탈퇴 시키겠습니까?
                     </Typography>
-                    <TextField label="아이디" 
-                               sx={{ mt:2, 
-                                     width:300, 
-                                     height:10, 
-                                     '& .MuiInputBase-root': { borderRadius: 15} 
-                                    }}
-                    />
                 </Box>
-                <hr className='login-idsearch_result-underline'/>
+                <hr className='user_delete_underline'/>
                 <Stack direction="row" spacing={1} sx={{ margin:'auto' }} >
-                    <Button variant="contained"  
+                    <Button variant="outlined"  
                             size="small" 
                             sx={{ color:'#ffff', 
-                                  backgroundColor: '#26a68a', 
+                                  backgroundColor: '#5856D6', 
                                   borderColor:'#434343'
-                                }}
-                    >
-                        중복 확인
+                                }} 
+                            onClick={() => { goUser_list() }}
+                     >
+                        삭제
                     </Button>
                 </Stack>
             </Box>
@@ -49,4 +51,4 @@ const IdCheck: React.FC = () => {
         </div>
     );
 }
-export default IdCheck;
+export default User_Delete;

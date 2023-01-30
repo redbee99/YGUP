@@ -28,9 +28,7 @@ const IdSearch: React.FC = () => {
                        borderRadius: 5, 
                        backgroundColor:'#ffffff', 
                        flexDirection: 'column', 
-                       mt:5 
-                    }}
-            >                <br/>
+                       mt:5 }}>               
                 <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
                     아이디 찾기
                 </Typography>
@@ -50,8 +48,7 @@ const IdSearch: React.FC = () => {
                                     id="login-email"
                                     value={email}
                                     onChange={handleChange}
-                                    label="이메일주소"
-                                    >
+                                    label="이메일주소">
                                     {
                                     emailAdress.map(
                                         (row, index) => {
@@ -65,15 +62,15 @@ const IdSearch: React.FC = () => {
                 </Box>
                 <br/>
                 <hr className='login-idsearch-underline'/>
-                <Button variant="contained"  
-                        size="small" 
-                        sx={{ width: 100, 
-                              mx:'auto', 
-                              color:'#ffff', 
-                              backgroundColor: '#26a69a', 
-                              borderColor:'#434343' 
-                            }} 
-                >
+                <Button 
+                    variant="contained"  
+                    size="small" 
+                    sx={{ width: 100, 
+                        mx:'auto', 
+                        color:'#ffff', 
+                        backgroundColor: '#26a69a', 
+                        borderColor:'#434343' 
+                        }} >
                     찾기
                 </Button>
             </Box>

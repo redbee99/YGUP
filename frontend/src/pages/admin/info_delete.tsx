@@ -2,8 +2,10 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Stack, TextField } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { BaseUrl } from '../../util/axiosApi';   
 
 const Info_Delete: React.FC = () => {
 
@@ -12,9 +14,26 @@ const Info_Delete: React.FC = () => {
     const goCompany_Basic_list = () => {
       navigate('/company_basic_list')
     };
+    const complete = (event: React.MouseEvent) => {
+     
+        axios.post( BaseUrl+'/company/delete'
+            , {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: {
+                    cname: 'string',uno:0
+                }
+            }
+        ).then(res => {
+            navigate('/company_basic_list')
+        }).catch(err => {
+            alert('기업이 없습니다')
+        });
+};
 
     return (
-        <div className='idcheck'>
+        <div className='info_delete'>
             <Box sx={{ display: 'flex',
                        position:'relative', 
                        width:400, 
@@ -41,7 +60,7 @@ const Info_Delete: React.FC = () => {
                                   backgroundColor: '#5856D6', 
                                   borderColor:'#434343'
                                 }} 
-                            onClick={() => { goCompany_Basic_list() }}
+                            onClick={(event) => complete(event)}
                      >
                         삭제
                     </Button>
