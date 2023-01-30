@@ -22,6 +22,12 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
     const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
 
+    const [id,setIdValue] = useState('');
+
+    const onChangeId = (newValue:string) => {
+        setIdValue(newValue)
+    }
+
     const [name,setNameValue] = useState('');
 
     const onChangeName = (newValue:string) => {
@@ -89,6 +95,23 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
             })
         }
+        else if(content == "비밀번호 찾기"){
+            const url = BaseUrl + "/user/pwsearch"
+            axios.post(url, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { name: name, email: email, id: id }
+            })
+            .then(function(response) {
+                alert('사용 가능한 이메일입니다.')
+                dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
+            })
+            .catch(function(error) {
+                alert('입력정보를 확인하세요.')
+            })
+        }
     }
 
     const DynamicContent = () => {
@@ -115,13 +138,28 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                         아이디 찾기
                     </Typography>
                     <br/>
-                    <Stack  direction="column" spacing={2} sx={{ pr:3, pl:3 }}>
-                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" />
-                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" />
-                    </Stack>
+                    <Box>
+                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" sx={{ mb:8, width:300, height:8}}/>
+                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" sx={{ mt:2, width:300, height:10 }}/>
+                    </Box>
                 </Box>
             )
-        } else {
+        } else if (content == "비밀번호 찾기") {
+            return (   
+                <Box sx={{ mt:5, mb:5 }} >
+                    <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
+                        {content}
+                    </Typography>
+                    <br/>
+                    <Box>
+                        <TextField value={name} onChange={(newValue) => onChangeName(newValue.target.value)} id="name" label="이름" sx={{ mb:8, width:300, height:10}}/>
+                        <TextField value={id} onChange={(newValue) => onChangeId(newValue.target.value)} id="id" label="아이디" sx={{ mb:8, width:300, height:10 }}/>
+                        <TextField value={email} onChange={(newValue) => onChangeEmail(newValue.target.value)} id="email" label="이메일" sx={{  width:300, height:10 }}/>
+                    </Box>
+                </Box>
+            )
+        } 
+        else {
             return(<div/>)
         }
     }
