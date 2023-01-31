@@ -27,12 +27,17 @@ def create_company(data):
 
 def update_company(data):
     """Update company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['uno']).first()
+    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('data').get('uno')).first()
     if usertype is None or usertype.type != 'admin':
         return {"message": f"only admin can update"}, 505
 
-    res = db.session.query(Company).filter(Company.cname == data['cname']).update(
-        {"cname": data['cname'], "keyword": data['keyword'], "wcloud_url": data['wcloud_url'], "address": data['address'], "sales": data['sales'], "owner": data['owner'], "info": data['info'], "pay": data['pay'], "courl": data['courl'], "logo_url": data['logo_url'], "resign": data['resign'], "form": data['form'], "bookmark": data['bookmark'], "readcnt":data['readcnt'] })
+    res = db.session.query(Company).filter(Company.cname == data['body'].get('data').get('cname')).update(
+        {"cname": data['body'].get('data').get('cname'), "keyword": data['body'].get('data').get('keyword'),
+          "address": data['body'].get('data').get('address'),
+         "sales": data['body'].get('data').get('sales'), "owner": data['body'].get('data').get('owner'),
+         "info": data['body'].get('data').get('info'), "pay": data['body'].get('data').get('pay'),
+         "courl": data['body'].get('data').get('courl'),
+         "resign": data['body'].get('data').get('resign'), "form": data['body'].get('data').get('form') })
 
     if not res:
         return 'fail', 505
