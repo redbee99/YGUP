@@ -5,6 +5,11 @@ import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { RootState } from '../../reducers/index';
+import BasicModal from '../components/basicModal';
+import { set } from '../../reducers/modalReducer'
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, 
          Tab, 
          Tabs,
@@ -43,6 +48,45 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
                     
 const User_list: React.FC = () => {
 
+  const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+  const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
+
+  const [id, setIdValue] = useState(currentModalCashe1);
+  const [modalType, setModalType] = React.useState('');
+  const dispatch = useDispatch();
+
+  //currentModalCashe1 변화 감지시 훅킹
+  useEffect(() => {
+     setIdValue(currentModalCashe1)
+  }, [currentModalCashe1]);
+
+    //user_delete
+    const user_delete = () => {
+      if(id = id) {
+        setModalType('id')
+        dispatch(set({
+          state: 'on', cashe1: id,
+          cashe2: ''
+        }));
+      }
+      else{
+        alert('아이디를 입력해주세요')
+      }
+    }
+
+  const ModalShow = () => {
+    if(currentModal == "on"){
+      if(modalType == 'id'){
+        return <div className='join_modal'>
+          <BasicModal content='회원 탈퇴' _cashe={currentModalCashe1} />
+        </div>
+      }
+    }
+    else{
+      return <div/>
+    }
+  }
+
   const [value, setValue] = React.useState(0); 
 
   const navigate = useNavigate();
@@ -53,10 +97,6 @@ const User_list: React.FC = () => {
   const goCompany_basic_list = (state: number) => {
         navigate('/company_basic_list',  { state: state })
   };
-
-  const goUser_delete = () => {
-    navigate('/User_delete')
-  }
 
   function a11yProps(index: number) {
       return {
@@ -123,7 +163,7 @@ const User_list: React.FC = () => {
                       <StyledTableCell>{data[value]['email']}</StyledTableCell>
                       <StyledTableCell>
                         <IconButton>
-                           <DeleteIcon fontSize="small"  onClick={() => { goUser_delete(); }}/>
+                           <DeleteIcon fontSize="small"  onClick={() => { uer_delete(); }}/>
                         </IconButton>
                       </StyledTableCell>
                     </StyledTableRow>

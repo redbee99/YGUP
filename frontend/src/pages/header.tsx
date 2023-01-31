@@ -16,24 +16,27 @@ const Header: React.FC = () => {
   const goHome = () => {
     navigate('/')
   };
+
   const goCompany = () => {
     navigate('/board_list')
   };
+  
   const goMylist = () => {
     navigate('/board_mylist')
   };
+
   const goPredict = () => {
     navigate('/board_predict')
   };
+
   const goUserinfo = () => {
     navigate('/userinfo')
   };
-  const goJoin = () => {
-    navigate('/join')
-  };
+
   const goLogin = () => {
     navigate('/login')
   };
+
   const dispatch = useDispatch();
 
   const doLogOut = () => {

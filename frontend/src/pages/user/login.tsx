@@ -20,12 +20,7 @@ const Login: React.FC = () => {
     const goHome = () => {
         navigate('/')
     };
-    const goIdsearch = () => {
-        navigate('/Idsearch')
-    };
-    const goPwsearch = () => {
-        navigate('/Pwsearch')
-    };
+    
     const goJoin = () => {
         navigate('/Join')
     };

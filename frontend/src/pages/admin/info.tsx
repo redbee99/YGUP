@@ -13,6 +13,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from "react-query";
 import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers'
 
 const Item = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,14 +28,17 @@ const Item = styled(Card)(({ theme }) => ({
 const Info: React.FC = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
-    const [companyName,] = React.useState(state);
-    
+    const currentCompany = useSelector((state: RootState) => state.companyReducer.cname);
+    const [cname] = React.useState(currentCompany);
     const goUpdate = () => {
       navigate('/info_update')
     };
     const goDelete = () => {
       navigate('/info_delete')
-    }
+    };
+    const goAdmin = () => {
+        navigate('/company_basic_list')
+    };
 
     const getCompany = async ()=>{
         const url = BaseUrl + "/company/readcompany"
@@ -42,7 +47,7 @@ const Info: React.FC = () => {
             {
                 "Content-Type": "application/json"
             },
-            body: { cname: companyName }
+            body: { cname: cname }
         })
         return data
     }
@@ -98,12 +103,15 @@ const Info: React.FC = () => {
                             />
                         </Card>
                     </Item>
-                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goUpdate() }}>
                             수정
                         </Button>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goDelete() }}>
                             삭제
+                        </Button>
+                        <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goAdmin() }}>
+                            확인
                         </Button>
                     </Stack>
                 </Box>

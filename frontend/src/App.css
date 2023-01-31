@@ -76,10 +76,11 @@ footer {
 }
 
 .info_update {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    overflow: scroll;
+  background-color: #ffffff;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
 }
 
 /* write start */
@@ -375,7 +376,7 @@ footer {
 
 .writeform {
   position: fixed;
-  height: 650px;
+  height: 100%;
   width: 100%;
   overflow: scroll;
 }

@@ -5,6 +5,8 @@ import React  from 'react';
 import '../../App.css';
 import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios"
+import { BaseUrl } from '../../util/axiosApi';
 
 const Info_Update: React.FC = () => {
     const navigate = useNavigate();
@@ -63,22 +65,38 @@ const Info_Update: React.FC = () => {
     }, [file]);
 
     const complete = (event: React.MouseEvent) => {
-        const companyData = new Map<string, string>();
-        companyData.set('companyName', companyName);
-        companyData.set('companyUrl', companyUrl);
-        companyData.set('companyInfo', companyInfo);
-        companyData.set('companySales', companySales);
-        companyData.set('companyPay', companyPay);
-        companyData.set('companyResign', companyResign);
-        companyData.set('companyCeo', companyCeo);
-        companyData.set('companyAdr', companyAdr);
-        companyData.set('companyContent', companyContent);
-        companyData.set('companyLogo', imageUrl);
+        const data = {
+            cname: companyName,
+            address: companyAdr,
+            sales: companySales,
+            owner: companyCeo,
+            info: companyContent,
+            pay: companyPay,
+            resign: companyResign,
+            form: companyInfo,
+            courl: companyUrl,
+            uno: 0
+        }
+    
+    
+        axios.post( BaseUrl+'/company/update'
+            //, formData
+            , {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: {
+                    'data': data
+                }
+            }
+        ).then(res => {
+            navigate('/info',  { state: data['cname'] })
+        }).catch(err => {
+            alert('정보를 다시 입력해 주세요')
+        });
+};
 
-        navigate('/info',  { state: companyData })
-    };
-
-    return (
+return (
     <div className='writeform'>
         <Box sx={{ display: 'flex',
                    position:'relative', 
@@ -95,7 +113,7 @@ const Info_Update: React.FC = () => {
                 }}
         >
             <Stack direction='column' marginTop={10} marginBottom={-10} marginLeft={5} >
-                <TextField id="company-name" onChange={(newValue) => nameChange(newValue.target.value)} label="기업명" variant="outlined" size="small" sx={{ width:700, }} margin="dense"/>
+                <TextField id="company-name" defaultValue="삼성" onChange={(newValue) => nameChange(newValue.target.value)} label="기업명" variant="outlined" size="small" sx={{ width:700, }} margin="dense"/>
                 <TextField id="company-url" onChange={(newValue) => urlChange(newValue.target.value)} label="홈페이지주소" variant="outlined" size="small" sx={{ width:700, }} margin="dense"/>
                 <TextField id="company-infomation" onChange={(newValue) => infoChange(newValue.target.value)} label="기업정보" variant="outlined" size="small" sx={{ width:700, }} margin="dense"/>
                 <TextField id="company-sales" onChange={(newValue) => salesChange(newValue.target.value)} label="매출" variant="outlined" size="small" sx={{ width:700, }} margin="dense"/>
