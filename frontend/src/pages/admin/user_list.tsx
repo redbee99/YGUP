@@ -55,24 +55,9 @@ const User_list: React.FC = () => {
   const [modalType, setModalType] = React.useState('');
   const dispatch = useDispatch();
 
-  //currentModalCashe1 변화 감지시 훅킹
-  useEffect(() => {
-     setIdValue(currentModalCashe1)
-  }, [currentModalCashe1]);
-
-    //user_delete
-    const user_delete = () => {
-      if(id = id) {
-        setModalType('id')
-        dispatch(set({
-          state: 'on', cashe1: id,
-          cashe2: ''
-        }));
-      }
-      else{
-        alert('아이디를 입력해주세요')
-      }
-    }
+  const user_delete = () => {
+    
+  }
 
   const ModalShow = () => {
     if(currentModal == "on"){
@@ -163,7 +148,7 @@ const User_list: React.FC = () => {
                       <StyledTableCell>{data[value]['email']}</StyledTableCell>
                       <StyledTableCell>
                         <IconButton>
-                           <DeleteIcon fontSize="small"  onClick={() => { uer_delete(); }}/>
+                           <DeleteIcon fontSize="small"  onClick={() => { user_delete(); }}/>
                         </IconButton>
                       </StyledTableCell>
                     </StyledTableRow>
