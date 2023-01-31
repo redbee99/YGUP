@@ -7,10 +7,24 @@ import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import { BaseUrl } from '../../util/axiosApi';
+import { set } from '../../reducers/companyReducer'
+import { useSelector,useDispatch } from 'react-redux';
+import { RootState } from '../../reducers'
 
 const Write: React.FC = () => {
     const navigate = useNavigate();
-    
+    const goInfo = () => {
+        navigate('/info')
+    };
+   /* const currentUser = useSelector((state: RootState) => state.userReducer.id);
+    const [id] = React.useState(currentUser);
+    React.useEffect(()=>{
+        if(id != 'admin'){
+            alert('관리자만 가능합니다.')
+            navigate('/')
+        }
+    })
+    */
     const [companyName, setNameValue] = React.useState('');
     const nameChange = (newValue: string) => {
         setNameValue(newValue);
@@ -123,6 +137,7 @@ const Write: React.FC = () => {
     const debugInfo = () => {
         navigate('/info',  { state: '삼성' })
     }
+    const dispatch = useDispatch();
 
     const complete = (event: React.MouseEvent) => {
             const data = {
@@ -155,8 +170,9 @@ const Write: React.FC = () => {
                         'data': data
                     }
                 }
-            ).then(res => {
-                navigate('/info',  { state: data['cname'] })
+            ).then(function(response) {
+                dispatch(set({ cname: data['cname']}))
+                goInfo()
             }).catch(err => {
                 alert('정보를 다시 입력해 주세요')
             });
