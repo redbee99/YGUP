@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
-from backend.cover_letter.services import create_cover_letter, update_cover_letter, delete_cover_letter
+from backend.cover_letter.services import create_cover_letter, update_cover_letter, delete_cover_letter,read_all_cover_letter
 api = Namespace("cover_letter", description="Cover_letter API")
 
 
@@ -10,6 +10,13 @@ cl_fields = api.model(
                      "content_2": fields.String, "content_3": fields.String,
                      "wdate": fields.DateTime, "clname" : fields.String
                      }
+)
+
+cl_read_all = api.model(
+    "Cover_letter_read", {
+       "id": fields.String
+    }
+
 )
 
 @api.doc(body=cl_fields)
@@ -30,7 +37,14 @@ class DeleteCover_letter(Resource):
         """Cover_letter Delete"""
         return delete_cover_letter(request.get_json())
 
+@api.doc(body=cl_read_all)
+class Read_All_Cover_letter(Resource):
+    def post(self):
+        """Cover_letter Delete"""
+        return read_all_cover_letter(request.get_json())
+
 
 api.add_resource(CreateCover_letter, "/create")
 api.add_resource(UpdateCover_letter, "/update")
 api.add_resource(DeleteCover_letter, "/delete")
+api.add_resource(Read_All_Cover_letter, "/read_all")

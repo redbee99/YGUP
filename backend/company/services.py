@@ -27,9 +27,9 @@ def create_company(data):
 
 def update_company(data):
     """Update company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('data').get('uno')).first()
-    if usertype is None or usertype.type != 'admin':
-        return {"message": f"only admin can update"}, 505
+    #usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('data').get('uno')).first()
+    #if usertype is None or usertype.type != 'admin':
+    #    return {"message": f"only admin can update"}, 505
 
     res = db.session.query(Company).filter(Company.cname == data['body'].get('data').get('cname')).update(
         {"cname": data['body'].get('data').get('cname'), "keyword": data['body'].get('data').get('keyword'),
@@ -172,10 +172,12 @@ def rank_company(data):
 
 def read_company(data) :
     """Read Company"""
+
+
     company = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
     if not company:
-        return 'fail', 505
+        return 'fail', 502
 
     result = {}
     readcnt = company[0].readcnt
