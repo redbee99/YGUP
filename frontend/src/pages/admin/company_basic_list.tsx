@@ -3,9 +3,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import User from '../components/user';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { BaseUrl } from '../../util/axiosApi';   
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { useState } from 'react';
 import { Box, 
          Tab, 
          Tabs,
@@ -21,7 +26,9 @@ import { Box,
          TableHead, 
          TableRow,
          Button,
-         CircularProgress} from '@mui/material';
+         CircularProgress,
+         Typography,
+         Popover} from '@mui/material';
 
          
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -42,12 +49,21 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       '&:last-child td, &:last-child th': {
      border: 0,
          },
-           }));
+           }));   
          
 const Company_Basic_List: React.FC = () => {
 
   const { state } = useLocation();
   const [value, setValue] = React.useState(state); 
+  const [open, setOpen] = useState(null);
+/*
+const handleOpenMenu = (event) => {
+    setOpen(event.currentTarget);
+}; */
+        
+const handleCloseMenu = () => {
+    setOpen(null);
+};       
   
   const navigate = useNavigate();
 
@@ -115,21 +131,14 @@ else{
       </Tabs>
       </Box>
       <Box sx={{ width: '100%' }} >
-        <Box className='admin_appbar' sx={{ width: '100%', borderBottom: 1, borderColor: 'divider', marginBottom:1  }}>
-        <Button 
-            variant="contained" 
-            size="small" 
-            onClick={() => { goWrite() }}
-            sx={{ width: 100, 
-                  mt:3, 
-                  mx:'auto', 
-                  color:'black', 
-                  backgroundColor: '#ffffff', 
-                  borderColor:'#ffffff',
-                  margin:1}} >
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h5" marginTop={3} marginLeft={3} gutterBottom>
+                기업 목록
+              </Typography>
+              <Button variant="contained" startIcon={<AddOutlinedIcon/>} onClick={() => { goWrite(); }}> 
             글쓰기
           </Button>
-      </Box>
+        </Stack>
         <Paper sx={{ width: '100%', mb: 2 }} >
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -138,7 +147,6 @@ else{
             <StyledTableCell>기업명</StyledTableCell>
             <StyledTableCell align="right">위치</StyledTableCell>
             <StyledTableCell align="right">키워드</StyledTableCell>
-            <StyledTableCell align="right"> </StyledTableCell>
             <StyledTableCell align="right"> </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -149,14 +157,9 @@ else{
               <StyledTableCell align="right">{data[value]['address']}</StyledTableCell>
               <StyledTableCell align="right">{data[value]['keyword']}</StyledTableCell>
               <StyledTableCell align="right">
-                <IconButton>
-                  <EditIcon fontSize="small"  onClick={() => { goInfo_update(); }}/>
-                </IconButton>
-                <IconButton>
-                  <DeleteIcon fontSize="small"  onClick={() => { goInfo_delete(); }}/>
-                </IconButton>
-              </StyledTableCell>
-              <StyledTableCell align="right">
+                <IconButton size="large" color="inherit" > {/*추후 화면나오면 다시 확인하면서 고치기. onClick={handleOpenMenu}*/}
+                 <MoreVertIcon />
+                 </IconButton>
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -165,6 +168,34 @@ else{
     </TableContainer>
         </Paper>
       </Box>
+      <Popover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleCloseMenu}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{
+          sx: {
+            p: 1,
+            width: 140,
+            '& .MuiMenuItem-root': {
+              px: 1,
+              typography: 'body2',
+              borderRadius: 0.75,
+            },
+          },
+        }}
+      >
+        <MenuItem>
+          <Button startIcon={<EditIcon/>} sx={{ mr: 2 }} onClick={() => { goInfo_update();}}/>
+          Edit
+        </MenuItem>
+
+        <MenuItem sx={{ color: 'error.main' }}>
+          <Button startIcon={<DeleteIcon/>}  sx={{ mr: 2 }} onClick={() => {goInfo_delete();}}/>
+          Delete
+        </MenuItem>
+      </Popover>
       </Stack>  
     </div>
   );
