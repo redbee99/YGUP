@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const CoverLetter_Update: React.FC = () => {
+const Cl_Update: React.FC = () => {
 
     const navigate = useNavigate();
     
@@ -137,4 +137,4 @@ const CoverLetter_Update: React.FC = () => {
     </div>               
     );
 }
-export default CoverLetter_Update;
+export default Cl_Update;

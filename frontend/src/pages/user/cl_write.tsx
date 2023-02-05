@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import { useNavigate } from 'react-router-dom';
 
-const CoverLetter_Write: React.FC = () => {
+const Cl_Write: React.FC = () => {
 
     const navigate = useNavigate();
     
@@ -124,4 +124,4 @@ const CoverLetter_Write: React.FC = () => {
         </div>
     );
 }
-export default CoverLetter_Write;
+export default Cl_Write;
