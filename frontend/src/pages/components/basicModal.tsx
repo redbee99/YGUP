@@ -24,7 +24,6 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     let id = ''
     let name = ''
     let email = ''
-    let cname = ''
 
     const onChangeId = (newValue:string) => {
         id = newValue
@@ -39,18 +38,6 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     }
 
     const confirm = () => {
-
-        const navigate = useNavigate();
-  
-        const goCompany_Basic_list = () => {
-          
-          navigate('/company_basic_list')
-        };
-
-        const goUser_list = () => {
-          
-            navigate('/user_list')
-          };
 
         if(content == "아이디"){
             const url = BaseUrl + "/user/overlapid"
@@ -122,45 +109,8 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
             .catch(function(error) {
                 alert('입력정보를 확인하세요.')
             })
+          }
         }
-        else if(content =="회원 탈퇴") {
-            const url = BaseUrl + "user/delete_user_admin"
-            axios.post(url, {
-                headers:
-                {
-                    "Content-Type": "application/json"
-                },
-                body: {id: id}
-            })
-            .then(function(response) {
-                alert('탈퇴 되었습니다.')
-                dispatch(set({state:'off', cashe1: currentModalCashe1}))
-                goUser_list()
-            })
-            .catch(function(error) {
-                alert('다시 확인하세요.')
-                goUser_list()
-            })
-        }
-        else if(content == "기업 삭제") {
-            const url = BaseUrl + "company/delete_company"
-            axios.post(url, {
-                headers:
-                {
-                    "Content-Type": "application/json"
-                },
-                boby: {cname: cname}
-            })
-            .then(function(response) {
-                alert('기업 삭제가 완료되었습니다.')
-                goCompany_Basic_list()
-            })
-            .catch(function(error) {
-                alert('다시 확인하세요.')
-                goCompany_Basic_list()
-            })
-        }
-    }
 
     const DynamicContent = () => {
         if(content == "아이디"){
@@ -206,28 +156,10 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                     </Box>
                 </Box>
             )
-        } else if (content == "회원 탈퇴") {
-            return (
-                <Box  sx={{ mt:5, mb:5 }} >
-                    <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
-                        탈퇴 시키겠습니까?
-                    </Typography>
-                </Box>
-            )
-        } else if (content == "기업 삭제") {
-            return (
-            <Box sx={{ mt:5, mb:5 }} >
-                    <Typography sx={{ fontSize: 20, fontWeight:'bold'}}>
-                        정말 삭제 하시겠습니까?
-                    </Typography>
-                </Box>
-            )
-        } 
-         else {
+        } else {
             return(<div/>)
         }
     }
-
     return(
         <Box sx={{ display: 'flex',
                     position:'relative', 

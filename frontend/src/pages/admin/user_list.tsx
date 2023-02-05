@@ -5,11 +5,6 @@ import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { RootState } from '../../reducers/index';
-import BasicModal from '../components/basicModal';
-import { set } from '../../reducers/modalReducer'
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Box, 
          Tab, 
          Tabs,
@@ -24,7 +19,8 @@ import { Box,
          TableContainer, 
          TableHead, 
          TableRow,
-         CircularProgress } from '@mui/material';
+         CircularProgress, 
+         Typography} from '@mui/material';
          
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
@@ -48,28 +44,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
                     
 const User_list: React.FC = () => {
 
-  const currentModal = useSelector((state: RootState) => state.modalReducer.state);
-  const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
-
-  const [id, setIdValue] = useState(currentModalCashe1);
-  const [modalType, setModalType] = React.useState('');
-  const dispatch = useDispatch();
-
   const user_delete = () => {
-    
-  }
-
-  const ModalShow = () => {
-    if(currentModal == "on"){
-      if(modalType == 'id'){
-        return <div className='join_modal'>
-          <BasicModal content='회원 탈퇴' _cashe={currentModalCashe1} />
-        </div>
-      }
-    }
-    else{
-      return <div/>
-    }
+    navigate('/user_delete')
   }
 
   const [value, setValue] = React.useState(0); 
@@ -129,6 +105,11 @@ const User_list: React.FC = () => {
            </Tabs>
         </Box>
         <Box sx={{ width: '100%', marginTop:20  }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h5" marginTop={3} marginLeft={3} gutterBottom>
+                회원 목록
+              </Typography>
+        </Stack>
           <Paper sx={{ width: '100%', mb: 2, marginTop:5 }} >
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
