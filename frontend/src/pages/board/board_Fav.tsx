@@ -68,14 +68,14 @@ const { isLoading, data, error } = useQuery('getRank1CompanyList', getRank1Compa
         'aria-controls': `simple-tabpanel-${index}`,
     };
 }
-/*test*/
+/*test
 const [bookMarkIcon, setbookMarkIcon] = useState(false);
 
 {bookMarkIcon === true ? (
   BookmarkIcon
 ) : (
   BookmarkBorderIcon
-)}
+)}*/
 /* 북마크*/
 function StandaloneToggleButton() {
   const [selected, setSelected] = React.useState(false);
@@ -124,7 +124,7 @@ const [value, setValue] = React.useState(state);
                                 </CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div" align="center">
-                                            기업명        <StandaloneToggleButton/><BookmarkBorderIcon onClick={() => setbookMarkIcon(!bookMarkIcon)}/>
+                                            기업명        <StandaloneToggleButton/><BookmarkBorderIcon/>
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             기업주소

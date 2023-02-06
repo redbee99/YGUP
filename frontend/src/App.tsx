@@ -32,7 +32,6 @@ import Company_Basic_List from './pages/admin/company_basic_list'
 import Write from './pages/admin/write';
 import Info from './pages/admin/info';
 import Info_Update from './pages/admin/info_update'
-import Info_Delete from './pages/admin/info_delete';
 
 
 
@@ -60,7 +59,6 @@ const App: React.FC = () => {
       <Route path='/join' element={<Join />} />
       <Route path='/info' element={<Info />} />
       <Route path='/info_update' element={<Info_Update />} />
-      <Route path='/info_delete' element={<Info_Delete />} />
       <Route path='/predicttest' element={<PredictTest />} />
       <Route path='/userinfo' element={<UserInfo />} />
       <Route path='/userinfo_update' element={<UserInfo_Update />} />

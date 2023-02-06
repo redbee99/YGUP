@@ -21,7 +21,11 @@ import { Box,
          TableRow,
          CircularProgress, 
          Typography} from '@mui/material';
-         
+import { set } from '../../reducers/modalReducer'
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../reducers/index'
+import BasicModal from '../components/basicModal';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
    backgroundColor: theme.palette.common.black,
@@ -44,10 +48,27 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
                     
 const User_list: React.FC = () => {
 
-  const user_delete = () => {
-    navigate('/user_delete')
+  const dispatch = useDispatch();
+  const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+  const [modalType, setModalType] = React.useState('')
+  const [id, setIdValue] = React.useState('');
+
+  const user_delete = (_id: string) => {
+    setIdValue(_id)
+    dispatch(set({state:'on', cashe1: id, cashe2: ''}))
   }
 
+
+  const ModalShow = () => {
+    if(currentModal == 'on'){
+        return <div className='join_modal'>
+          <BasicModal content='회원 삭제' _cashe={id} />
+        </div>
+    }
+    else{
+      return <div/>
+    }
+  }
   const [value, setValue] = React.useState(0); 
 
   const navigate = useNavigate();
@@ -55,6 +76,7 @@ const User_list: React.FC = () => {
   const goUser_list = () => {
         navigate('/user_list')
     };
+
   const goCompany_basic_list = (state: number) => {
         navigate('/company_basic_list',  { state: state })
   };
@@ -90,6 +112,7 @@ const User_list: React.FC = () => {
   else {
     return (
        <div className='user_list'>
+          <ModalShow/>
          <Stack direction={'row'} spacing={2} className='mypagecontents'>
            <User/>   
          <Box sx={{ flexGrow: 2, bgcolor: 'background.paper', display: 'flex', height: 224 }}>
@@ -128,8 +151,8 @@ const User_list: React.FC = () => {
                       <StyledTableCell>{data[value]['name']}</StyledTableCell>
                       <StyledTableCell>{data[value]['email']}</StyledTableCell>
                       <StyledTableCell>
-                        <IconButton>
-                           <DeleteIcon fontSize="small"  onClick={() => { user_delete(); }}/>
+                        <IconButton onClick={() => { user_delete(data[value]['id']); }}>
+                           <DeleteIcon fontSize="small"/>
                         </IconButton>
                       </StyledTableCell>
                     </StyledTableRow>
@@ -139,7 +162,7 @@ const User_list: React.FC = () => {
            </TableContainer>
          </Paper>
       </Box>
-      </Stack>  
+      </Stack> 
     </div>
    );
   }

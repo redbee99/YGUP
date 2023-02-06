@@ -7,7 +7,6 @@ import { RootState } from '../../reducers/index'
 import { set } from '../../reducers/modalReducer'
 import { BaseUrl } from '../../util/axiosApi';
 import React from "react";
-import { useNavigate } from 'react-router-dom'
 
 type Props = {
     content: string,
@@ -20,6 +19,7 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     const [cashe,] = React.useState(_cashe);
     const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
     const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
+    const uno = useSelector((state: RootState) => state.userReducer.type);
 
     let id = ''
     let name = ''
@@ -38,7 +38,6 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     }
 
     const confirm = () => {
-
         if(content == "아이디"){
             const url = BaseUrl + "/user/overlapid"
             axios.post(url, {
@@ -110,7 +109,26 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                 alert('입력정보를 확인하세요.')
             })
           }
+          else if(content == "회원 삭제"){
+            var data: number = +uno
+            const url = BaseUrl + "/user/admin_delete"
+            axios.post(url, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { uno: data ,id: cashe }
+            })
+            .then(function(response) {
+                alert('탈퇴되었습니다.')
+                dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
+            })
+            .catch(function(error) {
+                alert('실패되었습니다.')
+            })
+          }
         }
+
 
     const DynamicContent = () => {
         if(content == "아이디"){
@@ -156,50 +174,95 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                     </Box>
                 </Box>
             )
-        } else {
+        } else if(content == "회원 삭제"){
+            return (
+                <div className='info_delete'>
+                    <Box sx={{ display: 'flex',
+                            position:'relative', 
+                            width:400, 
+                            height:400, 
+                            margin:'auto', 
+                            textAlign:'center', 
+                            border: 1, 
+                            borderRadius: 5, 
+                            backgroundColor:'#ffffff', 
+                            flexDirection: 'column', 
+                            mt:5 
+                            }}
+                    >
+                        <Box sx={{ my:10 }} >
+                            <Typography sx={{ fontSize: 20, fontWeight:'bold'}}>
+                                정말 삭제 하시겠습니까?
+                            </Typography>
+                        </Box>
+                        <hr className='info_delete_underline'/>
+                        <Stack direction="row" spacing={1} sx={{ margin:'auto' }} >
+                            <Button variant="outlined"  
+                                    size="small" 
+                                    sx={{ color:'#ffff', 
+                                        backgroundColor: '#5856D6', 
+                                        borderColor:'#434343'
+                                        }} 
+                                    onClick={() => confirm()}
+                            >
+                                삭제
+                            </Button>
+                        </Stack>
+                    </Box>
+                </div>
+            );
+        }
+        else {
             return(<div/>)
         }
     }
-    return(
-        <Box sx={{ display: 'flex',
-                    position:'relative', 
-                    width:400, 
-                    height:400, 
-                    margin:'auto', 
-                    textAlign:'center', 
-                    border: 1, 
-                    borderRadius: 5, 
-                    backgroundColor:'#ffffff', 
-                    flexDirection: 'column', 
-                    mt:5 
-            }}
-        >
-        <DynamicContent/>
-        <hr className='login-idsearch_result-underline'/>
-        <Stack direction="row" spacing={2} sx={{ margin:'auto' }} >
-            <Button variant="contained"  
-                    size="small"
-                    onClick={confirm}
+
+    if(content != "회원 삭제"){
+        return (
+            <Box sx={{ display: 'flex',
+                        position:'relative', 
+                        width:400, 
+                        height:400, 
+                        margin:'auto', 
+                        textAlign:'center', 
+                        border: 1, 
+                        borderRadius: 5, 
+                        backgroundColor:'#ffffff', 
+                        flexDirection: 'column', 
+                        mt:5 
+                }}
+            >
+            <DynamicContent/>
+            <hr className='login-idsearch_result-underline'/>
+            <Stack direction="row" spacing={2} sx={{ margin:'auto' }} >
+                <Button variant="contained"  
+                        size="small"
+                        onClick={confirm}
+                        sx={{ color:'#ffff', 
+                                backgroundColor: '#26A689', 
+                                borderColor:'#434343'
+                            }} 
+                >
+                    확인
+                </Button>
+                <Button
+                    onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
+                    variant="contained"  
+                    size="small" 
                     sx={{ color:'#ffff', 
-                            backgroundColor: '#26A689', 
-                            borderColor:'#434343'
+                          backgroundColor: '#26A689',
+                          borderColor:'#434343'
                         }} 
-            >
-                확인
-            </Button>
-            <Button
-                onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
-                variant="contained"  
-                size="small" 
-                sx={{ color:'#ffff', 
-                      backgroundColor: '#26A689',
-                      borderColor:'#434343'
-                    }} 
-            >
-                취소
-            </Button>
-        </Stack>
-        </Box>
-    );
+                >
+                    취소
+                </Button>
+            </Stack>
+            </Box>
+        );
+    }
+    else{
+        return (<DynamicContent/>);
+    }
+
 }
 export default BasicModal;

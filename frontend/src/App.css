@@ -255,19 +255,6 @@ footer {
   width: 100%;
 }
 
-/*info_delete start*/
-.info_delete {
-  background-color: #E6EAF3;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-}
-.info_delete_underline{
-  width: 100%;
-  color: black;
-}
-/*info_delete end*/
-
 /*user_delete start*/
 .user_delete {
   background-color: #E6EAF3;
@@ -418,3 +405,16 @@ footer {
   left: 40%;
   z-index: 99999999;
 }
+
+/*info_delete start*/
+.info_delete {
+  position: absolute;
+  top: 20px;
+  left: 40%;
+  z-index: 99999999;
+}
+.info_delete_underline{
+  width: 100%;
+  color: black;
+}
+/*info_delete end*/

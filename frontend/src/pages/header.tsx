@@ -11,6 +11,8 @@ import { RootState } from '../reducers/index'
 import { set } from '../reducers/userReducer'
 
 const Header: React.FC = () => {
+  const currentUser = useSelector((state: RootState) => state.userReducer.type);
+
   const navigate = useNavigate();
 
   const goHome = () => {
@@ -18,7 +20,12 @@ const Header: React.FC = () => {
   };
 
   const goCompany = () => {
-    navigate('/board_list')
+    if(currentUser == '0'){
+      navigate('/user_list')
+    }
+    else{
+      navigate('/board_list')
+    }
   };
   
   const goMylist = () => {
@@ -42,8 +49,6 @@ const Header: React.FC = () => {
   const doLogOut = () => {
     dispatch(set({type: '', id: ''}));
   };
-
-  const currentUser = useSelector((state: RootState) => state.userReducer.type);
 
   const LoginButton = () => {
     if(currentUser == ''){
