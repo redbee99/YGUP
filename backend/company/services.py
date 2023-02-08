@@ -27,12 +27,12 @@ def create_company(data):
 
 def update_company(data):
     """Update company"""
-    #usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('data').get('uno')).first()
-    #if usertype is None or usertype.type != 'admin':
-    #    return {"message": f"only admin can update"}, 505
+    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('data').get('uno')).first()
+    if usertype is None or usertype.type != 'admin':
+       return {"message": f"only admin can update"}, 505
 
     res = db.session.query(Company).filter(Company.cname == data['body'].get('data').get('cname')).update(
-        {"cname": data['body'].get('data').get('cname'), "keyword": data['body'].get('data').get('keyword'),
+        {"cname": data['body'].get('data').get('cname'),
           "address": data['body'].get('data').get('address'),
          "sales": data['body'].get('data').get('sales'), "owner": data['body'].get('data').get('owner'),
          "info": data['body'].get('data').get('info'), "pay": data['body'].get('data').get('pay'),
