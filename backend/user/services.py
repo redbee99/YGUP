@@ -159,7 +159,7 @@ def read_all_users(data):
     res = db.session.query(User).filter(User.uno == 1).all()
 
     if not res:
-        return 'fail', 505
+        return 'fail', 504
 
     result = {}
 
