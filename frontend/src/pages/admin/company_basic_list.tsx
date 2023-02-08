@@ -161,17 +161,15 @@ else{
             글쓰기
           </Button>
         </Stack>
-        <Paper sx={{ width: '100%', mb: 2, overflow: 'hidden', elevation:3 }} >
+        <Paper sx={{ width: '100%', mb: 2, marginTop:5 ,overflow: 'hidden', elevation:3 }} >
         <Stack direction="row">
-          <Box className='company_list'>
-        <Search>
-          <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search Company…"
-              inputProps={{ 'aria-label': 'search' }}/>
-          </Search>
+        <Box sx={{marginLeft:3, marginTop:2, marginBottom:2 }}>
+          <Stack direction="row">
+          <input type="text" className='company_list' id="keyword"/>
+            <button type="button" className="search">
+                검색
+            </button>
+        </Stack>
           </Box>
         </Stack>
     <TableContainer component={Paper}>

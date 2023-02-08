@@ -136,6 +136,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     setValue(newValue);
   };
 
+  
   const getUserList = async ()=>{
    const url = BaseUrl + "/user/user_list"
    const { data } = await axios.post(url, {
@@ -179,16 +180,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         </Stack>
           <Paper sx={{ width: '100%', mb: 2, marginTop:5 }} >
           <Stack direction="row">
-          <Box className='User_list'>
-          <Search>
-             <SearchIconWrapper>
-               <SearchIcon />
-             </SearchIconWrapper>
-             <StyledInputBase
-              placeholder="Search User…"
-              inputProps={{ 'aria-label': 'search' }}
-             />
-           </Search>
+           <Box sx={{marginLeft:3, marginTop:2, marginBottom:2 }}>
+          <Stack direction="row">
+          <input type="text" className='company_list' id="keyword"/>
+            <button type="button" className="search">
+                검색
+            </button>
+        </Stack>
           </Box>
         </Stack>
             <TableContainer component={Paper}>
