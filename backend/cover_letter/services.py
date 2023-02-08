@@ -47,6 +47,28 @@ def delete_cover_letter(data):
         db.session.delete(r)
         db.session.commit()
 
+def read_all_cover_letter(data):
+    """Read All Company"""
+    user = db.session.query(User).filter(User.id == data['id']).first()
+    if user is None :
+        return {"message": "there's no such id of user"}, 505
+
+    cover_letter = db.session.query(Cover_letter).with_entities(Cover_letter.cname, Cover_letter.clname,
+    Cover_letter.wdate).all()
+
+    if not cover_letter:
+        return 'fail', 505
+
+    result = {}
+
+    for data in cover_letter:
+        temp = {}
+        temp['cname'] = data[0]
+        temp['clname'] = data[1]
+        temp['wdate'] = data[2].strftime("%Y년 %m월 %d일 %H시 %M분 %S초")
+        result[data[0]] = temp
+
+    return result, 200
 
 
 

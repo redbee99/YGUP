@@ -31,10 +31,14 @@ def create_user(data):
 
 def login_user(data):
     """Login User"""
-    if not db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw'))).all():
+    res = db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw'))).all()
+    if not res :
         return 'fail', 505
+    result = {
+        'uno': res[0].uno
+    }
 
-    return 'OK', 200
+    return result, 200
 
 def delete_user(data):
     """Delete User"""
@@ -156,7 +160,7 @@ def read_all_users(data):
     if user_type is None or user_type.type != 'admin':
         return {"message": f"only admin can read"}, 505
 
-    res = db.session.query(User).all()
+    res = db.session.query(User).filter(User.uno == 1).all()
 
     if not res:
         return 'fail', 505
@@ -173,11 +177,11 @@ def read_all_users(data):
 
 def delete_user_admin(data):
     """Delete User Admin"""
-    user_type = db.session.query(UserType).filter(UserType.uno == data['uno']).first()
+    user_type = db.session.query(UserType).filter(UserType.uno == data['body'].get('uno')).first()
     if user_type is None or user_type.type != 'admin':
         return {"message": f"only admin can delete"}, 505
 
-    res = db.session.query(User).filter(User.id == data['id']).all()
+    res = db.session.query(User).filter(User.id == data['body'].get('id')).all()
 
     if not res:
         return 'fail', 505
@@ -187,3 +191,40 @@ def delete_user_admin(data):
         db.session.commit()
 
     return 'Delete OK', 200
+
+def search_user(data):
+    """Search user"""
+    id_result = db.session.query(User).with_entities(User.id, User.name).filter(User.id.like('%' + data['searchData'] + '%')).all()
+    name_result = db.session.query(User).with_entities(User.id, User.name).filter(User.name.like('%' + data['searchData'] + '%')).all()
+
+
+    if not id_result:
+        id_result = ""
+
+    if not name_result:
+        name_result = ""
+
+
+    result = {}
+
+    if id_result != "":
+        i = 0
+        for data in id_result:
+            temp = {}
+            temp['id'] = data[0]
+            temp['name'] = data[1]
+            temp['email'] = data[2]
+            result['id_result' + str(i)] = temp
+            i+=1
+
+    if name_result != "":
+        i = 0
+        for data in name_result:
+            temp = {}
+            temp['id'] = data[0]
+            temp['name'] = data[1]
+            temp['email'] = data[2]
+            result['name_result' + str(i)] = temp
+            i += 1
+
+    return result, 200
