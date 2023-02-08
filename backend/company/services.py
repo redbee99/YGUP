@@ -13,11 +13,13 @@ def create_company(data):
         return {"message": f"only admin can create"}, 505
     cno = {'cno': str(uuid.uuid1())}
     data['body'].get('data').update(cno)
+    keyword = {'keyword': str(uuid.uuid1())}
+    data['body'].get('data').update(keyword)
     #북마크 테이블이 완성 되면 북마크 조회해서 값 채워 넣기
     company = Company(cname=data['body'].get('data').get('cname'), cno=data['body'].get('data').get('cno'),
-    keyword=data['body'].get('data').get('keyword'),
-    address=data['body'].get('data').get('address'),
-    sales=data['body'].get('data').get('sales'), owner=data['body'].get('data').get('owner'),info=data['body'].get('data').get('cname'),pay=data['body'].get('data').get('pay'),
+    keyword=data['body'].get('data').get('keyword'), address=data['body'].get('data').get('address'),
+    sales=data['body'].get('data').get('sales'), owner=data['body'].get('data').get('owner'),
+    info=data['body'].get('data').get('cname'),pay=data['body'].get('data').get('pay'),
     courl=data['body'].get('data').get('courl'),
     resign=data['body'].get('data').get('resign'), form=data['body'].get('data').get('form'), bookmarkcnt=0,
     readcnt=0)
@@ -48,14 +50,14 @@ def update_company(data):
 
 def delete_company(data):
     """Delete Company"""
-    usertype = db.session.query(UserType).filter(UserType.type == data['body'].get('uno')).first()
-    if usertype is None or usertype.type != 'admin':
+    user_type = db.session.query(UserType).filter(UserType.uno == data['body'].get('uno')).first()
+    if user_type is None or user_type.type != 'admin':
         return {"message": f"only admin can delete"}, 505
 
     res = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
     if not res:
-        return 'fail', 505
+        return 'fail', 503
 
     for r in res:
         db.session.delete(r)
