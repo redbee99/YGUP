@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from backend.user.services import create_user, login_user, delete_user, update_user, \
     search_id, search_pw, check_overlap_id, pwupdate_user, read_user, read_all_users, \
-    delete_user_admin, check_overlap_email
+    delete_user_admin, check_overlap_email, search_user
 
 
 from flask import request
@@ -33,6 +33,11 @@ admin_fields = api.model(
 )
 delete_user_admin_fields = api.model(
     "Delete_Users_Admin",{"id": fields.String, "uno":fields.Integer}
+)
+search_user_fields = api.model(
+    "SearchUser", {
+                    "searchData": fields.String
+                }
 )
 
 @api.doc(body=user_fields)
@@ -107,6 +112,12 @@ class Admin_Delete(Resource):
         """Delete user admin"""
         return delete_user_admin(request.get_json())
 
+@api.doc(body=search_user_fields)
+class Search_User(Resource):
+    def post(self):
+        """search user"""
+        return search_user(request.get_json())
+
 api.add_resource(SignUp, "/join")
 api.add_resource(Login, "/login")
 api.add_resource(Delete, "/delete")
@@ -119,3 +130,4 @@ api.add_resource(User_pwupdate, "/pwupdate")
 api.add_resource(User_read, "/userinfo")
 api.add_resource(Read_all_users, "/user_list")
 api.add_resource(CheckOverlapEmail, "/overlapemail")
+api.add_resource(Search_User, "/search_user")
