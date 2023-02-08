@@ -20,7 +20,9 @@ const Login: React.FC = () => {
     const goHome = () => {
         navigate('/')
     };
-    
+    const goUser_list = () => {
+        navigate('/user_list')
+    }
     const goJoin = () => {
         navigate('/Join')
     };
@@ -69,8 +71,11 @@ const Login: React.FC = () => {
             body: { id: id, pw: pw }
         })
         .then(function(response) {
-            dispatch(set({type: '0', id: id}))
+            if (dispatch(set({type: '0', id: id}))){
+             goUser_list()
+            } else{
             goHome()
+            }
         })
         .catch(function(error) {
             alert('로그인정보를 확인해 주세요')

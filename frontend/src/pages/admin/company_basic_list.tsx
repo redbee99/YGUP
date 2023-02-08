@@ -1,21 +1,15 @@
 import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import User from '../components/user';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import InputBase from '@mui/material/InputBase';
 import { BaseUrl } from '../../util/axiosApi';   
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { useState } from 'react';
 import { Box, 
          Tab, 
          Tabs,
-         IconButton, 
          Paper, 
          Stack,
          styled, 
@@ -29,10 +23,8 @@ import { Box,
          Button,
          CircularProgress,
          Typography,
-         Popover,
          alpha} from '@mui/material';
 
-         
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
    backgroundColor: theme.palette.common.black,
@@ -173,13 +165,12 @@ else{
         <Stack direction="row">
           <Box className='company_list'>
         <Search>
-            <SearchIconWrapper>
+          <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search Company…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+              inputProps={{ 'aria-label': 'search' }}/>
           </Search>
           </Box>
         </Stack>
