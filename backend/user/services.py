@@ -31,7 +31,7 @@ def create_user(data):
 
 def login_user(data):
     """Login User"""
-    res = db.session.query(User).filter(and_(User.id == data['id'], User.password == data['password'])).all()
+    res = db.session.query(User).filter(and_(User.id == data['body'].get('id'), User.password == data['body'].get('pw'))).all()
     if not res :
         return 'fail', 505
     result = {
