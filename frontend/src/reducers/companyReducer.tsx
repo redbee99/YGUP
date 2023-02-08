@@ -7,7 +7,7 @@ type CompanyAction =
 
 type CompanyState = {
 
-    cname : String
+    cname : string
 }    
 
 export const set = (company: CompanyState) => ({

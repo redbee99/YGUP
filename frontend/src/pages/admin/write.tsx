@@ -16,15 +16,14 @@ const Write: React.FC = () => {
     const goInfo = () => {
         navigate('/info')
     };
-   /* const currentUser = useSelector((state: RootState) => state.userReducer.id);
-    const [id] = React.useState(currentUser);
+    const currentUser = useSelector((state: RootState) => state.userReducer.type);
+    const [type] = React.useState(currentUser);
     React.useEffect(()=>{
-        if(id != 'admin'){
+        if(currentUser != '0'){
             alert('관리자만 가능합니다.')
             navigate('/')
         }
     })
-    */
     const [companyName, setNameValue] = React.useState('');
     const nameChange = (newValue: string) => {
         setNameValue(newValue);
@@ -230,9 +229,6 @@ const Write: React.FC = () => {
                         onChange={loadWcloudImage}
                     />
                 </Button> */}
-                <Button onClick={debugInfo}variant="contained" component="label" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', maxWidth:700}}>
-                        디버그
-                </Button>
                 <Button onClick={(event) => complete(event)} variant="contained" component="label" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', maxWidth:700}}>
                         작성
                 </Button>
