@@ -418,3 +418,27 @@ footer {
   color: black;
 }
 /*info_delete end*/
+
+/*company_basic_list start*/
+.company_list{
+  height: 40px;
+  border: 1px solid #434343;
+  border-radius: .25em;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
+  font-size: large;
+}
+/*company_basic_list end*/
+
+/*User_list start*/
+.User_list{
+  height: 40px;
+  border: 1px solid #434343;
+  border-radius: .25em;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
+  font-size: large;
+}
+/*User_list end*/

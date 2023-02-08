@@ -11,9 +11,10 @@ import Button from '@mui/material/Button';
 const Board_Predict: React.FC = () => {
     const navigate = useNavigate();
 
-    const goBoard_mylist_chek = () => {
-       navigate('/board_mylist_chek')
+    const goBoard_cl_check = () => {
+       navigate('/board_cl_check')
     };
+    
     const goPredict_write = () => {
         navigate('/predict_write')
     };
@@ -39,7 +40,7 @@ const Board_Predict: React.FC = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="large" onClick={() => { goBoard_mylist_chek()}}>자소서 선택</Button>
+                <Button size="large" onClick={() => { goBoard_cl_check()}}>자소서 선택</Button>
               </CardActions>
             </Card>  
             <Card  sx={{height:100, width:300}} variant="outlined">

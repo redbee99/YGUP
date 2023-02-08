@@ -1,10 +1,11 @@
 import * as React from 'react';
 import User from '../components/user';
-import { useNavigate } from 'react-router-dom';
+import { Search, useNavigate } from 'react-router-dom';
 import { BaseUrl } from '../../util/axiosApi';   
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
 import { Box, 
          Tab, 
          Tabs,
@@ -20,37 +21,81 @@ import { Box,
          TableHead, 
          TableRow,
          CircularProgress, 
-         Typography} from '@mui/material';
+         Typography,
+         alpha,
+         InputBase} from '@mui/material';
 import { set } from '../../reducers/modalReducer'
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../reducers/index'
 import BasicModal from '../components/basicModal';
-
+        
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
- [`&.${tableCellClasses.head}`]: {
-   backgroundColor: theme.palette.common.black,
-   color: theme.palette.common.white,
-   },
-   [`&.${tableCellClasses.body}`]: {
-     fontSize: 14,
-   },
-   }));
-
- const StyledTableRow = styled(TableRow)(({ theme }) => ({
-   '&:nth-of-type(odd)': {
-     backgroundColor: theme.palette.action.hover,
-   },
-   // hide last border
-      '&:last-child td, &:last-child th': {
-     border: 0,
-         },
-           }));
-                    
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+    }));
+          
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+       '&:last-child td, &:last-child th': {
+      border: 0,
+          },
+            }));           
+           
 const User_list: React.FC = () => {
+
+  
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+  backgroundColor: alpha(theme.palette.common.white, 0.25),
+},
+marginLeft: 0,
+width: '100%',
+[theme.breakpoints.up('sm')]: {
+marginLeft: theme.spacing(1),
+width: 'auto',
+},
+}));
+     
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+ padding: theme.spacing(0, 2),
+ height: '100%',
+ position: 'absolute',
+ pointerEvents: 'none',
+ display: 'flex',
+ alignItems: 'center',
+ justifyContent: 'center',
+}));
+     
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+   color: 'inherit',
+   '& .MuiInputBase-input': {
+   padding: theme.spacing(1, 1, 1, 0),
+   // vertical padding + font size from searchIcon
+   paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+   transition: theme.transitions.create('width'),
+   width: '100%',
+   [theme.breakpoints.up('sm')]: {
+   width: '12ch',
+   '&:focus': {
+    width: '20ch',
+    },
+ },
+},
+}));       
 
   const dispatch = useDispatch();
   const currentModal = useSelector((state: RootState) => state.modalReducer.state);
-  const [modalType, setModalType] = React.useState('')
   const [id, setIdValue] = React.useState('');
 
   const user_delete = (_id: string) => {
@@ -58,8 +103,7 @@ const User_list: React.FC = () => {
     dispatch(set({state:'on', cashe1: id, cashe2: ''}))
   }
 
-
-  const ModalShow = () => {
+ const ModalShow = () => {
     if(currentModal == 'on'){
         return <div className='join_modal'>
           <BasicModal content='회원 삭제' _cashe={id} />
@@ -134,6 +178,19 @@ const User_list: React.FC = () => {
               </Typography>
         </Stack>
           <Paper sx={{ width: '100%', mb: 2, marginTop:5 }} >
+          <Stack direction="row">
+          <Box className='User_list'>
+          <Search>
+             <SearchIconWrapper>
+               <SearchIcon />
+             </SearchIconWrapper>
+             <StyledInputBase
+              placeholder="Search User…"
+              inputProps={{ 'aria-label': 'search' }}
+             />
+           </Search>
+          </Box>
+        </Stack>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>

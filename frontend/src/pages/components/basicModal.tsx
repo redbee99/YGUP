@@ -13,13 +13,14 @@ type Props = {
     _cashe: string
 }
 
-const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
+const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
     const dispatch = useDispatch();
 
     const [cashe,] = React.useState(_cashe);
     const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
     const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
     const uno = useSelector((state: RootState) => state.userReducer.type);
+    const cname = useSelector((state: RootState) => state.companyReducer.cname);
 
     let id = ''
     let name = ''
@@ -110,14 +111,13 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
             })
           }
           else if(content == "회원 삭제"){
-            var data: number = +uno
             const url = BaseUrl + "/user/admin_delete"
             axios.post(url, {
                 headers: 
                 {
                     "Content-Type": "application/json"
                 },
-                body: { uno: data ,id: cashe }
+                body: { uno: uno ,id: cashe }
             })
             .then(function(response) {
                 alert('탈퇴되었습니다.')
@@ -207,6 +207,17 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                             >
                                 삭제
                             </Button>
+                            <Button
+                    onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
+                    variant="contained"  
+                    size="small" 
+                    sx={{ color:'#ffff', 
+                          backgroundColor: '#5856D6',
+                          borderColor:'#434343'
+                        }} 
+                >
+                    취소
+                </Button>
                         </Stack>
                     </Box>
                 </div>

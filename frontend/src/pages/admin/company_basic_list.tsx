@@ -3,10 +3,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import User from '../components/user';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Menu from '@mui/material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import InputBase from '@mui/material/InputBase';
 import { BaseUrl } from '../../util/axiosApi';   
 import axios from 'axios';
 import { useQuery } from 'react-query';
@@ -28,7 +29,8 @@ import { Box,
          Button,
          CircularProgress,
          Typography,
-         Popover} from '@mui/material';
+         Popover,
+         alpha} from '@mui/material';
 
          
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -50,20 +52,54 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
      border: 0,
          },
            }));   
+     
          
 const Company_Basic_List: React.FC = () => {
 
+  const Search = styled('div')(({ theme }) => ({
+     position: 'relative',
+     borderRadius: theme.shape.borderRadius,
+     backgroundColor: alpha(theme.palette.common.white, 0.15),
+     '&:hover': {
+     backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+   },
+  }));
+       
+  const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }));
+       
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+      color: 'inherit',
+      '& .MuiInputBase-input': {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+      width: '20ch',
+       },
+     },
+   },
+  }));     
+
   const { state } = useLocation();
-  const [value, setValue] = React.useState(state); 
-  const [open, setOpen] = useState(null);
-/*
-const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-}; */
-        
-const handleCloseMenu = () => {
-    setOpen(null);
-};       
+  const [value, setValue] = React.useState(state);  
   
   const navigate = useNavigate();
 
@@ -73,13 +109,7 @@ const handleCloseMenu = () => {
   const goCompany_basic_list = (state: number) => {
         navigate('/company_basic_list',  { state: state })
   };
-  const goInfo_update = () => {
-      navigate('/info_update')
-  };
 
-  const goInfo_delete = () => {
-    navigate('/info_delete')
-  }
   const goWrite = () => {
     navigate('/write')
   }
@@ -139,28 +169,39 @@ else{
             글쓰기
           </Button>
         </Stack>
-        <Paper sx={{ width: '100%', mb: 2 }} >
+        <Paper sx={{ width: '100%', mb: 2, overflow: 'hidden', elevation:3 }} >
+        <Stack direction="row">
+          <Box className='company_list'>
+        <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search Company…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
+          </Box>
+        </Stack>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>기업명</StyledTableCell>
-            <StyledTableCell align="right">위치</StyledTableCell>
-            <StyledTableCell align="right">키워드</StyledTableCell>
-            <StyledTableCell align="right"> </StyledTableCell>
+            <StyledTableCell>위치</StyledTableCell>
+            <StyledTableCell></StyledTableCell>
+            <StyledTableCell>키워드</StyledTableCell>
+            <StyledTableCell> </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
         {Object.keys(data).map((value:any, index:any) => (
-            <StyledTableRow key={data[value]['cname']}>
+            <StyledTableRow hover role="checkbox" key={data[value]['cname']}>
               <StyledTableCell component="th" scope="row">{data[value]['cname']}</StyledTableCell>
-              <StyledTableCell align="right">{data[value]['address']}</StyledTableCell>
-              <StyledTableCell align="right">{data[value]['keyword']}</StyledTableCell>
-              <StyledTableCell align="right">
-                <IconButton size="large" color="inherit" > {/*추후 화면나오면 다시 확인하면서 고치기. onClick={handleOpenMenu}*/}
-                 <MoreVertIcon />
-                 </IconButton>
-              </StyledTableCell>
+              <StyledTableCell>{data[value]['address']}</StyledTableCell>
+              <StyledTableCell>{ data[value]['keyword'].split(',')[0]}</StyledTableCell>
+              <StyledTableCell> { data[value]['keyword'].split(',')[1]} </StyledTableCell>
+              <StyledTableCell>{ data[value]['keyword'].split(',')[2]} </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -168,34 +209,6 @@ else{
     </TableContainer>
         </Paper>
       </Box>
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Button startIcon={<EditIcon/>} sx={{ mr: 2 }} onClick={() => { goInfo_update();}}/>
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Button startIcon={<DeleteIcon/>}  sx={{ mr: 2 }} onClick={() => {goInfo_delete();}}/>
-          Delete
-        </MenuItem>
-      </Popover>
       </Stack>  
     </div>
   );
