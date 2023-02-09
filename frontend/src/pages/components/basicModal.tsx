@@ -36,7 +36,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
         email = newValue.target.value
     }
     const navigate = useNavigate();
-    const goCompany_basic_list = () => {
+    const goCL_list = () => {
         navigate('/company_basic_list')
     };
 
@@ -141,7 +141,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
             .then(function(response) {
                 alert('삭제되었습니다.')
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
-                goCompany_basic_list()
+                goCL_list()
             })
             .catch(function(error) {
                 alert('실패되었습니다.')

@@ -32,10 +32,7 @@ const Info: React.FC = () => {
     const navigate = useNavigate();
     const currentCompany = useSelector((state: RootState) => state.companyReducer.cname);
     const [cname, setCnameValue] = React.useState(currentCompany);
-    const [cn ] = React.useState('');
-    const goDelete = () => {
-      navigate('/info_delete')
-    };
+    
     const goAdmin = () => {
         navigate('/company_basic_list')
     };
