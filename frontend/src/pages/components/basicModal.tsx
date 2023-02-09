@@ -1,13 +1,11 @@
-import { Stack, TextField, Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import { Stack, TextField, Typography, Button, Box } from '@mui/material';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../reducers/index'
 import { set } from '../../reducers/modalReducer'
 import { BaseUrl } from '../../util/axiosApi';
 import React from "react";
-
+import { useNavigate } from 'react-router-dom';
 type Props = {
     content: string,
     _cashe: string
@@ -37,6 +35,10 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
     const onChangeEmail = (newValue:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         email = newValue.target.value
     }
+    const navigate = useNavigate();
+    const goCompany_basic_list = () => {
+        navigate('/company_basic_list')
+    };
 
     const confirm = () => {
         if(content == "아이디"){
@@ -139,6 +141,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
             .then(function(response) {
                 alert('삭제되었습니다.')
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
+                goCompany_basic_list()
             })
             .catch(function(error) {
                 alert('실패되었습니다.')

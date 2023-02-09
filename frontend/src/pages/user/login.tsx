@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import {Typography,
+        TextField,
+        Button ,
+        Stack,
+        Box, } from '@mui/material';
 import LoginIcon from '@mui/icons-material/LoginRounded';
-import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router';
 import { BaseUrl } from '../../util/axiosApi';
 import { useSelector,useDispatch } from 'react-redux';
@@ -20,9 +20,11 @@ const Login: React.FC = () => {
     const goHome = () => {
         navigate('/')
     };
+
     const goUser_list = () => {
         navigate('/user_list')
-    }
+    };
+    
     const goJoin = () => {
         navigate('/Join')
     };
@@ -71,9 +73,10 @@ const Login: React.FC = () => {
             body: { id: id, pw: pw }
         })
         .then(function(response) {
-            if (dispatch(set({type: '0', id: id}))){
-             goUser_list()
-            } else{
+            dispatch(set({type: String(response.data.uno), id: id}))
+            if(response.data.uno == 0){
+            goUser_list()}
+            else{
             goHome()
             }
         })
