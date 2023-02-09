@@ -6,12 +6,22 @@ import { set } from '../../reducers/modalReducer'
 import { BaseUrl } from '../../util/axiosApi';
 import React from "react";
 import { useNavigate } from 'react-router-dom';
+import {useSpring, animated} from 'react-spring';
+import {useDrag} from 'react-use-gesture';
 type Props = {
     content: string,
     _cashe: string
 }
 
 const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
+      /*modal drag*/
+      const modalDrag = useSpring({x:0, y:0});
+
+      const bindModaldrag = useDrag((params)=>{
+          modalDrag.x.set(params.offset[0]);
+          modalDrag.y.set(params.offset[1]);
+        });
+      /*modal Drag*/
     const dispatch = useDispatch();
 
     const [cashe,] = React.useState(_cashe);
@@ -250,6 +260,10 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
 
     if(content != "회원 삭제" ){
         return (
+            <animated.div {...bindModaldrag()} style={{
+                x: modalDrag.x,
+                y: modalDrag.y
+              }}>
             <Box sx={{ display: 'flex',
                         position:'relative', 
                         width:400, 
@@ -289,6 +303,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
                 </Button>
             </Stack>
             </Box>
+            </animated.div>
         );
     }
     else{
