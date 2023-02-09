@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import User from '../components/user';
-import SearchIcon from '@mui/icons-material/Search';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import InputBase from '@mui/material/InputBase';
 import { BaseUrl } from '../../util/axiosApi';   
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, 
          Tab, 
          Tabs,
+         IconButton, 
          Paper, 
          Stack,
          styled, 
+         InputBase,
          Table, 
          TableBody, 
          TableCell, 
@@ -24,6 +25,11 @@ import { Box,
          CircularProgress,
          Typography,
          alpha} from '@mui/material';
+import { useSelector,useDispatch } from 'react-redux';
+import { RootState } from '../../reducers'
+import { set } from '../../reducers/modalReducer'
+import BasicModal from '../components/basicModal';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
@@ -101,9 +107,39 @@ const Company_Basic_List: React.FC = () => {
   const goCompany_basic_list = (state: number) => {
         navigate('/company_basic_list',  { state: state })
   };
-
   const goWrite = () => {
     navigate('/write')
+  }
+  const goInfo = () => {
+    navigate('/info')
+  }
+  const currentCompany = useSelector((state: RootState) => state.companyReducer.cname);
+  const [cname, setCnameValue] = React.useState(currentCompany);
+  const dispatch = useDispatch();
+  const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+
+
+  const info_delete = (_cname: string) => {
+    setCnameValue(_cname)
+    dispatch(set({state:'on', cashe1: cname, cashe2: ''}))
+  }
+  const go_Info = (_cname: string) => {
+    navigate('/info',{
+       state :{ data: data[value]['cname']
+ 
+         }
+       })
+     };
+
+  const ModalShow = () => {
+    if(currentModal == 'on'){
+        return <div className='info_delete_modal'>
+          <BasicModal content='기업 삭제' _cashe={cname} />
+        </div>
+    }
+    else{
+      return <div/>
+    }
   }
 
   function a11yProps(index: number) {
@@ -127,7 +163,9 @@ const getCompanyList = async ()=>{
       body: { uno: 0 }
   })
   return data
+  
 }
+
 
 const { isLoading, data, error } = useQuery('getCompanyList', getCompanyList);
 
@@ -137,6 +175,7 @@ if(isLoading){
 else{
   return (
     <div className='company_basic_list'>
+      <ModalShow/>
       <Stack direction={'row'} spacing={2} className='mypagecontents'>
          <User />    
       <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224, marginTop: 10}}>
@@ -181,16 +220,24 @@ else{
             <StyledTableCell></StyledTableCell>
             <StyledTableCell>키워드</StyledTableCell>
             <StyledTableCell> </StyledTableCell>
+            <StyledTableCell> </StyledTableCell>
+            <StyledTableCell> </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
         {Object.keys(data).map((value:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={data[value]['cname']}>
+            <StyledTableRow hover role="checkbox" key={data[value]['cname']} onClick={() => { goInfo();}}>
               <StyledTableCell component="th" scope="row">{data[value]['cname']}</StyledTableCell>
               <StyledTableCell>{data[value]['address']}</StyledTableCell>
               <StyledTableCell>{ data[value]['keyword'].split(',')[0]}</StyledTableCell>
               <StyledTableCell> { data[value]['keyword'].split(',')[1]} </StyledTableCell>
               <StyledTableCell>{ data[value]['keyword'].split(',')[2]} </StyledTableCell>
+              <StyledTableCell> 
+              <IconButton onClick={() => { info_delete(data[value]['cname']); }}>
+                           <DeleteIcon fontSize="small"/>
+                        </IconButton>
+              </StyledTableCell>
+              <StyledTableCell> </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
