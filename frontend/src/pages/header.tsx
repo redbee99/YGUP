@@ -48,6 +48,7 @@ const Header: React.FC = () => {
 
   const doLogOut = () => {
     dispatch(set({type: '', id: ''}));
+    goHome()
   };
 
   const LoginButton = () => {
