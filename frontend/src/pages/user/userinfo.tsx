@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Tab, Tabs, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, Stack, Typography, CircularProgress } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -25,30 +25,9 @@ const UserInfo: React.FC = () => {
     const goPwUpdate = () => {
         navigate('/pwupdate')
     };
-    const goUserInfo = () => {
-        navigate('/userinfo')
-    };
-    const goBookmark = (state: number) => {
-        navigate('/bookmark',  { state: state })
-    };
-    const goManage = (state: number) => {
-        navigate('/manage',  { state: state })
-    };
     const goUserInfo_Update = () => {
         navigate('/userinfo_update')
     };
-
-    function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-        };
-    }
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-      };
-    const [value, setValue] = React.useState(0);
 
     const userinfo = async ()=>{
         const url = BaseUrl + "/user/userinfo"
@@ -70,13 +49,6 @@ const UserInfo: React.FC = () => {
     else{
         return (
             <div className='userinfo'>
-                <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab value={0} label="회원정보" {...a11yProps(0)} onClick={() => { goUserInfo(); } }/>
-                        <Tab value={1} label="북마크" {...a11yProps(1)} onClick={() => { goBookmark(1); } }/>
-                        <Tab value={2} label="자소서 관리" {...a11yProps(2)} onClick={() => { goManage(2); } } />
-                    </Tabs>
-                </Box>
                 <Box sx={{ display: 'flex',
                         position:'relative', 
                         width:550, 

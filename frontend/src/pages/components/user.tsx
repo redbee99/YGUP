@@ -7,17 +7,44 @@ import { Avatar,
          ListItemIcon, 
          ListItemText, 
          Stack, 
-         Typography } from '@mui/material';
+         Typography,
+         CircularProgress } from '@mui/material';
 import * as React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers'
+import { useQuery } from "react-query";
+import { BaseUrl } from '../../util/axiosApi';
+import axios from 'axios';
 
 function User(): React.ReactElement {
     const navigate = useNavigate();
-    const { state } = useLocation();
+    const currentUser = useSelector((state: RootState) => state.userReducer.id);
+
+    const [id] = React.useState(currentUser);
+
     const goUserInfo = () => {
         navigate('/userinfo')
     };
     
+    const userinfo = async ()=>{
+        const url = BaseUrl + "/user/userinfo"
+        const { data } = await axios.post(url, {
+            headers: 
+            {
+                "Content-Type": "application/json"
+            },
+            body: { id: id }
+        })
+        return data
+    }
+
+    const { isLoading, data, error } = useQuery('userinfo', userinfo);
+
+    if(isLoading){
+        return <CircularProgress />
+    }
+    else{
     return(
         <div className='user'>
             <Box
@@ -27,10 +54,10 @@ function User(): React.ReactElement {
                 <Stack direction={'column'} spacing={2} >
                     <Box sx={{ margin:3 }}>
                         <Stack  direction="column" spacing={3} alignItems="center" >
-                            <Avatar sx={{ bgcolor:'orange', width:100, height:100 }}>이름</Avatar>
+                            <Avatar sx={{ bgcolor:'orange', width:100, height:100 }}>{ data['result']['user']['id'] }</Avatar>
                             <Divider/>
-                            <Typography sx={{ fontSize:20 }}>유저이름</Typography>
-                            <Typography sx={{ fontSize:15 }}>유저 이메일</Typography>
+                            <Typography sx={{ fontSize:20 }}>{ data['result']['user']['name'] }</Typography>
+                            <Typography sx={{ fontSize:15 }}>{ data['result']['user']['email'] }</Typography>
                         </Stack>
                     </Box>
                     <Divider/>
@@ -47,7 +74,8 @@ function User(): React.ReactElement {
                 </Stack>
             </Box>
         </div>
-    )
+      );
+    }
 }
 
 export default User;
