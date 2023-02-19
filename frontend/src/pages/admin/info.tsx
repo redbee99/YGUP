@@ -1,14 +1,17 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { CircularProgress, Stack } from '@mui/material';
-import { CardMedia } from '@mui/material'
-import Card from '@mui/material/Card';
-import { experimentalStyled as styled } from '@mui/material/styles';
+import { CircularProgress, Stack,
+         Checkbox,
+         experimentalStyled as styled,
+         Card,
+         CardMedia,
+         Typography,
+         Button,
+         Box,} from '@mui/material';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from "react-query";
 import { BaseUrl } from '../../util/axiosApi';
@@ -26,7 +29,7 @@ const Item = styled(Card)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
-
+  
 const Info: React.FC = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -54,6 +57,8 @@ const Info: React.FC = () => {
           return <div/>
         }
       }
+
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };  
 
     const getCompany = async ()=>{
         const url = BaseUrl + "/company/readcompany"
@@ -85,6 +90,10 @@ const Info: React.FC = () => {
             <div className='info'>
                 <ModalShow/>
                 <Box sx={{ display: 'flex',position:'relative', width:550, height: 700, margin:'auto', textAlign:'center', border: 1, borderRadius: 5, backgroundColor:'#ffffff', flexDirection: 'column',mt:5, padding: 5 }} >
+                <Box>
+                 <Checkbox sx={{ float: 'right'}} {...label}
+                     icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />}/>  
+                </Box>  
                     <Stack  direction="row" spacing={2} alignItems="center" >
                     <Item sx={{margin:'auto'}}>
                         <Card>
