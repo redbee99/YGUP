@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { CircularProgress, Stack,
-         Checkbox,
          experimentalStyled as styled,
          Card,
          CardMedia,
@@ -10,8 +9,6 @@ import { CircularProgress, Stack,
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from "react-query";
 import { BaseUrl } from '../../util/axiosApi';
@@ -20,6 +17,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import { RootState } from '../../reducers'
 import { set } from '../../reducers/modalReducer'
 import BasicModal from '../components/basicModal';
+import Bookmark from '../components/bookmark';
 
 const Item = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -29,13 +27,22 @@ const Item = styled(Card)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
-  
+
+  type ReadInfoState = {
+    type : String
+    cname: String
+}
+
 const Info: React.FC = () => {
-    const { state } = useLocation();
+    const location = useLocation();
     const navigate = useNavigate();
     const currentCompany = useSelector((state: RootState) => state.companyReducer.cname);
     const [cname, setCnameValue] = React.useState(currentCompany);
     
+    const state = location.state as {data:ReadInfoState};
+    
+    //여기 날리고, axios로 readcompany다시 해서 return(data) 직렬화 해서 상수선언 다시하기
+    const Cname = state.data
     const goAdmin = () => {
         navigate('/company_basic_list')
     };
@@ -47,18 +54,17 @@ const Info: React.FC = () => {
         dispatch(set({state:'on', cashe1: cname, cashe2: ''}))
       }
 
-      const ModalShow = () => {
+    const ModalShow = () => {
         if(currentModal == 'on'){
             return <div className='info_delete_modal'>
-              <BasicModal content='기업 삭제' _cashe={cname} />
+              <BasicModal content='기업 삭제' _cashe={data['result']['company']['cname']} />
             </div>
         }
         else{
           return <div/>
         }
-      }
-
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };  
+    }
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; 
 
     const getCompany = async ()=>{
         const url = BaseUrl + "/company/readcompany"
@@ -67,13 +73,12 @@ const Info: React.FC = () => {
             {
                 "Content-Type": "application/json"
             },
-            body: { cname: cname }
+            body: { cname: Cname }
         })
         return data
     }
 
-    const { isLoading, data, error } = useQuery('getCompany', getCompany);
-    
+    const { isLoading, data, error } = useQuery('getCompany', getCompany);    
 
     if(isLoading){
         return <CircularProgress />
@@ -82,7 +87,6 @@ const Info: React.FC = () => {
     const goUpdate = () => {
          navigate('/info_update',{
             state :{ data: data.result.company
-      
               }
             })
           };
@@ -90,10 +94,7 @@ const Info: React.FC = () => {
             <div className='info'>
                 <ModalShow/>
                 <Box sx={{ display: 'flex',position:'relative', width:550, height: 700, margin:'auto', textAlign:'center', border: 1, borderRadius: 5, backgroundColor:'#ffffff', flexDirection: 'column',mt:5, padding: 5 }} >
-                <Box>
-                 <Checkbox sx={{ float: 'right'}} {...label}
-                     icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />}/>  
-                </Box>  
+                <Bookmark/>
                     <Stack  direction="row" spacing={2} alignItems="center" >
                     <Item sx={{margin:'auto'}}>
                         <Card>
@@ -142,6 +143,7 @@ const Info: React.FC = () => {
                         </Button>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { info_delete(data['result']['company']['cname']); }}>
                             삭제
+                            {/*{info_delete(data['result']['company']['cname']);*/}
                         </Button>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goAdmin() }}>
                             확인
