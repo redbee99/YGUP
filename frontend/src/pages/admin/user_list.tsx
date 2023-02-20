@@ -157,13 +157,13 @@ const User_list: React.FC = () => {
                    </TableRow>
                 </TableHead>
                 <TableBody>
-                   {Object.keys(data).map((value:any, index:any) => (
-                     <StyledTableRow key={data[value]['id']}>
-                      <StyledTableCell component="th" scope="row">{data[value]['id']}</StyledTableCell>
-                      <StyledTableCell>{data[value]['name']}</StyledTableCell>
-                      <StyledTableCell>{data[value]['email']}</StyledTableCell>
+                   {Object.keys(data).map((result:any, index:any) => (
+                     <StyledTableRow key={data[result]['id']}>
+                      <StyledTableCell component="th" scope="row">{data[result]['id']}</StyledTableCell>
+                      <StyledTableCell>{data[result]['name']}</StyledTableCell>
+                      <StyledTableCell>{data[result]['email']}</StyledTableCell>
                       <StyledTableCell>
-                        <IconButton onClick={() => { user_delete(data[value]['id']); }}>
+                        <IconButton onClick={() => { user_delete(data[result]['id']); }}>
                            <DeleteIcon fontSize="small"/>
                         </IconButton>
                       </StyledTableCell>

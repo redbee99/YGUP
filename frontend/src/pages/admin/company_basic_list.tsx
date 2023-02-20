@@ -55,48 +55,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
          
 const Company_Basic_List: React.FC = () => {
 
-  const Search = styled('div')(({ theme }) => ({
-     position: 'relative',
-     borderRadius: theme.shape.borderRadius,
-     backgroundColor: alpha(theme.palette.common.white, 0.15),
-     '&:hover': {
-     backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-   },
-  }));
-       
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-       
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-      color: 'inherit',
-      '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-      width: '20ch',
-       },
-     },
-   },
-  }));     
-
   const { state } = useLocation();
   const [value, setValue] = React.useState(state);  
   
@@ -111,9 +69,7 @@ const Company_Basic_List: React.FC = () => {
   const goWrite = () => {
     navigate('/write')
   }
-  const goInfo = () => {
-    navigate('/info')
-  }
+
   const currentCompany = useSelector((state: RootState) => state.companyReducer.cname);
   const [cname, setCnameValue] = React.useState(currentCompany);
   const dispatch = useDispatch();
@@ -124,10 +80,10 @@ const Company_Basic_List: React.FC = () => {
     setCnameValue(_cname)
     dispatch(set({state:'on', cashe1: cname, cashe2: ''}))
   }
-  const go_Info = (_cname: string) => {
+
+  const goInfo = () => {
     navigate('/info',{
-       state :{ data: data[value]['cname']
- 
+       state :{ data: data['cname']
          }
        })
      };
@@ -167,7 +123,6 @@ const getCompanyList = async ()=>{
   
 }
 
-
 const { isLoading, data, error } = useQuery('getCompanyList', getCompanyList);
 
 if(isLoading){
@@ -188,8 +143,8 @@ else{
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
-         <Tab label="회원 목록" value={0}  {...a11yProps(0)} onClick={() => { goUser_list(); }} />
-         <Tab label="기업 목록" value={1}  {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }} />
+         <Tab label="회원 목록" value={0} {...a11yProps(0)} onClick={() => { goUser_list(); }} />
+         <Tab label="기업 목록" value={1} {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }} />
       </Tabs>
       </Box>
       <Box sx={{ width: '100%' }} >
@@ -226,15 +181,15 @@ else{
           </TableRow>
         </TableHead>
         <TableBody>
-        {Object.keys(data).map((value:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={data[value]['cname']} onClick={() => { goInfo();}}>
-              <StyledTableCell component="th" scope="row">{data[value]['cname']}</StyledTableCell>
-              <StyledTableCell>{data[value]['address']}</StyledTableCell>
-              <StyledTableCell>{ data[value]['keyword'].split(',')[0]}</StyledTableCell>
-              <StyledTableCell> { data[value]['keyword'].split(',')[1]} </StyledTableCell>
-              <StyledTableCell>{ data[value]['keyword'].split(',')[2]} </StyledTableCell>
+        {Object.keys(data).map((result:any, index:any) => (
+            <StyledTableRow hover role="checkbox" key={data[result]['cname']} onClick={() => { goInfo();}}>
+              <StyledTableCell component="th" scope="row">{data[result]['cname']}</StyledTableCell>
+              <StyledTableCell>{data[result]['address']}</StyledTableCell>
+              <StyledTableCell>{ data[result]['keyword'].split(',')[0]}</StyledTableCell>
+              <StyledTableCell> { data[result]['keyword'].split(',')[1]} </StyledTableCell>
+              <StyledTableCell>{ data[result]['keyword'].split(',')[2]} </StyledTableCell>
               <StyledTableCell> 
-              <IconButton onClick={() => { info_delete(data[value]['cname']); }}>
+              <IconButton onClick={() => { info_delete(data[result]['cname']); }}>
                            <DeleteIcon fontSize="small"/>
                         </IconButton>
               </StyledTableCell>
