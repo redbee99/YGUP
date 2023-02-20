@@ -7,9 +7,9 @@ Model = db.Model
 class Bookmark(Model):
     __tablename__ = "bookmark"
 
-    bkno = Column(db.Integer, primary_key=True)
+    bkno = Column(db.String(200), primary_key=True)
     id = Column(db.String(20), nullable=False)
-    cname = Column(db.String(50), nullable=False)
+    cname = Column(db.String(100), nullable=False)
     state = Column(db.Integer, nullable=False)
 
 
