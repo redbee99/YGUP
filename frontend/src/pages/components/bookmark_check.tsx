@@ -4,7 +4,7 @@ import {Box,
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';        
 
-function Bookmark(): React.ReactElement {
+function Bookmark_check(): React.ReactElement {
    
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; 
 
@@ -18,4 +18,4 @@ function Bookmark(): React.ReactElement {
   );
 }
 
-export default Bookmark;
+export default Bookmark_check;

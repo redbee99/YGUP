@@ -36,7 +36,7 @@ const Header: React.FC = () => {
       navigate('/user_list')
     }
     else{
-    navigate('/manage')
+    navigate('/bookmark')
     }
   };
 

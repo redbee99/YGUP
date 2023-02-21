@@ -141,8 +141,7 @@ else{
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider' }}
-      >
+        sx={{ borderRight: 1, borderColor: 'divider' }}>
          <Tab label="회원 목록" value={0} {...a11yProps(0)} onClick={() => { goUser_list(); }} />
          <Tab label="기업 목록" value={1} {...a11yProps(1)} onClick={() => { goCompany_basic_list(1); }} />
       </Tabs>

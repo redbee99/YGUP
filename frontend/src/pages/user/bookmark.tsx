@@ -151,29 +151,25 @@ interface EnhancedTableProps {
 const Bookmark: React.FC = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
+    const [value, setValue] = React.useState(state);
 
-    const goUserInfo = () => {
-        navigate('/userinfo')
+    const goBookmark = () => {
+        navigate('/bookmark')
     };
-    const goBookmark = (state: number) => {
-        navigate('/bookmark',  { state: state })
-    };
+
     const goManage = (state: number) => {
         navigate('/manage',  { state: state })
     };
  
     function a11yProps(index: number) {
-        return {
-            id: `simple-tab-${index}`,
-            'aria-controls': `simple-tabpanel-${index}`,
-        };
-    }
-
+      return {
+          id: `simple-tab-${index}`,
+          'aria-controls': `simple-tabpanel-${index}`,
+      };
+  }
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-
-    const [value, setValue] = React.useState(state);
       
       function createData(
         id: string,
@@ -248,16 +244,21 @@ const Bookmark: React.FC = () => {
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
     return (
-        <div className='bookmark'>
-            <Box className='mypageheader' sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab value={0} label="회원정보" {...a11yProps(0)} onClick={() => { goUserInfo(); } }/>
-                    <Tab value={1} label="북마크" {...a11yProps(1)} onClick={() => { goBookmark(1); } }/>
-                    <Tab value={2} label="자소서 관리" {...a11yProps(2)} onClick={() => { goManage(2); } } />
-                </Tabs>
-            </Box>
-            <Stack direction={'row'} spacing={2} className='mypagecontents'>
-              <User />
+      <div className='bookmark'>
+          <Stack direction={'row'} spacing={2} className='mypagecontents'>
+             <User/>   
+           <Box sx={{ flexGrow: 1, bgcolor:'#E6EAF3', display: 'flex', height: 224, marginTop: 10}}>
+             <Tabs
+               orientation="vertical"
+               variant="scrollable"
+               value={value}
+               onChange={handleChange}
+               aria-label="Vertical tabs example"
+               sx={{ borderRight: 1, borderColor: 'divider' }}>
+                <Tab label="북마크" value={0}  {...a11yProps(0)} onClick={() => { goBookmark(); }} />
+                <Tab label="자소서 관리" value={1}  {...a11yProps(1)} onClick={() => { goManage(1);}} />
+            </Tabs>
+          </Box>
               <Box sx={{ width: '100%', mb:10 }}>
                 <Paper sx={{ width: '100%' }}>
                   <Typography
