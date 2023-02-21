@@ -71,10 +71,11 @@ const Login: React.FC = () => {
             body: { id: id, pw: pw }
         })
         .then(function(response) {
-            if (dispatch(set({type: '0', id: id}))){
-             goUser_list()
+            dispatch(set({type: String(response.data.uno), id: id}))
+            if (response.data.uno == 0){
+                goUser_list()
             } else{
-            goHome()
+                goHome()
             }
         })
         .catch(function(error) {
