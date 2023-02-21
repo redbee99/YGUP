@@ -6,7 +6,7 @@ from backend.cover_letter.schemas import cover_letter_schema
 from sqlalchemy import and_
 import json
 def create_cover_letter(data):
-    """Given serialized data and create a ner User"""
+    """Given serialized data and create cover_letter"""
     res = db.session.query(User).filter(and_(User.id == data['id'], Company.cname == data['cname'])).all()
     if not res:
         return 'fail', 404
