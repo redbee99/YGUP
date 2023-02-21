@@ -7,34 +7,24 @@ import { RootState } from '../../reducers/index'
 import { set } from '../../reducers/modalReducer'
 import { BaseUrl } from '../../util/axiosApi';
 import React from "react";
-import {useSpring, animated} from 'react-spring';
-import {useDrag} from 'react-use-gesture';
+import { useNavigate } from 'react-router-dom';
 type Props = {
     content: string,
     _cashe: string
 }
 
-const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
-    /*modal drag*/
-    const modalDrag = useSpring({x:0, y:0});
-
-    const bindModaldrag = useDrag((params)=>{
-        modalDrag.x.set(params.offset[0]);
-        modalDrag.y.set(params.offset[1]);
-      });
-    /*modal Drag*/
-    
+const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
     const dispatch = useDispatch();
 
     const [cashe,] = React.useState(_cashe);
     const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
     const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
     const uno = useSelector((state: RootState) => state.userReducer.type);
-    const cname = useSelector((state: RootState) => state.companyReducer.cname);
 
     let id = ''
     let name = ''
     let email = ''
+    
 
     const onChangeId = (newValue:string) => {
         id = newValue
@@ -47,6 +37,10 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
     const onChangeEmail = (newValue:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         email = newValue.target.value
     }
+    const navigate = useNavigate();
+    const goCL_list = () => {
+        navigate('/company_basic_list')
+    };
 
     const confirm = () => {
         if(content == "아이디"){
@@ -132,6 +126,24 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
             .then(function(response) {
                 alert('탈퇴되었습니다.')
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
+            })
+            .catch(function(error) {
+                alert('실패되었습니다.')
+            })
+          }
+          else if(content == "기업 삭제"){
+            const url = BaseUrl + "/company/delete"
+            axios.post(url, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { uno: uno ,cname: cashe }
+            })
+            .then(function(response) {
+                alert('삭제되었습니다.')
+                dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
+                goCL_list()
             })
             .catch(function(error) {
                 alert('실패되었습니다.')
@@ -238,12 +250,8 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
         }
     }
 
-    if(content != "회원 삭제"){
+    if(content != "회원 삭제" ){
         return (
-<animated.div {...bindModaldrag()} style={{
-          x: modalDrag.x,
-          y: modalDrag.y
-        }}>
             <Box sx={{ display: 'flex',
                         position:'relative', 
                         width:400, 
@@ -283,7 +291,6 @@ const BasicModal: React.FC<Props> = ({ content, _cashe }:Props) => {
                 </Button>
             </Stack>
             </Box>
-            </animated.div>
         );
     }
     else{

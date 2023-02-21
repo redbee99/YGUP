@@ -23,8 +23,8 @@ const Header: React.FC = () => {
       navigate('/board_list')
   };
   
-  const goBoard_cl = () => {
-     navigate('/board_cl')
+  const goMylist = () => {
+    navigate('/board_mylist')
   };
 
   const goPredict = () => {
@@ -32,12 +32,11 @@ const Header: React.FC = () => {
   };
 
   const goUserinfo = () => {
-    
     if(currentUser == '0'){
       navigate('/user_list')
     }
     else{
-      navigate('/userinfo')
+    navigate('/manage')
     }
   };
 
@@ -49,6 +48,7 @@ const Header: React.FC = () => {
 
   const doLogOut = () => {
     dispatch(set({type: '', id: ''}));
+    goHome()
   };
 
   const LoginButton = () => {
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
               <Button variant="text" size="large" onClick={() => { goCompany() }}>기업</Button>
               </li>
               <li>
-              <Button variant="text" size="large" onClick={() => { goBoard_cl() }}>자소서</Button>
+              <Button variant="text" size="large" onClick={() => { goMylist() }}>자소서</Button>
               </li>
               <li>
               <Button variant="text" size="large" onClick={() => { goPredict() }}>합격예측</Button>

@@ -13,13 +13,11 @@ import { RootState } from '../../reducers'
 
 const Write: React.FC = () => {
     const navigate = useNavigate();
-    const goInfo = () => {
-        navigate('/info')
-    };
-   /* const currentUser = useSelector((state: RootState) => state.userReducer.id);
-    const [id] = React.useState(currentUser);
-    React.useEffect(()=>{
-        if(id != 'admin'){
+    
+    const currentUser = useSelector((state: RootState) => state.userReducer.type);
+    const [type] = React.useState(currentUser);
+    /*React.useEffect(()=>{
+        if(currentUser != '0'){
             alert('관리자만 가능합니다.')
             navigate('/')
         }
@@ -152,14 +150,13 @@ const Write: React.FC = () => {
                 courl: companyUrl,
                 uno: 0
             }
-        
-            /*const formData = new FormData();
-            formData.append('companyLogo', logofile);
-            formData.append('wcloud', wcfile);
-            formData.append('data', new Blob([JSON.stringify(data)], {
-                type: "application/json"
-            }));*/
-        
+            const goInfo = () => {
+                navigate('/info',{
+                    state :{ data: data.cname
+                      }
+                    })
+            };
+
             axios.post( BaseUrl+'/company/create'
                 //, formData
                 , {
@@ -171,7 +168,6 @@ const Write: React.FC = () => {
                     }
                 }
             ).then(function(response) {
-                dispatch(set({ cname: data['cname']}))
                 goInfo()
             }).catch(err => {
                 alert('정보를 다시 입력해 주세요')
@@ -230,9 +226,6 @@ const Write: React.FC = () => {
                         onChange={loadWcloudImage}
                     />
                 </Button> */}
-                <Button onClick={debugInfo}variant="contained" component="label" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', maxWidth:700}}>
-                        디버그
-                </Button>
                 <Button onClick={(event) => complete(event)} variant="contained" component="label" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343', maxWidth:700}}>
                         작성
                 </Button>

@@ -49,50 +49,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
           },
             }));           
            
-const User_list: React.FC = () => {
-
-  
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-  backgroundColor: alpha(theme.palette.common.white, 0.25),
-},
-marginLeft: 0,
-width: '100%',
-[theme.breakpoints.up('sm')]: {
-marginLeft: theme.spacing(1),
-width: 'auto',
-},
-}));
-     
-const SearchIconWrapper = styled('div')(({ theme }) => ({
- padding: theme.spacing(0, 2),
- height: '100%',
- position: 'absolute',
- pointerEvents: 'none',
- display: 'flex',
- alignItems: 'center',
- justifyContent: 'center',
-}));
-     
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-   color: 'inherit',
-   '& .MuiInputBase-input': {
-   padding: theme.spacing(1, 1, 1, 0),
-   // vertical padding + font size from searchIcon
-   paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-   transition: theme.transitions.create('width'),
-   width: '100%',
-   [theme.breakpoints.up('sm')]: {
-   width: '12ch',
-   '&:focus': {
-    width: '20ch',
-    },
- },
-},
-}));       
+const User_list: React.FC = () => {    
 
   const dispatch = useDispatch();
   const currentModal = useSelector((state: RootState) => state.modalReducer.state);
@@ -136,6 +93,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     setValue(newValue);
   };
 
+  
   const getUserList = async ()=>{
    const url = BaseUrl + "/user/user_list"
    const { data } = await axios.post(url, {
@@ -179,16 +137,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         </Stack>
           <Paper sx={{ width: '100%', mb: 2, marginTop:5 }} >
           <Stack direction="row">
-          <Box className='User_list'>
-          <Search>
-             <SearchIconWrapper>
-               <SearchIcon />
-             </SearchIconWrapper>
-             <StyledInputBase
-              placeholder="Search User…"
-              inputProps={{ 'aria-label': 'search' }}
-             />
-           </Search>
+           <Box sx={{marginLeft:3, marginTop:2, marginBottom:2 }}>
+          <Stack direction="row">
+          <input type="text" className='company_list' id="keyword"/>
+            <button type="button" className="search">
+                검색
+            </button>
+        </Stack>
           </Box>
         </Stack>
             <TableContainer component={Paper}>
@@ -202,13 +157,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
                    </TableRow>
                 </TableHead>
                 <TableBody>
-                   {Object.keys(data).map((value:any, index:any) => (
-                     <StyledTableRow key={data[value]['id']}>
-                      <StyledTableCell component="th" scope="row">{data[value]['id']}</StyledTableCell>
-                      <StyledTableCell>{data[value]['name']}</StyledTableCell>
-                      <StyledTableCell>{data[value]['email']}</StyledTableCell>
+                   {Object.keys(data).map((result:any, index:any) => (
+                     <StyledTableRow key={data[result]['id']}>
+                      <StyledTableCell component="th" scope="row">{data[result]['id']}</StyledTableCell>
+                      <StyledTableCell>{data[result]['name']}</StyledTableCell>
+                      <StyledTableCell>{data[result]['email']}</StyledTableCell>
                       <StyledTableCell>
-                        <IconButton onClick={() => { user_delete(data[value]['id']); }}>
+                        <IconButton onClick={() => { user_delete(data[result]['id']); }}>
                            <DeleteIcon fontSize="small"/>
                         </IconButton>
                       </StyledTableCell>

@@ -84,6 +84,13 @@ footer {
 }
 
 /* write start */
+.writeform {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+
 .Write {
   padding: 20px;
   padding-left: 30px;
@@ -91,11 +98,13 @@ footer {
   padding-bottom: 30px;
   border: none;
   font-size: 22px;
+  overflow: scroll;
 }
 
 .Write div {
   margin-top: 30px;
   margin-left: 50px;
+  overflow: scroll;
 }
 
 .company_basic_list {
@@ -361,13 +370,6 @@ footer {
   overflow: scroll;
 }
 
-.writeform {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  overflow: scroll;
-}
-
 .filebox label {
   display: inline-block;
   padding: .5em .75em;
@@ -423,22 +425,27 @@ footer {
 .company_list{
   height: 40px;
   border: 1px solid #434343;
-  border-radius: .25em;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  margin-top: 20px;
-  font-size: large;
+  width:calc(100% - 110px);
+  line-height:50px;
+  padding:0px 10px;
+  margin-right:20px;
 }
+
 /*company_basic_list end*/
 
 /*User_list start*/
+
 .User_list{
   height: 40px;
   border: 1px solid #434343;
-  border-radius: .25em;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  margin-top: 20px;
-  font-size: large;
+  width:calc(100% - 110px);
+  line-height:50px;
+  padding:0px 10px;
+  margin-right:20px;
+}
+
+.search{
+  padding:0px 10px;
 }
 /*User_list end*/
+
