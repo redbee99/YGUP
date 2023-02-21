@@ -17,7 +17,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import { RootState } from '../../reducers'
 import { set } from '../../reducers/modalReducer'
 import BasicModal from '../components/basicModal';
-import Bookmark from '../components/bookmark';
+import Bookmark_check from '../components/bookmark_check';
 
 const Item = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -28,7 +28,7 @@ const Item = styled(Card)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-  type ReadInfoState = {
+type ReadInfoState = {
     type : String
     cname: String
 }
@@ -64,7 +64,6 @@ const Info: React.FC = () => {
           return <div/>
         }
     }
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; 
 
     const getCompany = async ()=>{
         const url = BaseUrl + "/company/readcompany"
@@ -94,7 +93,7 @@ const Info: React.FC = () => {
             <div className='info'>
                 <ModalShow/>
                 <Box sx={{ display: 'flex',position:'relative', width:550, height: 700, margin:'auto', textAlign:'center', border: 1, borderRadius: 5, backgroundColor:'#ffffff', flexDirection: 'column',mt:5, padding: 5 }} >
-                <Bookmark/>
+                <Bookmark_check/>
                     <Stack  direction="row" spacing={2} alignItems="center" >
                     <Item sx={{margin:'auto'}}>
                         <Card>
