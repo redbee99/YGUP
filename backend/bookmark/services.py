@@ -1,5 +1,6 @@
 from backend import db
 from backend.bookmark.models import Bookmark
+from backend.company.models import Company
 from backend.user.models import User
 from backend.bookmark.schemas import bookmark_schema
 import uuid
@@ -38,4 +39,32 @@ def delete_bookmark(data):
     for r in res:
         db.session.delete(r)
         db.session.commit()
- 
+
+
+def read_bookmark(data):
+    """Read Bookmark"""
+    subquery = db.session.query(Bookmark.cname).filter(Bookmark.id == data['id']).all()
+
+    result = {}
+
+    for data in subquery:
+        temp = {}
+        temp['cname'] = data[0]
+        result[data[0]] = temp
+
+        result1 = {}
+
+        for data1 in db.session.query.with_entities(Company.cname, Company.address, Company.keyword,
+            Company.logo, Company.info).filter(Company.cname == temp['cname']).all():
+
+            temp1 = {}
+            temp1['cname'] = data1[0]
+            temp1['address'] = data1[1]
+            temp1['keyword'] = data1[2]
+            temp1['logo'] = data1[3]
+            temp1['info'] = data1[4]
+            result1[data1[0]] = temp1
+
+    return result1, 200
+
+
