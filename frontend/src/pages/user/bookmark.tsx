@@ -150,8 +150,7 @@ interface EnhancedTableProps {
 
 const Bookmark: React.FC = () => {
     const navigate = useNavigate();
-    const { state } = useLocation();
-    const [value, setValue] = React.useState(state);
+    const [value, setValue] = React.useState(0);
 
     const goBookmark = () => {
         navigate('/bookmark')
@@ -246,7 +245,7 @@ const Bookmark: React.FC = () => {
     return (
       <div className='bookmark'>
           <Stack direction={'row'} spacing={2} className='mypagecontents'>
-             <User/>   
+             <User/>
            <Box sx={{ flexGrow: 1, bgcolor:'#E6EAF3', display: 'flex', height: 224, marginTop: 10}}>
              <Tabs
                orientation="vertical"

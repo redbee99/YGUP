@@ -70,34 +70,13 @@ const Company_Basic_List: React.FC = () => {
     navigate('/write')
   }
 
-  const currentCompany = useSelector((state: RootState) => state.companyReducer.cname);
-  const [cname, setCnameValue] = React.useState(currentCompany);
-  const dispatch = useDispatch();
   const currentModal = useSelector((state: RootState) => state.modalReducer.state);
 
-
-  const info_delete = (_cname: string) => {
-    setCnameValue(_cname)
-    dispatch(set({state:'on', cashe1: cname, cashe2: ''}))
-  }
-
-  const goInfo = () => {
+  const goInfo = (data: string) => {
     navigate('/info',{
-       state :{ data: data['cname']
-         }
+       state :{ data: data }
        })
-     };
-
-  const ModalShow = () => {
-    if(currentModal == 'on'){
-        return <div className='info_delete_modal'>
-          <BasicModal content='기업 삭제' _cashe={cname} />
-        </div>
-    }
-    else{
-      return <div/>
-    }
-  }
+  };
 
   function a11yProps(index: number) {
       return {
@@ -131,7 +110,6 @@ if(isLoading){
 else{
   return (
     <div className='company_basic_list'>
-      <ModalShow/>
       <Stack direction={'row'} spacing={2} className='mypagecontents'>
          <User />    
       <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224, marginTop: 10}}>
@@ -181,16 +159,13 @@ else{
         </TableHead>
         <TableBody>
         {Object.keys(data).map((result:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={data[result]['cname']} onClick={() => { goInfo();}}>
+            <StyledTableRow hover role="checkbox" key={data[result]['cname']} onClick={() => { goInfo(data[result]['cname']) }}>
               <StyledTableCell component="th" scope="row">{data[result]['cname']}</StyledTableCell>
               <StyledTableCell>{data[result]['address']}</StyledTableCell>
               <StyledTableCell>{ data[result]['keyword'].split(',')[0]}</StyledTableCell>
               <StyledTableCell> { data[result]['keyword'].split(',')[1]} </StyledTableCell>
               <StyledTableCell>{ data[result]['keyword'].split(',')[2]} </StyledTableCell>
               <StyledTableCell> 
-              <IconButton onClick={() => { info_delete(data[result]['cname']); }}>
-                           <DeleteIcon fontSize="small"/>
-                        </IconButton>
               </StyledTableCell>
               <StyledTableCell> </StyledTableCell>
             </StyledTableRow>

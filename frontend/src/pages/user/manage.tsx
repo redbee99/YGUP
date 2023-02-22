@@ -209,8 +209,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 const Manage: React.FC = () => {
 
     const navigate = useNavigate();
-    const { state } = useLocation();
-    const [value, setValue] = React.useState(state);
+    const [value, setValue] = React.useState(1);
 
     const goBookmark = () => {
         navigate('/bookmark')
