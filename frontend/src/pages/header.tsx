@@ -62,7 +62,7 @@ const Header: React.FC = () => {
     else {
       return <Button variant="text" onClick={() => { doLogOut() }}>LogOut</Button>
     }
-  }
+  };
 
   return (
       <header className="App-header">

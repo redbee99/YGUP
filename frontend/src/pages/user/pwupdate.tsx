@@ -80,7 +80,7 @@ const PwUpdate: React.FC = () => {
             goUserinfo()         
         })
         .catch(function(error) {
-            alert('비밀번호를 확인해주세요')
+            alert('비밀번호 변경 실패')
         })
     };
 

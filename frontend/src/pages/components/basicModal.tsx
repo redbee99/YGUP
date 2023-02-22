@@ -25,7 +25,6 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
     let pw = ''
     let name = ''
     let email = ''
-    
 
     const onChangeId = (newValue:string) => {
         id = newValue

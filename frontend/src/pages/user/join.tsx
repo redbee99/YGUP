@@ -163,7 +163,7 @@ const Join: React.FC = (props) => {
            }
       })
       .then(function(response) {
-          alert('가입이 완료되었습니다.')
+          alert('가입이 완료되었습니다')
           goLogin()         
       })
       .catch(function(error) {

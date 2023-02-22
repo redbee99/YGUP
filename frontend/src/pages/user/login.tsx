@@ -143,7 +143,7 @@ const Login: React.FC = () => {
                                 }} 
                             onClick={() => { goJoin() }}
                     >
-                        회원 가입
+                        회원가입
                     </Button>
                 </Stack>
             </Box>

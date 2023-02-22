@@ -57,6 +57,7 @@ const UserInfo: React.FC = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
       };
+    
     const [value, setValue] = React.useState(0);
 
     const userinfo = async ()=>{

@@ -11,7 +11,7 @@ import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import { reset } from '../../reducers/headerReducer';
 
-// 다 날라가서 처음부터 다시 해야함
+// 다 날라가서 처음부터 다시 해야합니다.
 const UserInfo_Update: React.FC = () => {
 
     const navigate = useNavigate();
