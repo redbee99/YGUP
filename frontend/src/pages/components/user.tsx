@@ -24,7 +24,7 @@ function User(): React.ReactElement {
     const [id] = React.useState(currentUser);
 
     const goUserInfo = () => {
-        navigate('/userinfo')
+        navigate('/userinfo', {state : data})
     };
     
     const userinfo = async ()=>{

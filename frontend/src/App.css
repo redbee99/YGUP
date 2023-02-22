@@ -408,6 +408,20 @@ footer {
   z-index: 99999999;
 }
 
+.idoverlapcheck{
+  position: absolute;
+  top: 20px;
+  left: 40%;
+  z-index: 99999999;
+}
+
+.emailoverlapcheck{
+  position: absolute;
+  top: 20px;
+  left: 40%;
+  z-index: 99999999;
+}
+
 /*info_delete start*/
 .info_delete {
   position: absolute;

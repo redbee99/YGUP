@@ -22,12 +22,17 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
     const uno = useSelector((state: RootState) => state.userReducer.type);
 
     let id = ''
+    let pw = ''
     let name = ''
     let email = ''
     
 
     const onChangeId = (newValue:string) => {
         id = newValue
+    }
+
+    const onChangePw = (newValue:string) => {
+        pw = newValue
     }
 
     const onChangeName = (newValue:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -149,6 +154,24 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
                 alert('실패되었습니다.')
             })
           }
+        else if(content == "회원탈퇴") {
+            const url = BaseUrl + "/user/delete"
+            axios.post(url, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { id: cashe ,pw: pw }
+            })
+            .then(function(response) {
+                alert('탈퇴되었습니다.')
+                dispatch(set({state:'off', cashe1: '', cashe2: ''}))
+                navigate('/')
+            })
+            .catch(function(error) {
+                alert('실패되었습니다.')
+            })
+          }
         }
 
 
@@ -244,6 +267,19 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
                     </Box>
                 </div>
             );
+        } else if (content == "회원탈퇴") {
+            return (   
+                <Box sx={{ mt:10, mb:1 }} >
+                    <Typography sx={{ fontSize: 20, fontWeight:'bold' }} color="#434343" gutterBottom>
+                        회원탈퇴
+                    </Typography>
+                    <br/>
+                    <Box>
+                        <TextField variant="outlined" id="delete-id" value={currentModalCashe1} label="아이디" sx={{ mb:8, width:300, height:8}}/>
+                        <TextField variant="outlined" id="delete-pw" type='password' onChange={(newValue) => onChangePw(newValue.target.value)} label="비밀번호" sx={{ mt:2, width:300, height:10 }}/>
+                    </Box>
+                </Box>
+            )
         }
         else {
             return(<div/>)

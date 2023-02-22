@@ -1,11 +1,14 @@
-import { Box, Button, Stack, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, Stack, Tab, Tabs, Typography, CircularProgress } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { RootState } from '../../reducers'
 import { useQuery } from "react-query";
 import { BaseUrl } from '../../util/axiosApi';
+import BasicModal from '../components/basicModal';
+import * as setModal from '../../reducers/modalReducer'
 import axios from 'axios';
+import { set } from '../../reducers/modalReducer'
 
 
 const UserInfo: React.FC = () => {
@@ -13,7 +16,7 @@ const UserInfo: React.FC = () => {
     
     const currentUser = useSelector((state: RootState) => state.userReducer.id);
 
-    const [id] = React.useState(currentUser);
+    const [id,setIdValue] = React.useState(currentUser);
 
     React.useEffect(()=>{
         if(id == ''){
@@ -25,9 +28,36 @@ const UserInfo: React.FC = () => {
     const goPwUpdate = () => {
         navigate('/pwupdate')
     };
-    const goUserInfo_Update = () => {
-        navigate('/userinfo_update')
-    };
+
+    const dispatch = useDispatch();
+
+    const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+
+    const ModalShow = () => {
+        if(currentModal == "on"){
+            return <div className='idsearchModal'><BasicModal content="회원탈퇴" _cashe={String(id)} /></div>
+        }
+        else{
+            return <div/>
+        }
+    }
+
+    const DeleteModal = (_id: string) => {
+        setIdValue(_id)
+        dispatch(set({state:'on', cashe1: String(id), cashe2:''}))
+    }
+
+    function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+      };
+    const [value, setValue] = React.useState(0);
 
     const userinfo = async ()=>{
         const url = BaseUrl + "/user/userinfo"
@@ -47,6 +77,9 @@ const UserInfo: React.FC = () => {
         return <CircularProgress />
     }
     else{
+        const goUserInfo_Update = () => {
+            navigate('/userinfo_update', {state : data})
+        };
         return (
             <div className='userinfo'>
                 <Box sx={{ display: 'flex',
@@ -64,7 +97,7 @@ const UserInfo: React.FC = () => {
                         }} 
                 >    
                     <Typography sx={{fontSize: 32, pb:3 }}>회원 정보</Typography>
-                    <Stack  direction="row" spacing={2} alignItems="center"sx={{px:5}}> 
+                    <Stack  direction="row" spacing={2} alignItems="center"sx={{margin:'auto'}}> 
                         <Stack direction="column">
                             <Stack  direction="row" spacing={2} alignItems="center" sx={{py:2}} >
                                 <Typography sx={{fontSize: 20 }}>아이디 :</Typography>
@@ -97,20 +130,34 @@ const UserInfo: React.FC = () => {
                         </Stack>    
                     </Stack>
                     <br/>
-                    <Button variant="contained"  
+                    <Stack direction="row" spacing={2} alignItems="center" sx={{ margin:'auto' }} >
+                        <Button variant="contained"  
                             size="small" 
                             sx={{ width: 110, 
-                                mt:3, 
                                 mx:'auto', 
                                 color:'#ffff', 
                                 backgroundColor: '#26a69a', 
                                 borderColor:'#434343'
                                 }} 
                             onClick={() => { goUserInfo_Update() }}
-                    >
-                        회원정보 수정
-                    </Button>
+                        >
+                            회원정보 수정
+                        </Button>
+                        <Button variant="contained"  
+                            size="small" 
+                            sx={{ width: 110, 
+                                mx:'auto', 
+                                color:'#ffff', 
+                                backgroundColor: '#26a69a', 
+                                borderColor:'#434343'
+                                }} 
+                            onClick={() => { DeleteModal(data['result']['user']['id'])}}
+                        >
+                            회원탈퇴
+                        </Button>
+                    </Stack>
                 </Box>
+                <ModalShow/>
             </div>
         );
     }

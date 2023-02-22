@@ -35,8 +35,12 @@ const Header: React.FC = () => {
     if(currentUser == '0'){
       navigate('/user_list')
     }
+    else if(currentUser == '1'){
+      navigate('/bookmark')
+    }
     else{
-    navigate('/bookmark')
+      alert('로그인 후 이용해주세요')
+      goHome()
     }
   };
 
