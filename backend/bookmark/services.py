@@ -1,7 +1,7 @@
+from sqlalchemy import and_
 from backend import db
 from backend.bookmark.models import Bookmark
 from backend.company.models import Company
-from backend.user.models import User
 from backend.bookmark.schemas import bookmark_schema
 import uuid
 
@@ -40,31 +40,47 @@ def delete_bookmark(data):
         db.session.delete(r)
         db.session.commit()
 
+def userpage_read_bookmark(data):
+    """Userpage Read Bookmark"""
+    subquery = db.session.query(Bookmark.cname).filter(Bookmark.id == data['id']).subquery()
+    mainquery = db.session.query(Company).filter(Company.cname.in_(subquery))
+    result = {}
+    i=0
+    for data in mainquery:
+        temp = {}
+        temp['cname'] = data.cname
+        temp['address'] = data.address
+        temp['keyword'] = data.keyword
+        temp['logo_url'] = data.logo_url
+        temp['info'] = data.info
+        result[str(i)] = temp
+        i+=1
+
+    return result, 200
+
+def infopage_read_bookmark(data):
+    """Userpage Read Bookmark"""
+    subquery = db.session.query(Bookmark.cname).filter(Bookmark.id == data['id']).subquery()
+    mainquery = db.session.query(Company).filter(Company.cname.in_(subquery))
+    result = {}
+    i=0
+    for data in mainquery:
+        temp = {}
+        temp['cname'] = data.cname
+        temp['address'] = data.address
+        temp['keyword'] = data.keyword
+        temp['logo_url'] = data.logo_url
+        temp['info'] = data.info
+        result[str(i)] = temp
+        i+=1
+
+    return result, 200
 
 def read_bookmark(data):
     """Read Bookmark"""
-    subquery = db.session.query(Bookmark.cname).filter(Bookmark.id == data['id']).all()
+    bookmark = db.session.query(Bookmark).filter(and_(Bookmark.id == data['body'].get('id'), Bookmark.cname == data['body'].get('cname'))).first()
+    if not bookmark:
+        return 'error', 404
 
-    result = {}
-
-    for data in subquery:
-        temp = {}
-        temp['cname'] = data[0]
-        result[data[0]] = temp
-
-        result1 = {}
-
-        for data1 in db.session.query.with_entities(Company.cname, Company.address, Company.keyword,
-            Company.logo, Company.info).filter(Company.cname == temp['cname']).all():
-
-            temp1 = {}
-            temp1['cname'] = data1[0]
-            temp1['address'] = data1[1]
-            temp1['keyword'] = data1[2]
-            temp1['logo'] = data1[3]
-            temp1['info'] = data1[4]
-            result1[data1[0]] = temp1
-
-    return result1, 200
-
-
+    else :
+        return 'bookmark_button_on', 200
