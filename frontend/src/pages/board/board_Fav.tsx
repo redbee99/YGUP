@@ -1,163 +1,215 @@
-import { Box } from '@mui/system';
-import { useNavigate, useLocation } from 'react-router-dom';
 import React from 'react';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../reducers';
-import { set } from '../../reducers/headerReducer';
-import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import { useQuery } from 'react-query';
+import { Box, Stack } from '@mui/system';
+import SearchIcon from '@mui/icons-material/Search';
+import { Checkbox, CardActionArea, CardContent, CardMedia, CircularProgress, 
+        Divider,Tabs, Tab, Card, Grid,Typography } from '@mui/material';
 import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
-import Grid from '@mui/material/Unstable_Grid2';
-import { CardActionArea, CardContent, CardMedia, CircularProgress, Divider, Stack } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
-import ToggleButton from '@mui/material/ToggleButton';
-import { useState} from 'react';
-
+import { useQuery } from 'react-query';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers'
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { StarTwoTone } from '@mui/icons-material';
 
 const Board_Fav: React.FC = () => {
 
-  const getRank1CompanyList = async ()=>{
-    const url = BaseUrl + "/company/rank"
-    const { data } = await axios.post(url, {
-        headers: 
-        {
-            "Content-Type": "application/json"
-        },
-        body: { type: 'readcnt', f_all: 0 }
-    })
-    return data
-}
+const location = useLocation();
+const navigate = useNavigate();
+const { state } = useLocation();
+const [value, setValue] = React.useState(state);
+const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
+const currentId = useSelector((state: RootState) => state.userReducer.id);
+const [id] = React.useState(currentId);
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-const { isLoading, data, error } = useQuery('getRank1CompanyList', getRank1CompanyList);
- 
-  const currentPage = useSelector((state: RootState) => state.headerReducer.page);
-  console.log(currentPage);
-  const dispatch = useDispatch();
-  dispatch(set('company'));
+const goList = () => {
+  navigate('/board_list')
+};
+const goLike = (state: number) => {
+  navigate('/board_like', { state: state })
+};
+const goFav = (state: number) => {
+  navigate('/board_Fav', { state: state })
+};
 
-  const navigate = useNavigate();
-  const { state } = useLocation();
+const goInfo = (data: string) => {
+  navigate('/info',{
+     state :{ data: data }
+     })
+};
 
-  const goList = () => {
-    navigate('/board_list', { state: state })
+function a11yProps(index: number) {
+  return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
   };
-  const goLike = (state: number) => {
-    navigate('/board_like', { state: state })
-  };
-  const goFav = (state: number) => {
-    navigate('/board_Fav', { state: state })
-  };
-
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
-
-
-
-
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
-
- /*전체,실시간,인기기업 tab부분*/
-  function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-/*test
-const [bookMarkIcon, setbookMarkIcon] = useState(false);
-
-{bookMarkIcon === true ? (
-  BookmarkIcon
-) : (
-  BookmarkBorderIcon
-)}*/
-/* 북마크*/
-function StandaloneToggleButton() {
-  const [selected, setSelected] = React.useState(false);
-
-  return (
-    <ToggleButton
-      value="check"
-      selected={selected}
-      onChange={() => {
-        setSelected(!selected);
-      }}
-    >
-      <CheckIcon />
-    </ToggleButton>
-  );
 }
 
 const handleChange = (event: React.SyntheticEvent, newValue: number) => {
   setValue(newValue);
 };
 
-const [value, setValue] = React.useState(state);
+const CompanyList = async ()=>{
+  const url = BaseUrl + "/company/rank"
+  const { data } = await axios.post(url, {
+      headers: 
+      {
+          "Content-Type": "application/json"
+      },
+      body: {type: 'bookmark', f_all: 0 }
+  })
+  return data
+}
+/*
+const getBookmark = async ()=>{
+  const url = BaseUrl + "/bookmark/read"
+  const { data } = await axios.post(url, {
+      headers: 
+      {
+          "Content-Type": "application/json"
+      },
+      body: { id: id, cname: cname }
+  })
 
+  if(data == "bookmark_button_on"){
+      setisBookmarkSelectedValue(true)
+  }
+  else{
+      setisBookmarkSelectedValue(false)
+  }
+  return data
+}
+
+const createBookmark = async ()=>{
+  const url = BaseUrl + "/bookmark/create"
+  const url2 = BaseUrl + "/bookmark/delete"
+  let data = null
+
+  try {
+  // Check if bookmark exists
+  const checkUrl = BaseUrl + "/bookmark/read1"
+  const checkResponse = await axios.post(checkUrl, {
+      headers: 
+      {
+          "Content-Type": "application/json"
+      },
+      body: { id: id, cname: Cname }
+  })
+
+  
+      // Delete existing bookmark
+      const deleteResponse = await axios.post(url2, {
+          headers: 
+          {
+              "Content-Type": "application/json"
+          },
+          body: { id: id, cname: Cname }
+      })
+
+      data = deleteResponse.data;
+      
+  } catch(error) {
+      console.log(error);
+      // Create new bookmark
+      
+      const createResponse = await axios.post(url, {
+          headers: 
+          {
+              "Content-Type": "application/json"
+          },
+          body: { id: id, cname: Cname, state: '1'}
+      })
+
+      data = createResponse.data;
+  
+  }
+  return data
+} */
+
+const { isLoading: CompanyIsLoading, data: CompanyData, error } = useQuery('CompanyList', CompanyList);
+/* const { isLoading: BookmarkIsLoading, data: BookmarkData, error: BookmarkError } = useQuery('getBookmark', getBookmark); */  
+
+if( CompanyIsLoading ){
+  return <CircularProgress />
+}
+else{
   return (
     <div className='board_Fav'>  
-      <Box sx={{ backgroundColor:'#009688', border: '1px solid grey', height:60, pt:3}}>
-      </Box>
-      <Box sx={{ borderBottom: 2, borderColor: 'divider' }}>
+      <Box sx={{ backgroundColor:'#ffff', borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="전체" {...a11yProps(0)} onClick={() => { goList(); }}/>
+          <Tab label="전체" {...a11yProps(0)} onClick={() => {goList()}}/>
           <Tab label="실시간 급상승" {...a11yProps(1)} onClick={() => { goLike(1); }}/>
           <Tab label="인기 기업" {...a11yProps(2)} onClick={() => { goFav(2); }}/>
         </Tabs>
       </Box>
-      <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                        <Grid xs={2} sm={2} md={2}>
-                            <Card style={{ maxHeight:600 }}>
-                                <CardActionArea>
-                                    <CardContent>
-                                        <CardMedia
-                                            component="img"
-                                            sx={{ marginLeft:3, width: 200 ,height:300, align:'center', objectFit:"contain"}}
-                                            src=' '
-                                            alt="logo"/>
-                                    </CardContent>
-                                </CardActionArea>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div" align="center">
-                                            기업명        <StandaloneToggleButton/><BookmarkBorderIcon/>
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            기업주소
-                                        </Typography>
-                                        <Box sx={{ m: 2 }}>
-                                            <Stack direction="row" spacing={3}>
-                                                <Box borderRadius={1} sx={{ width:70, height:30,  backgroundColor:'#26a68a',border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ color:'white',fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
-                                                            키워드1
-                                                    </Typography>
-                                                </Box>
-                                                <Box borderRadius={1} sx={{ padding:'auto', width:70, height:30,  backgroundColor:'#26a68a',border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ color:'white',fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
-                                                            키워드2
-                                                    </Typography>
-                                                </Box>
-                                                <Box borderRadius={1} sx={{ width:70, height:30,  backgroundColor:'#26a68a',border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ color:'white',fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
-                                                            키워드3
-                                                    </Typography>
-                                                </Box>
-                                            </Stack>
-                                        </Box>
-                                    </CardContent>
-                            </Card>
-                        </Grid>
-                    </Grid>
-    </div>  
-    );
-  }
-export default Board_Fav;
+      <Box sx={{ flexGrow: 1, maxWidth: 1500, marginTop: 5 , mx:15, mb:15 }}>
+          <Grid container spacing={{xs: 3, md: 3}} columns={{ xs: 10, sm: 8, md: 10 }}>
+              {Object.keys(CompanyData).map((result:any, index:any) => (
+                  <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(CompanyData[result]['cname']) }}>
+                      <Card style={{ maxHeight:600 }}>
+                          <CardActionArea>
+                              <CardContent>
+                                <Checkbox 
+                                   sx={{ float: 'right'}} {...label}
+                                   icon={<BookmarkBorderIcon />} 
+                                   checkedIcon={<BookmarkIcon />}
+                                   checked={isBookmarkSelected}
+                                 />  
+                                  <CardMedia
+                                      component="img"
+                                      sx={{ marginLeft:3, width: 200 , align:'center', maxHeight:50, objectFit:"contain"}}
+                                      src={CompanyData[result]['logo_url']}
+                                      alt="logo"
+                                      />
+                              </CardContent>
+                              <CardContent>
+                                  <Typography gutterBottom variant="h5" component="div" align="center">
+                                      {CompanyData[result]['cname']}
+                                  </Typography>
+                                  <Typography variant="body2" color="text.secondary">
+                                      {CompanyData[result]['address']}
+                                  </Typography>
+                                  <Divider/>
+                                  <Box sx={{ m: 2 }}>
+                                      <Typography gutterBottom variant="body1" sx={{ fontSize:15 }}>
+                                          {CompanyData[result]['form']}
+                                      </Typography>
+                                      <Stack direction="row" spacing={3}>
+                                          <Box borderRadius={1} sx={{ width:50, height:30, border:"solid 1px black"}}>
+                                              <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                                  {
+                                                      CompanyData[result]['keyword'].split(',')[0]
+                                                  }
+                                              </Typography>
+                                          </Box>
+                                          <Box borderRadius={1} sx={{ padding:'auto', width:50, height:30, border:"solid 1px black"}}>
+                                              <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                                  {
+                                                      CompanyData[result]['keyword'].split(',')[1]
+                                                  }
+                                              </Typography>
+                                          </Box>
+                                          <Box borderRadius={1} sx={{ width:50, height:30, border:"solid 1px black"}}>
+                                              <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                                  {
+                                                      CompanyData[result]['keyword'].split(',')[2]
+                                                  }
+                                              </Typography>
+                                          </Box>
+                                      </Stack>
+                                  </Box>
+                              </CardContent>
+                          </CardActionArea>
+                      </Card>
+                  </Grid>
+              ))}
+              </Grid>
+          </Box>
+      </div>
+  );
+ }
+}
 
-
-
-
-
+export default Board_Fav ;

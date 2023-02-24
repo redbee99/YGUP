@@ -12,7 +12,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from "react-query";
 import { BaseUrl } from '../../util/axiosApi';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useSelector,useDispatch } from 'react-redux';
 import { RootState } from '../../reducers'
 import { set } from '../../reducers/modalReducer'
@@ -42,7 +42,7 @@ const Info: React.FC = () => {
     const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
     const state = location.state as {data:ReadInfoState};
     
-    //여기 날리고, axios로 readcompany다시 해서 return(data) 직렬화 해서 상수선언 다시하기
+    
     const Cname = state.data
     const goAdmin = () => {
         navigate('/company_basic_list')
@@ -95,7 +95,52 @@ const Info: React.FC = () => {
         }
         return data
     }
+    const createBookmark = async ()=>{
+        const url = BaseUrl + "/bookmark/create"
+        const url2 = BaseUrl + "/bookmark/delete"
+        let data = null
 
+        try {
+        // Check if bookmark exists
+        const checkUrl = BaseUrl + "/bookmark/read1"
+        const checkResponse = await axios.post(checkUrl, {
+            headers: 
+            {
+                "Content-Type": "application/json"
+            },
+            body: { id: id, cname: Cname }
+        })
+    
+        
+            // Delete existing bookmark
+            const deleteResponse = await axios.post(url2, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { id: id, cname: Cname }
+            })
+    
+            data = deleteResponse.data;
+            
+        } catch(error) {
+            console.log(error);
+            // Create new bookmark
+            
+            const createResponse = await axios.post(url, {
+                headers: 
+                {
+                    "Content-Type": "application/json"
+                },
+                body: { id: id, cname: Cname, state: '1'}
+            })
+    
+            data = createResponse.data;
+        
+        }
+        return data
+    }
+    
     const { isLoading: CompanyIsLoading, data: CompanyData, error: CompanyError } = useQuery('getCompany', getCompany);
     const { isLoading: BookmarkIsLoading, data: BookmarkData, error: BookmarkError } = useQuery('getBookmark', getBookmark);   
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; 
@@ -110,6 +155,7 @@ const Info: React.FC = () => {
               }
             })
           };
+   
         return (
             <div className='info'>
                 <ModalShow/>
@@ -120,6 +166,7 @@ const Info: React.FC = () => {
                             icon={<BookmarkBorderIcon />} 
                             checkedIcon={<BookmarkIcon />}
                             checked={isBookmarkSelected}
+                            onClick={() => { createBookmark()}}
                             />  
                     </Box>
                     <Stack  direction="row" spacing={2} alignItems="center" >
