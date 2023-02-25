@@ -8,8 +8,18 @@ import Typography from '@mui/material/Typography';
 import { BaseUrl } from '../util/axiosApi';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Home: React.FC = () => {
+
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  const goInfo = (data: string) => {
+    navigate('/info',{
+       state :{ data: data }
+       })
+  };
 
     const getRank1CompanyList = async ()=>{
         const url = BaseUrl + "/company/rank"
@@ -35,7 +45,7 @@ const Home: React.FC = () => {
                 <Typography sx={{fontSize:20, my:5}} textAlign='center'>실시간 급상승 검색 기업 top5 !</Typography>
                     <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
                     {Object.keys(data).map((value:any, index:any) => (
-                        <Grid xs={2} sm={2} md={2} key={index}>
+                        <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(data[value]['cname']) }}>
                             <Card style={{ maxHeight:400 }}>
                                 <CardActionArea>
                                     <CardContent>
