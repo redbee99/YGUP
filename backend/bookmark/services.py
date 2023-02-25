@@ -87,7 +87,7 @@ def read_bookmark1(data):
     """Read Bookmark1"""
     bookmark = db.session.query(Bookmark).filter(and_(Bookmark.id == data['body'].get('id'), Bookmark.cname == data['body'].get('cname'))).first()
     if not bookmark:
-        return 'error', 404
+        return 'error', 401
 
     else:
         return 'bookmark_button_on', 200
