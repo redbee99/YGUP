@@ -3,23 +3,27 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import PwValidation from '../components/pwvalidation';
+import { FormControl, InputLabel, List, ListItem, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../reducers/index'
 import { set } from '../../reducers/modalReducer'
 import BasicModal from '../components/basicModal';
 import { useState, useEffect } from 'react';
+import { BaseUrl } from '../../util/axiosApi';
+import axios from 'axios';
 
 const Join: React.FC = (props) => {
   const navigate = useNavigate();
   
-  const goLogin = () => {
-    
+  const goLogin = () => {   
     navigate('/login')
   };
+  const goJoin = () => {    
+    navigate('/join')
+  };
 
+  //modalcashe
   const currentModal = useSelector((state: RootState) => state.modalReducer.state);
   const currentModalCashe1 = useSelector((state: RootState) => state.modalReducer.cashe1);
   const currentModalCashe2 = useSelector((state: RootState) => state.modalReducer.cashe2);
@@ -34,7 +38,7 @@ const Join: React.FC = (props) => {
       setEmailValue(initialEmail)
     }
   }, [currentModalCashe2]);
-
+  
   const dispatch = useDispatch();
   
   type email_type = {
@@ -45,8 +49,9 @@ const Join: React.FC = (props) => {
   const initialEmail: email_type = {
     emailid: '',
     address: ''
-}
+  }
 
+  //user
   const [id, setIdValue] = useState(currentModalCashe1);
   const [name, setNameValue] = useState('');
   const [email, setEmailValue] = React.useState(initialEmail);
@@ -57,13 +62,34 @@ const Join: React.FC = (props) => {
       'hanmail.net',
       'nate.net',
   ];
+  const [pw, setpw] = useState({
+    pw1: '',
+    pw2: ''
+  })
+  //pwvalidation
+  const [validLength, setValidLength] = useState(false);
+  const [hasNumber, setHasNumber] = useState(false);
+  const [upperCase, setUpperCase] = useState(false);
+  const [lowerCase, setLowerCase] = useState(false);
+  const [specialChar, setSpecialChar] = useState(false);
+  const [match, setMatch] = useState(false);
+  const [requiredLength, setRequiredLength] = useState(5)
   
+  useEffect(() => {
+    setValidLength(pw.pw1.length >= requiredLength ? true : false);
+    setUpperCase(pw.pw1.toLowerCase() !== pw.pw1);
+    setLowerCase(pw.pw1.toUpperCase() !== pw.pw1);
+    setHasNumber(/\d/.test(pw.pw1));
+    setMatch(!!pw.pw1 && pw.pw1 === pw.pw2)
+    setSpecialChar(/[ `!@#$%^&*()_+\-=\]{};':"\\|,.<>?~]/.test(pw.pw1));
+  }, [pw, requiredLength]);
+
   const idChange = (newValue: string) => {
     setIdValue(newValue);
   }
 
   const nameChange = (newValue: string) => {
-    setIdValue(newValue);
+    setNameValue(newValue);
   }
 
   const emailIdChange = (newValue: string)=> {
@@ -73,6 +99,15 @@ const Join: React.FC = (props) => {
   const handleChange = (event: SelectChangeEvent) => {
     setEmailValue({ emailid:email.emailid ,address:event.target.value as string });
   };
+
+  //pwv
+  const inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
+    const { value, name } = event.target;
+    setpw
+    ({
+      ...pw,[name]: value
+    })
+  }
 
   //idcheckmodal
   const idOverlapCheck = () => {
@@ -85,7 +120,6 @@ const Join: React.FC = (props) => {
       alert('아이디를 입력해주세요')
     }
   }
-
   //emailcheckmodal
   const emailOverlapCheck = () => {
     if(email.emailid != '' && email.address != ''){
@@ -101,23 +135,42 @@ const Join: React.FC = (props) => {
   const ModalShow = () => {
     if(currentModal == "on"){
       if(modalType == 'id'){
-        return <div className='join_modal'>
-          <BasicModal content='아이디' _cashe={currentModalCashe1} />
-        </div>
-      }
+        return (
+          <div className='idoverlapcheck'>
+            <BasicModal content='아이디' _cashe={currentModalCashe1} />
+          </div>
+        )}
       else if(modalType == 'email'){
-        return <div className='join_modal'>
-          <BasicModal content='이메일' _cashe={currentModalCashe2} />
-        </div>
-      }
+        return (
+          <div className='emailoverlapcheck'>
+            <BasicModal content='이메일' _cashe={currentModalCashe2} />
+          </div>
+        )}
       else{
         return <div/>
       }
     }
-    else{
+    else {
       return <div/>
     }
   }
+
+  const join = () => {
+    const url = BaseUrl + "/user/join"
+      axios.post(url, {
+          headers:  { "Content-Type": "application/json" },
+          body: { id: id, name:name, email:currentModalCashe2, pw:pw.pw1
+           }
+      })
+      .then(function(response) {
+          alert('가입이 완료되었습니다')
+          goLogin()         
+      })
+      .catch(function(error) {
+          alert('회원정보를 확인해주세요')
+          goJoin()
+      })
+    };
 
     return (
         <div className='join'>
@@ -143,13 +196,53 @@ const Join: React.FC = (props) => {
                       size="small" 
                       sx={{ color:'#ffff', 
                             backgroundColor: '#26A689', 
-                            borderColor:'#434343'
-                          }} 
-                    >
+                            borderColor:'#434343' }} >
                       중복 확인
                     </Button>
                 </Stack>
-                <PwValidation/>
+                <Stack direction='row' spacing={2}>
+                  <Stack direction='column' spacing={2}>
+                    <TextField id="join-pw1" 
+                              label="비밀번호" 
+                              variant="outlined"
+                              type='password'
+                              size="small"  
+                              margin="normal" 
+                              sx={{ width: 300 }} 
+                              onChange={inputChange} 
+                              name="pw1"/>
+                    <TextField id="join-pw1" 
+                              label="비밀번호 확인" 
+                              type='password'
+                              variant="outlined" 
+                              size="small"  
+                              margin="normal" 
+                              sx={{ width: 300 }} 
+                              onChange={inputChange} 
+                              name="pw2"/> 
+                  </Stack>
+                  <Box sx={{ width:150, height:100}}>
+                    <List className='validationdesign' dense sx={{ fontSize:'10px' }}>
+                      <ListItem>
+                        5자리 이상: {validLength ? <Typography color='blue' sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+                      </ListItem>
+                      <ListItem>
+                        숫자 유무: {hasNumber ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+                      </ListItem>
+                      <ListItem>
+                        대문자: {upperCase ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+                      </ListItem>
+                      <ListItem>
+                        소문자: {lowerCase ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+                      </ListItem>
+                      <ListItem>비밀번호 일치: {match ? <Typography color='blue'sx={{ fontSize:'10px' }}>일치</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불일치</Typography>}
+                      </ListItem>
+                      <ListItem>
+                        특수문자: {specialChar ? <Typography color='blue'sx={{ fontSize:'10px' }}>만족</Typography> : <Typography color='red' sx={{ fontSize:'10px' }}>불만족</Typography>}
+                      </ListItem>
+                    </List>
+                  </Box>
+                </Stack>
                 <TextField id="join-name" label="이름" variant="outlined" size="small" margin="normal" sx={{ width: 200 }} onChange={(newValue) => nameChange(newValue.target.value)}/>
                 <br/>
                 <Stack  direction="row" spacing={3} >
@@ -179,23 +272,21 @@ const Join: React.FC = (props) => {
                       sx={{ color:'#ffff', 
                             backgroundColor: '#26A689', 
                             borderColor:'#434343',
-                            maxHeight: 30
-                          }} 
-                    >
+                            maxHeight: 30}}>
                       중복 확인
                     </Button>
                 </Stack>
                 <br/>
-                <Button variant="contained"  
-                        size="small" 
-                        sx={{ width: 100, 
-                              mt:3, mx:'auto', 
-                              color:'#ffff', 
-                              backgroundColor: '#26A689',
-                              borderColor:'#434343'
-                        }} 
-                        onClick={() => { goLogin() }}
-                >
+                <Button 
+                  variant="contained"  
+                  size="small" 
+                  sx={{ width: 100, 
+                        mt:3, mx:'auto', 
+                        color:'#ffff', 
+                        backgroundColor: '#26A689',
+                        borderColor:'#434343'
+                  }} 
+                  onClick={() => { join() }}>
                     회원 가입
                 </Button>
             </Box>

@@ -110,7 +110,7 @@ const Login: React.FC = () => {
                 <br/>
 
                 <TextField id="login-id" onChange={(newValue) => idChange(newValue.target.value)} label="아이디" variant="outlined" size="small" margin="normal"/>
-                <TextField id="login-pw" onChange={(newValue) => pwChange(newValue.target.value)} label="비밀번호" variant="outlined" size="small"  margin="normal"/>
+                <TextField id="login-pw" type='password' onChange={(newValue) => pwChange(newValue.target.value)} label="비밀번호" variant="outlined" size="small"  margin="normal"/>
                 <br/>
 
                 <Button variant="contained" 
@@ -143,7 +143,7 @@ const Login: React.FC = () => {
                                 }} 
                             onClick={() => { goJoin() }}
                     >
-                        회원 가입
+                        회원가입
                     </Button>
                 </Stack>
             </Box>

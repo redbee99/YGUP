@@ -19,12 +19,13 @@ import axios from 'axios';
 
 function User(): React.ReactElement {
     const navigate = useNavigate();
+
     const currentUser = useSelector((state: RootState) => state.userReducer.id);
 
     const [id] = React.useState(currentUser);
 
     const goUserInfo = () => {
-        navigate('/userinfo')
+        navigate('/userinfo', { state : data })
     };
     
     const userinfo = async ()=>{
