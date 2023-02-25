@@ -45,7 +45,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
     const goCL_list = () => {
         navigate('/company_basic_list')
     };
-
+ 
     const confirm = () => {
         if(content == "아이디"){
             const url = BaseUrl + "/user/overlapid"
@@ -85,7 +85,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
         }
         else if(content == "아이디 찾기"){
             const url = BaseUrl + "/user/idsearch"
-            axios.post(url, {
+            const {} = axios.post(url, {
                 headers: 
                 {
                     "Content-Type": "application/json"
@@ -93,13 +93,14 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
                 body: { name: name, email: email }
             })
             .then(function(response) {
-                alert('사용 가능한 이메일입니다.')
+                alert(response.data['id'])
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
             })
             .catch(function(error) {
-                alert('중복 가입자 입니다.')
+                alert('입력정보를 확인하세요.')
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
             })
+            
         }
         else if(content == "비밀번호 찾기"){
             const url = BaseUrl + "/user/pwsearch"
@@ -111,7 +112,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
                 body: { name: name, email: email, id: id }
             })
             .then(function(response) {
-                alert('사용 가능한 이메일입니다.')
+                alert(response.data['pw'])
                 dispatch(set({state:'off', cashe1: currentModalCashe1, cashe2: currentModalCashe2}))
             })
             .catch(function(error) {
