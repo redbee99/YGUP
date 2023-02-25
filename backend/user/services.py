@@ -7,24 +7,24 @@ import re
 
 def create_user(data):
     """Given serialized data and create a ner User"""
-    if not len(data['id']) >= 4 and len(data['id']) <= 10:
+    if not len(data['body'].get('id')) >= 4 and len(data['body'].get('id')) <= 10:
         return 'please id rule check', 505
-
-    if not len(data['password']) >= 5 and len(data['password']) <= 15:
+    '''
+    if not len(data['body'].get('pw')) >= 5 and len(data['body'].get('pw')) <= 15:
         return 'Check the password length', 505
 
-    if not re.findall('[0-9]+', data['password']) and not re.findall('[a-z]', data['password']) or not re.findall('[A-Z]', data['password']) :
+    if not re.findall('[0-9]+', data['body'].get('pw')) and not re.findall('[a-z]', data['body'].get('pw')) or not re.findall(
+            '[A-Z]', data['body'].get('pw')):
         return 'please password rule check', 505
 
-    if not re.findall('[`~!@#$%^&*(),<.>/?]+', data['password']):
+    if not re.findall('[`~!@#$%^&*(),<.>/?]+', data['body'].get('pw')):
         return 'At least 1 special character required', 505
 
-    if not data['password'] == data['chk_pwd']:
+    if not data['body'].get('pw') == data['body'].get('pw_chk'):
         return 'password and chk_pwd do not match', 505
-
-    del data["chk_pwd"]
-    data["uno"] = 1
-    user = user_schema.load(data)
+    '''
+    user = User(id=data['body'].get('id'), password=data['body'].get('pw'),
+                name=data['body'].get('name'), email=data['body'].get('email'), uno=1)
     db.session.add(user)
     db.session.commit()
     return user_schema.dump(user), 201

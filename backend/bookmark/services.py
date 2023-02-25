@@ -15,23 +15,21 @@ import uuid
 def create_bookmark(data):
     """Create Bookmark"""
     bkno = {'bkno': str(uuid.uuid1())}
-    data['body'].get('data').update(bkno)
-    res = db.session.query.with_entities(Bookmark.id, Bookmark.cname, Bookmark.state)\
-    .filter(Bookmark.id == data['body'].get('id') and Bookmark.cname == data['body'].get('cname')).first()
-    bookmark = Bookmark(bkno=data['body'].get('data').get('bkno'), id=data['body'].get('data').get('id'),
-                        cname=data['body'].get('data').get('cname'), state=data['body'].get('data').get('state'))
+    data['body'].update(bkno)
 
-    if not res:
+    #res = db.session.query(Bookmark).filter(and_(Bookmark.id == data['body'].get('id'),
+     #                                            Bookmark.cname == data['body'].get('cname'))).first()
+    bookmark = Bookmark(bkno=data['body'].get('bkno'), id=data['body'].get('id'),
+                        cname=data['body'].get('cname'), state=data['body'].get('state'))
 
-      db.session.add(bookmark)
-      db.session.commit()
+    db.session.add(bookmark)
+    db.session.commit()
 
     return bookmark_schema.dump(bookmark), 201
 
 def delete_bookmark(data):
     """Delete Bookmark"""
-    res = db.session.query.with_entities(Bookmark.id, Bookmark.cname) \
-        .filter(Bookmark.id == data['body'].get('id') and Bookmark.cname == data['body'].get('cname')).first()
+    res = db.session.query(Bookmark).filter(and_(Bookmark.id == data['body'].get('id'), Bookmark.cname == data['body'].get('cname'))).all()
 
     if not res:
         return 'fail', 404
@@ -83,4 +81,13 @@ def read_bookmark(data):
         return 'error', 404
 
     else :
+        return 'bookmark_button_on', 200
+
+def read_bookmark1(data):
+    """Read Bookmark1"""
+    bookmark = db.session.query(Bookmark).filter(and_(Bookmark.id == data['body'].get('id'), Bookmark.cname == data['body'].get('cname'))).first()
+    if not bookmark:
+        return 'error', 401
+
+    else:
         return 'bookmark_button_on', 200
