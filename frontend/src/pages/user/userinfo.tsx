@@ -47,19 +47,6 @@ const UserInfo: React.FC = () => {
         dispatch(set({state:'on', cashe1: String(id), cashe2:''}))
     }
 
-    function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-        };
-    }
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-      };
-    
-    const [value, setValue] = React.useState(0);
-
     const userinfo = async ()=>{
         const url = BaseUrl + "/user/userinfo"
         const { data } = await axios.post(url, {
