@@ -56,7 +56,7 @@ def delete_user(data):
 def update_user(data):
     """Update User"""
     res = db.session.query(User).filter(User.id == data['body'].get('id')).update(
-        {"email": data['email'], "name": data['name']})
+        {"email": data['body'].get('email'), "name": data['body'].get('name')})
 
     if not res:
         return 'fail', 505

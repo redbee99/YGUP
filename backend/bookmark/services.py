@@ -40,7 +40,7 @@ def delete_bookmark(data):
 
 def userpage_read_bookmark(data):
     """Userpage Read Bookmark"""
-    subquery = db.session.query(Bookmark.cname).filter(Bookmark.id == data['id']).subquery()
+    subquery = db.session.query(Bookmark.cname).filter(Bookmark.id == data['body'].get('id')).subquery()
     mainquery = db.session.query(Company).filter(Company.cname.in_(subquery))
     result = {}
     i=0
