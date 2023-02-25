@@ -1,6 +1,4 @@
 import * as React from 'react';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 import User from '../components/user';
 import { Box, Stack, Checkbox, CardActionArea, CardContent, CardMedia, CircularProgress, 
         Divider,Tabs, Tab, Card, Grid,Typography } from '@mui/material';
@@ -11,22 +9,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducers'
 
-type ReadInfoState = {
-  type : String
-  cname: String
-}
 
 const Bookmark: React.FC = () => {
 
-    const location = useLocation();
     const navigate = useNavigate();
     const [value, setValue] = React.useState(0);
     const currentId = useSelector((state: RootState) => state.userReducer.id);
     const [id, setIdValue] = React.useState(currentId);
-    const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-    const state = location.state as {data:ReadInfoState};
-    const Cname = state.data
 
     const goBookmark = () => {
         navigate('/bookmark')
@@ -65,76 +54,9 @@ const Bookmark: React.FC = () => {
    return data
  }
 
-const getBookmark = async ()=>{
-  const url = BaseUrl + "/bookmark/read"
-  const { data } = await axios.post(url, {
-      headers: 
-      {
-          "Content-Type": "application/json"
-      },
-      body: { id: id, cname: Cname }
-  })
-
-  if(data == "bookmark_button_on"){
-      setisBookmarkSelectedValue(true)
-  }
-  else{
-      setisBookmarkSelectedValue(false)
-  }
-  return data
-}
-
-/*
-const createBookmark = async ()=>{
-  const url = BaseUrl + "/bookmark/create"
-  const url2 = BaseUrl + "/bookmark/delete"
-  let data = null
-
-  try {
-  // Check if bookmark exists
-  const checkUrl = BaseUrl + "/bookmark/read1"
-  const checkResponse = await axios.post(checkUrl, {
-      headers: 
-      {
-          "Content-Type": "application/json"
-      },
-      body: { id: id, cname: Cname }
-  })
-
-  
-      // Delete existing bookmark
-      const deleteResponse = await axios.post(url2, {
-          headers: 
-          {
-              "Content-Type": "application/json"
-          },
-          body: { id: id, cname: Cname }
-      })
-
-      data = deleteResponse.data;
-      
-  } catch(error) {
-      console.log(error);
-      // Create new bookmark
-      
-      const createResponse = await axios.post(url, {
-          headers: 
-          {
-              "Content-Type": "application/json"
-          },
-          body: { id: id, cname: Cname, state: '1'}
-      })
-
-      data = createResponse.data;
-  
-  }
-  return data
-} */
-
 const { isLoading: BookmarkReadIsLoading, data: BookmarkReadData, error } = useQuery('BookmarkRead', BookmarkRead);
-const { isLoading: BookmarkIsLoading, data: BookmarkData, error: BookmarkError } = useQuery('getBookmark', getBookmark);  
 
-if( BookmarkReadIsLoading && BookmarkIsLoading ){
+if( BookmarkReadIsLoading ){
   return <CircularProgress />
 }
 else{
@@ -171,12 +93,6 @@ else{
                       <Card style={{ maxHeight:600 }}>
                           <CardActionArea>
                               <CardContent>
-                                <Checkbox 
-                                   sx={{ float: 'right'}} {...label}
-                                   icon={<BookmarkBorderIcon />} 
-                                   checkedIcon={<BookmarkIcon />}
-                                   checked={isBookmarkSelected}
-                                 />  
                                   <CardMedia
                                       component="img"
                                       sx={{ marginLeft:3, width: 200 , align:'center', maxHeight:50, objectFit:"contain"}}

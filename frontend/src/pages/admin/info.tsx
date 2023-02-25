@@ -19,6 +19,7 @@ import { set } from '../../reducers/modalReducer'
 import BasicModal from '../components/basicModal';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import * as setModal from '../../reducers/modalReducer'
 
 const Item = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -47,12 +48,15 @@ const Info: React.FC = () => {
     const goAdmin = () => {
         navigate('/company_basic_list')
     };
+    const dispatch = useDispatch();
     const currentModal = useSelector((state: RootState) => state.modalReducer.state);
     const [cname, setCnameValue] = React.useState('');
+    
 
     const info_delete = (_cname: string) => {
-      setCnameValue(_cname)
-    }
+        setCnameValue(_cname)
+        dispatch(set({state:'on', cashe1: cname, cashe2: ''}))
+      }
   
     const ModalShow = () => {
       if(currentModal == 'on'){
@@ -217,7 +221,6 @@ const Info: React.FC = () => {
                         </Button>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { info_delete(CompanyData['result']['company']['cname']); }}>
                             삭제
-                            {/*{info_delete(data['result']['company']['cname']);*/}
                         </Button>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goAdmin() }}>
                             확인
