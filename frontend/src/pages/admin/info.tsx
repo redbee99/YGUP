@@ -216,14 +216,14 @@ const Info: React.FC = () => {
                         </Card>
                     </Item>
                     <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
+                        <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goAdmin() }}>
+                            확인
+                        </Button>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goUpdate() }}>
                             수정
                         </Button>
                         <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { info_delete(CompanyData['result']['company']['cname']); }}>
                             삭제
-                        </Button>
-                        <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goAdmin() }}>
-                            확인
                         </Button>
                     </Stack>
                 </Box>

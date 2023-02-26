@@ -176,6 +176,7 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
 
 
     const DynamicContent = () => {
+
         if(content == "아이디"){
             return  <Box sx={{ mt:10, mb:15 }} >
                 <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
@@ -280,13 +281,59 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
                     </Box>
                 </Box>
             )
+        } else if (content == "기업 삭제") {
+            return (
+              <div className='Modal'>
+                <div className='Modal1' onClick={(e) => e.stopPropagation()}>
+                <Box sx={{ display: 'flex',
+                        
+                        
+                        textAlign:'center', 
+                        backgroundColor:'#ffffff', 
+                        flexDirection: 'column', 
+                        mt:5, mb:1 
+                }}>
+                    <button id="modalCloseBtn" onClick={() => dispatch(set({state:'off', cashe1:'', cashe2:''})) }>
+                          ✖
+                    </button>
+                   <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
+                                정말 삭제 하시겠습니까?
+                   </Typography>
+                   <hr className='login-idsearch_result-underline'/>
+            <Stack direction="row" spacing={2} sx={{ margin:'auto' }} >
+                <Button variant="contained"  
+                        size="small"
+                        onClick={confirm}
+                        sx={{ color:'#ffff', 
+                                backgroundColor: '#26A689', 
+                                borderColor:'#434343'
+                            }} 
+                >
+                    확인
+                </Button>
+                <Button
+                    onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
+                    variant="contained"  
+                    size="small" 
+                    sx={{ color:'#ffff', 
+                          backgroundColor: '#26A689',
+                          borderColor:'#434343'
+                        }} 
+                >
+                    취소
+                </Button>
+            </Stack>
+                </Box>
+                </div>
+              </div>
+            )
         }
         else {
             return(<div/>)
         }
     }
 
-    if(content != "회원 삭제" ){
+    if(content != "회원 삭제" && content != "기업 삭제" ){
         return (
             <Box sx={{ display: 'flex',
                         position:'relative', 
