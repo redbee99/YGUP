@@ -6,7 +6,7 @@ Model = db.Model
 class Cover_letter(Model):
     __tablename__ = "cover_letter"
 
-    clno = Column(db.Integer, primary_key=True)
+    clno = Column(db.String(100), primary_key=True)
     id = Column(db.String(20), nullable=False)
     cname = Column(db.String(100), nullable=False)
     content_1 = Column(db.Text)
