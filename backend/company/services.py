@@ -175,7 +175,6 @@ def rank_company(data):
 def read_company(data) :
     """Read Company"""
 
-
     company = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
     if not company:
