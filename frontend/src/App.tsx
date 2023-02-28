@@ -17,7 +17,7 @@ import IdSearch_Result from './pages/user/idsearch_result';
 import PwSearch from './pages/user/pwsearch';
 import PwSearch_Result from './pages/user/pwsearch_result';
 import Join from './pages/user/join';
-import PredictTest from './pages/user/predicttest';
+import Cl_Info from './pages/user/cl_info';
 import UserInfo from './pages/user/userinfo';
 import UserInfo_Update from './pages/user/userinfo_update';
 import PwUpdate from './pages/user/pwupdate';
@@ -57,7 +57,7 @@ const App: React.FC = () => {
       <Route path='/join' element={<Join />} />
       <Route path='/info' element={<Info />} />
       <Route path='/info_update' element={<Info_Update />} />
-      <Route path='/predicttest' element={<PredictTest />} />
+      <Route path='/cl_info' element={<Cl_Info />} />
       <Route path='/userinfo' element={<UserInfo />} />
       <Route path='/userinfo_update' element={<UserInfo_Update />} />
       <Route path='/pwupdate' element={<PwUpdate />} />

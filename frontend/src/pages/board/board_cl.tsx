@@ -12,22 +12,27 @@ import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers';
 
 const Board_cl: React.FC = () => {
 
   const navigate = useNavigate();
+  const currentId = useSelector((state: RootState) => state.userReducer.id);
+  const [id ] = React.useState(currentId);
+
   const goCl_write = () => {
     navigate('/cl_write')
   }
 
   const getCl_List = async ()=>{
-    const url = BaseUrl + "/cover_letter/read_all_cover_letter"
+    const url = BaseUrl + "/cover_letter/read_all"
     const { data } = await axios.post(url, {
         headers: 
         {
             "Content-Type": "application/json"
         },
-        body: { clno: 0 }
+        body: { id: id }
     })
     return data
 }
@@ -43,10 +48,10 @@ else{
             <Box sx={{ width: '100%' }}>
             <Typography sx={{fontSize:20, my:5}} textAlign='center'>최근 문서</Typography>
             <Box sx={{ width: '100%' }}>
-            <Card style={{ maxHeight:400 }}>
+            <Card style={{ maxHeight:400 }}  onClick={() => goCl_write()}>
                                 <CardActionArea>
                                     <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div" align="center" onClick={() => goCl_write()}>
+                                        <Typography gutterBottom variant="h5" component="div" align="center">
                                             새 자소서 작성
                                         </Typography>
                                         <Divider/>
@@ -54,19 +59,19 @@ else{
                                 </CardActionArea>
                             </Card>
             <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                    {Object.keys(data).map((value:any, index:any) => (
+                    {Object.keys(data).map((result:any, index:any) => (
                         <Grid xs={2} sm={2} md={2} key={index}>
                             <Card style={{ maxHeight:400 }}>
                                 <CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div" align="center">
-                                            {data[value]['cname']}
+                                            {data[result]['cname']}
                                         </Typography>
                                         <Typography gutterBottom variant="h5" color="text.secondary">
-                                            {data[value]['clname']}
+                                            {data[result]['clname']}
                                         </Typography>
                                         <Typography gutterBottom variant="h6" sx={{ fontSize:15 }}>
-                                                {data[value]['wdate']}
+                                                {data[result]['wdate']}
                                             </Typography>
                                         <Divider/>
                                     </CardContent>

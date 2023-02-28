@@ -12,8 +12,21 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducers';
+import { useNavigate } from 'react-router-dom';
 
 const Board_cl_check: React.FC = () => {
+
+   const currentId = useSelector((state: RootState) => state.userReducer.id);
+   const [id ] = React.useState(currentId);
+   const navigate = useNavigate();
+   
+   const goNewpredict = (data: string) => {
+    navigate('/predicttest',{
+       state :{ data: data }
+       })
+  };
 
   const getCl_List = async ()=>{
     const url = BaseUrl + "/cover_letter/read_all_cover_letter"
@@ -22,7 +35,7 @@ const Board_cl_check: React.FC = () => {
         {
             "Content-Type": "application/json"
         },
-        body: { clno: 0 }
+        body: { id: id }
     })
     return data
 }
@@ -36,20 +49,20 @@ else{
     return (
         <div className='board_cl_check'>
             <Box sx={{ width: '100%' }}>
-            <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                    {Object.keys(data).map((value:any, index:any) => (
-                        <Grid xs={2} sm={2} md={2} key={index}>
+            <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }} >
+                    {Object.keys(data).map((result:any, index:any) => (
+                        <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goNewpredict(data[result]['cname']) }}>
                             <Card style={{ maxHeight:400 }}>
                                 <CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div" align="center">
-                                            {data[value]['cname']}
+                                            {data[result]['cname']}
                                         </Typography>
                                         <Typography gutterBottom variant="h5" color="text.secondary">
-                                            {data[value]['clname']}
+                                            {data[result]['clname']}
                                         </Typography>
                                         <Typography gutterBottom variant="h6" sx={{ fontSize:15 }}>
-                                                {data[value]['wdate']}
+                                                {data[result]['wdate']}
                                             </Typography>
                                         <Divider/>
                                     </CardContent>
