@@ -286,8 +286,6 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
               <div className='Modal'>
                 <div className='Modal1' onClick={(e) => e.stopPropagation()}>
                 <Box sx={{ display: 'flex',
-                        
-                        
                         textAlign:'center', 
                         backgroundColor:'#ffffff', 
                         flexDirection: 'column', 

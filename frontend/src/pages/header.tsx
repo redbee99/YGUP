@@ -23,8 +23,8 @@ const Header: React.FC = () => {
       navigate('/board_list')
   };
   
-  const goMylist = () => {
-    navigate('/board_mylist')
+  const goCllist = () => {
+    navigate('/board_cl')
   };
 
   const goPredict = () => {
@@ -81,7 +81,7 @@ const Header: React.FC = () => {
               <Button variant="text" size="large" onClick={() => { goCompany() }}>기업</Button>
               </li>
               <li>
-              <Button variant="text" size="large" onClick={() => { goMylist() }}>자소서</Button>
+              <Button variant="text" size="large" onClick={() => { goCllist() }}>자소서</Button>
               </li>
               <li>
               <Button variant="text" size="large" onClick={() => { goPredict() }}>합격예측</Button>
