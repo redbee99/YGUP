@@ -1,11 +1,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { Stack, TextField, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { CircularProgress, Select, SelectChangeEvent } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios"
 import { BaseUrl } from '../../util/axiosApi';
@@ -15,9 +12,10 @@ import { useSelector } from 'react-redux';
 
 
 type ReadClInfoState = {
-    type : String
-    clno: String
+    type : string
+    clno: string
 } 
+
 const Cl_Info: React.FC = () => {
     const location = useLocation();
     const currentId = useSelector((state: RootState) => state.userReducer.id);
@@ -83,21 +81,21 @@ if( ClIsLoading ){
                     }}
             >
                 <Typography sx={{fontSize: 32, pb:3 }}>자기소개서</Typography>
-                <Typography>기업명 : { ClData['result']['cover_letter']['cname'] }</Typography>
+                <Typography>기업명 : {ClData['result']['cover_letter']['cname']}</Typography>
                 <Stack  direction="row" spacing={2} alignItems="start" padding={5} >
-                <Typography sx={{fontSize: 16, margin:'nomal', border:1,borderRadius: 5 }}>글 제목 : { ClData['result']['cover_letter']['clname'] }</Typography> 
+                <Typography sx={{fontSize: 16, margin:'nomal'}}>글 제목 : { ClData['result']['cover_letter']['clname'] }</Typography> 
                 </Stack>   
                 <Stack  direction="column" spacing={2} alignItems="start" padding={5} marginTop={-5}>
                     <Typography sx={{fontSize: 16, pb:3}}>1.지원 동기</Typography>
-                    <Typography sx={{fontSize: 16, pb:3, border:1,borderRadius: 5 }}> { ClData['result']['cover_letter']['content_1'] }</Typography>
+                    <Typography sx={{fontSize: 16, pb:3}}> { ClData['result']['cover_letter']['content_1'] }</Typography>
                 </Stack>
                 <Stack  direction="column" spacing={2} alignItems="start" padding={5}>
                     <Typography sx={{fontSize: 16, pb:3}}>2.성격 장-단점</Typography>
-                    <Typography sx={{fontSize: 16, pb:3, border:1,borderRadius: 5 }}> { ClData['result']['cover_letter']['content_2'] }</Typography>
+                    <Typography sx={{fontSize: 16, pb:3}}> { ClData['result']['cover_letter']['content_2'] }</Typography>
                 </Stack>
                 <Stack  direction="column" spacing={2} alignItems="start" padding={5}>
                     <Typography sx={{fontSize: 16, pb:3}}>3.업무 역량</Typography>
-                    <Typography sx={{fontSize: 16, pb:3, border:1,borderRadius: 5 }}> { ClData['result']['cover_letter']['content_3'] }</Typography>
+                    <Typography sx={{fontSize: 16, pb:3}}> { ClData['result']['cover_letter']['content_3'] }</Typography>
                 </Stack>       
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
                 <Button variant="contained"

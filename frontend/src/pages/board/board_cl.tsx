@@ -1,90 +1,94 @@
 import { Box,
-  Card, 
-  Typography,
-  CardActionArea, 
-  CardContent, 
-  CircularProgress, 
-  Divider, 
-  Stack } from '@mui/material';
-import * as React from 'react';
-import Grid from '@mui/material/Unstable_Grid2';
-import { BaseUrl } from '../../util/axiosApi';
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../reducers';
+    Card, 
+    Typography,
+    CardActionArea, 
+    CardContent, 
+    CircularProgress, 
+    Divider, 
+    Stack } from '@mui/material';
+  import * as React from 'react';
+  import Grid from '@mui/material/Unstable_Grid2';
+  import { BaseUrl } from '../../util/axiosApi';
+  import axios from 'axios';
+  import { useQuery } from 'react-query';
+  import { useNavigate } from 'react-router-dom';
+  import { useSelector } from 'react-redux';
+  import { RootState } from '../../reducers'
+  
+  const Board_cl: React.FC = () => {
 
-const Board_cl: React.FC = () => {
-
-  const navigate = useNavigate();
-  const currentId = useSelector((state: RootState) => state.userReducer.id);
-  const [id ] = React.useState(currentId);
-
-  const goCl_write = () => {
-    navigate('/cl_write')
+    const currentId = useSelector((state: RootState) => state.userReducer.id);
+    const [id] = React.useState(currentId);
+    const navigate = useNavigate();
+    const goCl_write = () => {
+      navigate('/cl_write')
+    }
+    const goCl_info = (data:string) => {
+      navigate('/cl_info',{
+        state :{ data: data }
+        })
+    }
+  
+    const getCl_List = async ()=>{
+      const url = BaseUrl + "/cover_letter/read_all"
+      const { data } = await axios.post(url, {
+          headers: 
+          {
+              "Content-Type": "application/json"
+          },
+          body: { id:id }
+      })
+      return data
   }
-
-  const getCl_List = async ()=>{
-    const url = BaseUrl + "/cover_letter/read_all"
-    const { data } = await axios.post(url, {
-        headers: 
-        {
-            "Content-Type": "application/json"
-        },
-        body: { id: id }
-    })
-    return data
-}
-
-const { isLoading, data, error } = useQuery('getCl_List', getCl_List);
-
-if(isLoading){
-    return <CircularProgress />
-}
-else{
-    return (
-        <div className='board_cl_check'>
-            <Box sx={{ width: '100%' }}>
-            <Typography sx={{fontSize:20, my:5}} textAlign='center'>최근 문서</Typography>
-            <Box sx={{ width: '100%' }}>
-            <Card style={{ maxHeight:400 }}  onClick={() => goCl_write()}>
-                                <CardActionArea>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div" align="center">
-                                            새 자소서 작성
-                                        </Typography>
-                                        <Divider/>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-            <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                    {Object.keys(data).map((result:any, index:any) => (
-                        <Grid xs={2} sm={2} md={2} key={index}>
-                            <Card style={{ maxHeight:400 }}>
-                                <CardActionArea>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div" align="center">
-                                            {data[result]['cname']}
-                                        </Typography>
-                                        <Typography gutterBottom variant="h5" color="text.secondary">
-                                            {data[result]['clname']}
-                                        </Typography>
-                                        <Typography gutterBottom variant="h6" sx={{ fontSize:15 }}>
-                                                {data[result]['wdate']}
-                                            </Typography>
-                                        <Divider/>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    ))}
-                    </Grid>
-               </Box>
-            </Box>
-        </div>
-    );
+  
+  const { isLoading, data, error } = useQuery('getCl_List', getCl_List);
+  
+  if(isLoading){
+      return <CircularProgress />
   }
-}
-
-export default Board_cl;
+  else{
+      return (
+          <div className='board_cl_check'>
+              <Box sx={{ width: '100%' }}>
+              <Typography sx={{fontSize:20, my:5}} textAlign='center'>최근 문서</Typography>
+              <Box sx={{ width: '100%' }}>
+              <Card style={{ maxHeight:400 }} onClick={() => goCl_write()}>
+                                  <CardActionArea>
+                                      <CardContent>
+                                          <Typography gutterBottom variant="h5" component="div" align="center" >
+                                              새 자소서 작성
+                                          </Typography>
+                                          <Divider/>
+                                      </CardContent>
+                                  </CardActionArea>
+                              </Card>
+              <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
+                      {Object.keys(data).map((result:any, index:any) => (
+                          <Grid xs={2} sm={2} md={2} key={index} onClick={() => goCl_info(data[result]['clno'])}>
+                              <Card style={{ maxHeight:400 }}>
+                                  <CardActionArea>
+                                      <CardContent>
+                                          <Typography gutterBottom variant="h5" component="div" align="center">
+                                              {data[result]['cname']}
+                                          </Typography>
+                                          <Typography gutterBottom variant="h5" color="text.secondary">
+                                              {data[result]['clname']}
+                                          </Typography>
+                                          <Typography gutterBottom variant="h6" sx={{ fontSize:15 }}>
+                                                  {data[result]['wdate']}
+                                              </Typography>
+                                          <Divider/>
+                                      </CardContent>
+                                  </CardActionArea>
+                              </Card>
+                          </Grid>
+                      ))}
+                      </Grid>
+                 </Box>
+              </Box>
+          </div>
+      );
+    }
+  }
+  
+  export default Board_cl;

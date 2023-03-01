@@ -15,14 +15,14 @@ import { RootState } from '../../reducers';
 import { useSelector } from 'react-redux';
 
 type ReadClInfoState = {
-    type : String
-    cname: String
-    clno: String
-    clname: String
-    wdate: String
-    content_1: String
-    content_2: String
-    content_3: String
+    type : string
+    cname: string
+    clno: string
+    clname: string
+    wdate: string
+    content_1: string
+    content_2: string
+    content_3: string
 }
 
 const Cl_Update: React.FC = () => {
@@ -53,27 +53,27 @@ const Cl_Update: React.FC = () => {
         return data
     }
     
-    const [company, setCompany] = React.useState('');
+    const [company, setCompany] = React.useState(state.data.cname);
     const handleChange = (event: SelectChangeEvent) => {
         setCompany(event.target.value as string);
     };
 
-    const [clName, setclNameValue] = React.useState('');
+    const [clName, setclNameValue] = React.useState(state.data.clname);
     const clnameChange = (newValue: string) => {
           setclNameValue(newValue);
      };
 
-    const [content1, setcontent1Value] = React.useState('');
+    const [content1, setcontent1Value] = React.useState(state.data.content_1);
     const content1Change = (newValue: string) => {
           setcontent1Value(newValue);
     };
 
-    const [content2, setcontent2Value] = React.useState('');
+    const [content2, setcontent2Value] = React.useState(state.data.content_2);
     const content2Change = (newValue: string) => {
           setcontent2Value(newValue);
     };
 
-    const [content3, setcontent3Value] = React.useState('');
+    const [content3, setcontent3Value] = React.useState(state.data.content_3);
     const content3Change = (newValue: string) => {
           setcontent3Value(newValue);
     };
@@ -83,6 +83,7 @@ const Cl_Update: React.FC = () => {
     const complete = (event: React.MouseEvent) => {
         const data = {
             id:id,
+            clno:clno,
             cname : company,
             clname: clName,
             content1: content1,
@@ -101,7 +102,7 @@ const Cl_Update: React.FC = () => {
                     }
                 }
             ).then(function(response) {
-                navigate('/cl_info', {state: data['cname']})
+                navigate('/cl_info', {state:{data: clno}})
             }).catch(err => {
                 alert('정보를 다시 입력해 주세요')
             });
@@ -136,7 +137,7 @@ if( CompanyIsLoading ){
                     <Select
                             labelId="demo-select-small"
                             id="demo-simple-select-standard"
-                            defaultValue = {'cname'}
+                            defaultValue = {cname}
                             value={company}
                             onChange={handleChange}
                             label="기업명"
