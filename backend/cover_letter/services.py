@@ -21,12 +21,12 @@ def create_cover_letter(data):
 
 def update_cover_letter(data):
     """Update cover_letter"""
-    res = db.session.query(Cover_letter).filter(Cover_letter.id == data['body'].get('id'),
-                                    Cover_letter.clno == data['body'].get('clno')).update(
+    res = db.session.query(Cover_letter).filter(Cover_letter.id == data['body'].get('data').get('id'),
+                                    Cover_letter.clno == data['body'].get('data').get('clno')).update(
         {
-        "cname": data['body'].get('cname'), "clname": data['body'].get('clname'),
-        "content_1": data['body'].get('content_1'), "content_2": data['body'].get('content_2'),
-        "content_3": data['body'].get('content_3'),"wdate": data['body'].get('wdate'),
+        "cname": data['body'].get('data').get('cname'), "clname": data['body'].get('data').get('clname'),
+        "content_1": data['body'].get('data').get('content1'), "content_2": data['body'].get('data').get('content2'),
+        "content_3": data['body'].get('data').get('content3'),"wdate": data['body'].get('data').get('wdate'),
         }
     )
     if not res:
@@ -69,7 +69,7 @@ def read_all_cover_letter(data):
         temp['clname'] = data[1]
         temp['wdate'] = data[2].strftime("%Y년 %m월 %d일 %H시 %M분 %S초")
         temp['clno'] = data[3]
-        result[data[0]] = temp
+        result[data[3]] = temp
 
     return result, 201
 
@@ -77,7 +77,7 @@ def read_all_cover_letter(data):
 def read_cover_letter(data) :
     """Read cover_letter"""
 
-    cover_letter = db.session.query(Cover_letter).filter(Cover_letter.clno == data['body'].get('clno')).all()
+    cover_letter = db.session.query(Cover_letter).filter(Cover_letter.clno == data['body'].get('clno'))
 
     if not cover_letter:
         return 'fail', 502
@@ -89,7 +89,6 @@ def read_cover_letter(data) :
         del temp['_sa_instance_state']
         del temp['wdate']
         del temp['id']
-        del temp['clno']
         result['cover_letter'] = temp
 
 
