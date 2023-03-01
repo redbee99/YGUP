@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { visuallyHidden } from '@mui/utils';
 import EditIcon from '@mui/icons-material/Edit';
 import User from '../components/user';
 import React from 'react';
@@ -26,6 +27,8 @@ import { Box,
          CircularProgress,
          Typography,
          alpha} from '@mui/material';
+
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${tableCellClasses.head}`]: {
@@ -58,8 +61,8 @@ const Manage: React.FC = () => {
     const goManage = (state: number) => {
         navigate('/manage',  { state: state })
     };
-    const goCl_Update = () => {
-      navigate('/cl_update')
+    const goCoverLetter_Update = () => {
+      navigate('/coverletter_update')
     };
 
     const goCl_Write = () => {
@@ -143,7 +146,7 @@ const Manage: React.FC = () => {
         </TableHead>
         <TableBody>
         {Object.keys(cldata).map((result:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={cldata[result]['cname']} onClick={() => { goClInfo(cldata[result]['clno']) }}>
+            <StyledTableRow hover role="checkbox" key={cldata[result]['cname']} onClick={() => { goClInfo(cldata[result]['cname']) }}>
               <StyledTableCell component="th" scope="row">{cldata[result]['cname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['clname']}</StyledTableCell>
               <StyledTableCell>{ cldata[result]['wdate'].split(',')[0]}</StyledTableCell>
@@ -152,7 +155,7 @@ const Manage: React.FC = () => {
                      color = "primary"
                      size = "small"
                      variant = "text"
-                     onClick = {() => { goCl_Update() }}
+                     onClick = {() => { goCoverLetter_Update() }}
                      sx={{ height:20 }} >
                      Edit
                   <IconButton aria-label="Edit" size="small" disabled color="primary" >
