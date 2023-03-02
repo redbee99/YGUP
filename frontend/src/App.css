@@ -430,6 +430,12 @@ footer {
   left: 40%;
   z-index: 99999999;
 }
+.cl_info_delete_modal{
+  position: absolute;
+  top: 20px;
+  left: 40%;
+  z-index: 99999999;
+}
 .Modal{
   position: fixed;
   top: 0;

@@ -1,18 +1,15 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { visuallyHidden } from '@mui/utils';
-import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
 import User from '../components/user';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import { useSelector} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { RootState } from '../../reducers'
 import { Box, 
          Tab, 
          Tabs,
-         IconButton, 
          Paper, 
          Stack,
          styled, 
@@ -25,10 +22,8 @@ import { Box,
          TableRow,
          Button,
          CircularProgress,
-         Typography,
-         alpha} from '@mui/material';
-
-
+         Typography } from '@mui/material';
+import BasicModal from '../components/basicModal';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${tableCellClasses.head}`]: {
@@ -54,17 +49,14 @@ const Manage: React.FC = () => {
 
     const navigate = useNavigate();
     const [value, setValue] = React.useState(1);
-
+    const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+  
     const goBookmark = () => {
         navigate('/bookmark')
     };
     const goManage = (state: number) => {
         navigate('/manage',  { state: state })
     };
-    const goCoverLetter_Update = () => {
-      navigate('/coverletter_update')
-    };
-
     const goCl_Write = () => {
       navigate('/cl_write')
     };  
@@ -107,7 +99,7 @@ const Manage: React.FC = () => {
   } 
   else {
     return (
-      <div className='manage'>   
+      <div className='manage'>  
             <Stack direction={'row'} spacing={2} className='mypagecontents' >
               <User />
               <Box sx={{ flexGrow: 1, bgcolor:'#E6EAF3', display: 'flex', height: 224, marginTop: 10}}>
@@ -139,30 +131,18 @@ const Manage: React.FC = () => {
             <StyledTableCell>기업명</StyledTableCell>
             <StyledTableCell>제목</StyledTableCell>
             <StyledTableCell>작성시간</StyledTableCell>
-            <StyledTableCell>수정</StyledTableCell>
+            <StyledTableCell> </StyledTableCell>
             <StyledTableCell> </StyledTableCell>
             <StyledTableCell> </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
         {Object.keys(cldata).map((result:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={cldata[result]['cname']} onClick={() => { goClInfo(cldata[result]['cname']) }}>
+            <StyledTableRow hover role="checkbox" key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'])}}>
               <StyledTableCell component="th" scope="row">{cldata[result]['cname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['clname']}</StyledTableCell>
-              <StyledTableCell>{ cldata[result]['wdate'].split(',')[0]}</StyledTableCell>
-              <StyledTableCell>
-               <Button
-                     color = "primary"
-                     size = "small"
-                     variant = "text"
-                     onClick = {() => { goCoverLetter_Update() }}
-                     sx={{ height:20 }} >
-                     Edit
-                  <IconButton aria-label="Edit" size="small" disabled color="primary" >
-                  <EditIcon fontSize="small"/>
-                  </IconButton>
-                </Button>  
-              </StyledTableCell>
+              <StyledTableCell>{cldata[result]['wdate'].split(',')[0]}</StyledTableCell>
+              <StyledTableCell></StyledTableCell>
               <StyledTableCell></StyledTableCell>
               <StyledTableCell></StyledTableCell>
             </StyledTableRow>

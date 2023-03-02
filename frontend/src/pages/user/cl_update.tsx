@@ -101,8 +101,8 @@ const Cl_Update: React.FC = () => {
                         'data': data
                     }
                 }
-            ).then(function(response) {
-                navigate('/cl_info', {state:{data: clno}})
+            ).then(res => {
+                navigate('/cl_info', {state: {data:clno}})
             }).catch(err => {
                 alert('정보를 다시 입력해 주세요')
             });

@@ -12,6 +12,8 @@ import rootReducer from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension'
 import Footer from './pages/footer';
 import { QueryClient, QueryClientProvider } from "react-query";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 
 const theme = createTheme({
   palette: {
@@ -30,12 +32,13 @@ const root = ReactDOM.createRoot(
 
 const store = createStore(rootReducer, composeWithDevTools());
 const queryClient = new QueryClient();
-
+const persistor = persistStore(store);
 
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
+       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Header/>
@@ -48,7 +51,8 @@ root.render(
             </main>
             <Footer/>
           </BrowserRouter>
-        </ThemeProvider>
+         </ThemeProvider>
+        </PersistGate>
       </Provider>
     </QueryClientProvider>
   </React.StrictMode>
