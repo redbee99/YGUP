@@ -8,28 +8,49 @@ import axios from "axios"
 import { BaseUrl } from '../../util/axiosApi';
 import { useQuery } from 'react-query';
 import { RootState } from '../../reducers';
-import { useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
+import BasicModal from '../components/basicModal';
+import { set } from '../../reducers/modalReducer';
 
 
 type ReadClInfoState = {
-    type : string
-    clno: string
+    type : String
+    clno: String
 } 
 
 const Cl_Info: React.FC = () => {
+
     const location = useLocation();
     const currentId = useSelector((state: RootState) => state.userReducer.id);
-    const [id ] = React.useState(currentId);
+    const [id] = React.useState(currentId);
     const state = location.state as {data:ReadClInfoState};
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+    const [clno, setClnoValue] = React.useState('');
 
     const Clno = state.data
     const goManage = () =>{
     navigate('/manage')
     }
+    const Clinfo_delete = (_clno: string) => {
+        setClnoValue(_clno)
+        dispatch(set({state:'on', cashe1: clno, cashe2: ''}))
+      }
+  
+    const ModalShow = () => {
+      if(currentModal == 'on'){
+          return <div className='cl_info_delete_modal'>
+            <BasicModal content='자소서 삭제' _cashe={clno} />
+          </div>
+      }
+      else{
+        return <div/>
+      }
+    }
     
-  const CompanyName = async ()=>{
-     const url = BaseUrl + "/cover_letter/read_one"
+  const CompanyName1 = async ()=>{
+    const url = BaseUrl + "/cover_letter/read_one"
     const { data } = await axios.post(url, {
          headers: 
          {
@@ -39,8 +60,8 @@ const Cl_Info: React.FC = () => {
      })
      return data
 }
- const { isLoading: ClIsLoading, data: ClData, error } = useQuery('CompanyName', CompanyName);
-if( ClIsLoading ){
+ const { isLoading: ClIsLoading, data: ClData, error } = useQuery('CompanyName1', CompanyName1);
+  if( ClIsLoading ){
     return <CircularProgress />
  }
   else{
@@ -52,6 +73,7 @@ if( ClIsLoading ){
          };
     return (
         <div className='predicttest'>
+            <ModalShow/> 
             <Box height={'40%'} sx={{mb:1}}>
                 <Stack
                     direction="column"
@@ -98,20 +120,17 @@ if( ClIsLoading ){
                     <Typography sx={{fontSize: 16, pb:3}}> { ClData['result']['cover_letter']['content_3'] }</Typography>
                 </Stack>       
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
-                <Button variant="contained"
-                        size="small" 
-                        sx={{ width: 100, 
-                              mt:3, mx:'auto', 
-                              color:'#ffff', 
-                              backgroundColor: '#26a69a', 
-                              borderColor:'#434343'
-                            }}
-                        onClick={() => {goManage();}}
-                >
-                    확인
+                <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} 
+                     onClick={() => { goClUpdate() }}>
+                  수정
                 </Button>
-                <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goClUpdate() }}>
-                            수정
+                <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} 
+                      onClick={() => { Clinfo_delete(ClData['result']['cover_letter']['clno']);}}>
+                  삭제
+                </Button>
+                <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}}
+                      onClick={() => {goManage();}}>
+                  확인
                 </Button>
                 </Stack>
             </Box>
