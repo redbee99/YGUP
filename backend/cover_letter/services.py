@@ -39,8 +39,7 @@ def update_cover_letter(data):
 def delete_cover_letter(data):
     """Delete Cover_letter"""
 
-    res = db.session.query(Cover_letter).filter(and_(Cover_letter.clno == data['clno'],
-          User.id == data['id'], Company.cname == data['cname'])).all()
+    res = db.session.query(Cover_letter).filter(Cover_letter.clno == data['body'].get('clno')).all()
 
     if not res:
         return 'fail', 404
