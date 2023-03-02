@@ -25,19 +25,18 @@ const UserInfo: React.FC = () => {
         }
     })
 
-    const goPwUpdate = () => {
-        navigate('/pwupdate')
-    };
 
     const dispatch = useDispatch();
 
     const currentModal = useSelector((state: RootState) => state.modalReducer.state);
+    const currentModal1 = useSelector((state: RootState) => state.modalReducer.state);
 
     const ModalShow = () => {
         if(currentModal == "on"){
             return <div className='idsearchModal'><BasicModal content="회원탈퇴" _cashe={String(id)} /></div>
-        }
-        else{
+        }else if(currentModal1 =="on1"){
+            return <div className='pwudateModal'><BasicModal content="비밀번호 변경" _cashe={String(id)} /></div>
+        }else{
             return <div/>
         }
     }
@@ -45,6 +44,10 @@ const UserInfo: React.FC = () => {
     const DeleteModal = (_id: string) => {
         setIdValue(_id)
         dispatch(set({state:'on', cashe1: String(id), cashe2:''}))
+    }
+
+    const Pwupdate  = () => {
+        dispatch(setModal.set({state:'on1', cashe1:'', cashe2:''}));
     }
 
     const userinfo = async ()=>{
@@ -102,7 +105,7 @@ const UserInfo: React.FC = () => {
                                             backgroundColor: '#26a69a', 
                                             borderColor:'#434343'
                                             }} 
-                                        onClick={() => { goPwUpdate() }}
+                                            onClick={() => { Pwupdate() }}
                                 >
                                     비밀번호 변경
                                 </Button>
