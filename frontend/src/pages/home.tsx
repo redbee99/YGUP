@@ -1,8 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import { CardActionArea, CardContent, CardMedia, CircularProgress, Divider, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import {Card, CardActionArea, CardContent, CardMedia, CircularProgress, Divider, Stack, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { BaseUrl } from '../util/axiosApi';
 import axios from 'axios';
