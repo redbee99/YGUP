@@ -181,18 +181,10 @@ def read_company(data) :
         return 'fail', 502
 
     result = {}
-    readcnt = company[0].readcnt
     for data in company:
         temp = data.__dict__
         del temp['_sa_instance_state']
         del temp['cno']
         result['company'] = temp
-        readcnt += 1
 
-    #########################조회수 + 1#########################
-
-    #db.session.close()
-    #db.session.query(Company).filter(Company.cname == data['cname']).update({"readcnt":readcnt})
-    #db.session.commit()
-
-    return {'result':result, 'readcnt':readcnt}, 200
+    return {'result':result}, 200

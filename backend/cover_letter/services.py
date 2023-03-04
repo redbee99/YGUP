@@ -5,7 +5,9 @@ from backend.cover_letter.models import Cover_letter
 from backend.cover_letter.schemas import cover_letter_schema
 from sqlalchemy import and_
 import uuid
-import json
+import konlpy
+from collections import Counter
+
 def create_cover_letter(data):
     """Given serialized data and create cover_letter"""
     clno = {'clno': str(uuid.uuid1())}
@@ -76,6 +78,13 @@ def read_all_cover_letter(data):
 def read_cover_letter(data) :
     """Read cover_letter"""
 
+    keyword_list = db.session.query(Company.keyword).filter(Company.cname == data['body'].get('cname'))
+    c_lst = str(list(keyword_list)[0]).replace("'", "").replace("(","").replace(")","").split(', ')
+    #c_list2 = keyword_list[0]
+    #c_list3 = str(c_list2).replace("'", "").replace("(","").replace(")","")
+    #c_list4 = c_list3.split(', ')
+
+
     cover_letter = db.session.query(Cover_letter).filter(Cover_letter.clno == data['body'].get('clno'))
 
     if not cover_letter:
@@ -90,5 +99,34 @@ def read_cover_letter(data) :
         del temp['id']
         result['cover_letter'] = temp
 
+    content=str(temp['content_1']+temp['content_2']+temp['content_3'])
+    filtered_content = content.replace('.', '').replace(',', '').replace("'", "").replace('·', ' ').replace('=','').replace('\n', '')
+    Okt = konlpy.tag.Okt()
+    Okt_morphs = Okt.pos(filtered_content)
+    Noun_words = []
+    for word, pos in Okt_morphs:
+        if pos == 'Noun':
+            Noun_words.append(word)
 
-    return {'result':result}, 200
+    words = [n for n in Noun_words if len(n) > 1]
+    c = Counter(words)
+
+    mylist = []
+    for i in c.most_common(30):
+        mylist.append(i[0])
+
+
+    new = []
+    cnt = 0
+    for i in c_lst:
+        for j in mylist:
+            if i == j:
+                new.append(i)
+                cnt += 1
+    word = list(set(c_lst) - set(new))
+    cnt1 = cnt/3*10
+
+    return {'result':result,'cnt1':cnt1,'c_lst':c_lst,'new':new,'word':word,'cnt':cnt }, 200
+
+
+
