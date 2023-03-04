@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { CardActionArea, CardContent, CardMedia, CircularProgress, Divider, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import Icon from '../img/logo.svg'
 import Typography from '@mui/material/Typography';
 import { BaseUrl } from '../util/axiosApi';
 import axios from 'axios';

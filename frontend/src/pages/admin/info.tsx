@@ -114,8 +114,6 @@ const Info: React.FC = () => {
             },
             body: { id: id, cname: Cname }
         })
-    
-        
             // Delete existing bookmark
             const deleteResponse = await axios.post(url2, {
                 headers: 
@@ -126,6 +124,7 @@ const Info: React.FC = () => {
             })
     
             data = deleteResponse.data;
+            setisBookmarkSelectedValue(false)
             
         } catch(error) {
             console.log(error);
@@ -140,6 +139,7 @@ const Info: React.FC = () => {
             })
     
             data = createResponse.data;
+            setisBookmarkSelectedValue(true)
         
         }
         return data
