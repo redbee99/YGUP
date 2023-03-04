@@ -297,101 +297,97 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
         } 
         else if(content == "회원 삭제" ) {
             return (
-                <div className='info_delete'>
-                    <Box sx={{ display: 'flex',
-                            position:'relative', 
-                            width:400, 
-                            height:400, 
-                            margin:'auto', 
-                            textAlign:'center', 
-                            border: 1, 
-                            borderRadius: 5, 
-                            backgroundColor:'#ffffff', 
-                            flexDirection: 'column', 
-                            mt:5 
-                            }}
-                    >
-                        <Box sx={{ my:10 }} >
-                            <Typography sx={{ fontSize: 20, fontWeight:'bold'}}>
-                                정말 삭제 하시겠습니까?
-                            </Typography>
-                        </Box>
-                        <hr className='info_delete_underline'/>
-                        <Stack direction="row" spacing={1} sx={{ margin:'auto' }} >
-                            <Button variant="outlined"  
-                                    size="small" 
-                                    sx={{ color:'#ffff', 
-                                        backgroundColor: '#5856D6', 
-                                        borderColor:'#434343'
-                                        }} 
-                                    onClick={() => confirm()}
-                            >
-                                삭제
-                            </Button>
-                            <Button
-                    onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
-                    variant="contained"  
-                    size="small" 
-                    sx={{ color:'#ffff', 
-                          backgroundColor: '#5856D6',
-                          borderColor:'#434343'
-                        }} 
-                >
-                    취소
-                </Button>
-                        </Stack>
-                    </Box>
+                <div className='Modal'>
+                  <div className='Modal1' onClick={(e) => e.stopPropagation()}>
+                  <Box sx={{ display: 'flex',
+  
+  
+                          textAlign:'center', 
+                          backgroundColor:'#ffffff', 
+                          flexDirection: 'column', 
+                          mt:5, mb:1 
+                  }}>
+                      <button id="modalCloseBtn" onClick={() => dispatch(set({state:'off', cashe1:'', cashe2:''})) }>
+                            ✖
+                      </button>
+                     <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
+                                  정말 삭제 하시겠습니까?
+                     </Typography>
+                     <hr className='login-idsearch_result-underline'/>
+              <Stack direction="row" spacing={2} sx={{ margin:'auto' }} >
+                  <Button variant="contained"  
+                          size="small"
+                          onClick={confirm}
+                          sx={{ color:'#ffff', 
+                                  backgroundColor: '#26A689', 
+                                  borderColor:'#434343'
+                              }} 
+                  >
+                      확인
+                  </Button>
+                  <Button
+                      onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
+                      variant="contained"  
+                      size="small" 
+                      sx={{ color:'#ffff', 
+                            backgroundColor: '#26A689',
+                            borderColor:'#434343'
+                          }} 
+                  >
+                      취소
+                  </Button>
+              </Stack>
+                  </Box>
+                  </div>
                 </div>
             );
         } 
         else if(content == "자소서 삭제") {
             return (
-                <div className='cl_info_delete'>
-                    <Box sx={{ display: 'flex',
-                            position:'relative', 
-                            width:400, 
-                            height:400, 
-                            margin:'auto', 
-                            textAlign:'center', 
-                            border: 1, 
-                            borderRadius: 5, 
-                            backgroundColor:'#ffffff', 
-                            flexDirection: 'column', 
-                            mt:5 
-                            }}
-                    >
-                        <Box sx={{ my:10 }} >
-                            <Typography sx={{ fontSize: 20, fontWeight:'bold'}}>
-                                정말 삭제 하시겠습니까?
-                            </Typography>
-                        </Box>
-                        <hr className='info_delete_underline'/>
-                        <Stack direction="row" spacing={1} sx={{ margin:'auto' }} >
-                            <Button variant="outlined"  
-                                    size="small" 
-                                    sx={{ color:'#ffff', 
-                                        backgroundColor: '#5856D6', 
-                                        borderColor:'#434343'
-                                        }} 
-                                    onClick={() => confirm()}
-                            >
-                                삭제
-                            </Button>
-                            <Button
-                    onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
-                    variant="contained"  
-                    size="small" 
-                    sx={{ color:'#ffff', 
-                          backgroundColor: '#5856D6',
-                          borderColor:'#434343'
-                        }} 
-                >
-                    취소
-                </Button>
-                        </Stack>
-                    </Box>
-                </div>
-            );
+                    <div className='Modal'>
+                      <div className='Modal1' onClick={(e) => e.stopPropagation()}>
+                      <Box sx={{ display: 'flex',
+      
+      
+                              textAlign:'center', 
+                              backgroundColor:'#ffffff', 
+                              flexDirection: 'column', 
+                              mt:5, mb:1 
+                      }}>
+                          <button id="modalCloseBtn" onClick={() => dispatch(set({state:'off', cashe1:'', cashe2:''})) }>
+                                ✖
+                          </button>
+                         <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
+                                      정말 삭제 하시겠습니까?
+                         </Typography>
+                         <hr className='login-idsearch_result-underline'/>
+                  <Stack direction="row" spacing={2} sx={{ margin:'auto' }} >
+                      <Button variant="contained"  
+                              size="small"
+                              onClick={confirm}
+                              sx={{ color:'#ffff', 
+                                      backgroundColor: '#26A689', 
+                                      borderColor:'#434343'
+                                  }} 
+                      >
+                          확인
+                      </Button>
+                      <Button
+                          onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
+                          variant="contained"  
+                          size="small" 
+                          sx={{ color:'#ffff', 
+                                backgroundColor: '#26A689',
+                                borderColor:'#434343'
+                              }} 
+                      >
+                          취소
+                      </Button>
+                  </Stack>
+                      </Box>
+                      </div>
+                    </div>
+                  );
         } 
         else if (content == "회원탈퇴") {
             return (   
@@ -421,6 +417,53 @@ const BasicModal: React.FC<Props> = ({content, _cashe }:Props) => {
                 </Box>
             );
             }
+            else if (content == "기업 삭제") {
+                return (
+                  <div className='Modal'>
+                    <div className='Modal1' onClick={(e) => e.stopPropagation()}>
+                    <Box sx={{ display: 'flex',
+    
+    
+                            textAlign:'center', 
+                            backgroundColor:'#ffffff', 
+                            flexDirection: 'column', 
+                            mt:5, mb:1 
+                    }}>
+                        <button id="modalCloseBtn" onClick={() => dispatch(set({state:'off', cashe1:'', cashe2:''})) }>
+                              ✖
+                        </button>
+                       <Typography sx={{ fontSize: 20, fontWeight:'bold', mb:5}}>
+                                    정말 삭제 하시겠습니까?
+                       </Typography>
+                       <hr className='login-idsearch_result-underline'/>
+                <Stack direction="row" spacing={2} sx={{ margin:'auto' }} >
+                    <Button variant="contained"  
+                            size="small"
+                            onClick={confirm}
+                            sx={{ color:'#ffff', 
+                                    backgroundColor: '#26A689', 
+                                    borderColor:'#434343'
+                                }} 
+                    >
+                        확인
+                    </Button>
+                    <Button
+                        onClick={ () => dispatch(set({state:'off', cashe1:'', cashe2:''})) }
+                        variant="contained"  
+                        size="small" 
+                        sx={{ color:'#ffff', 
+                              backgroundColor: '#26A689',
+                              borderColor:'#434343'
+                            }} 
+                    >
+                        취소
+                    </Button>
+                </Stack>
+                    </Box>
+                    </div>
+                  </div>
+                )
+            } 
             else {
                 return(<div/>)
             }
