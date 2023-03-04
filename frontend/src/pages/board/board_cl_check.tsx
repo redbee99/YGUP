@@ -2,11 +2,9 @@ import { Box,
          Card, 
          Typography,
          CardActionArea, 
-         CardContent, 
-         CardMedia, 
+         CardContent,  
          CircularProgress, 
-         Divider, 
-         Stack } from '@mui/material';
+         Divider} from '@mui/material';
 import * as React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import { BaseUrl } from '../../util/axiosApi';
@@ -29,7 +27,7 @@ const Board_cl_check: React.FC = () => {
   };
 
   const getCl_List = async ()=>{
-    const url = BaseUrl + "/cover_letter/read_all_cover_letter"
+    const url = BaseUrl + "/cover_letter/read_all"
     const { data } = await axios.post(url, {
         headers: 
         {
@@ -51,7 +49,7 @@ else{
             <Box sx={{ width: '100%' }}>
             <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }} >
                     {Object.keys(data).map((result:any, index:any) => (
-                        <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goNewpredict(data[result]['cname']) }}>
+                        <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goNewpredict(data[result]['clno']) }}>
                             <Card style={{ maxHeight:400 }}>
                                 <CardActionArea>
                                     <CardContent>

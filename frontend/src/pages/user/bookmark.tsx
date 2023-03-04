@@ -1,11 +1,11 @@
 import * as React from 'react';
 import User from '../components/user';
-import { Box, Stack, Checkbox, CardActionArea, CardContent, CardMedia, CircularProgress, 
+import { Box, Stack, CardActionArea, CardContent, CardMedia, CircularProgress, 
         Divider,Tabs, Tab, Card, Grid,Typography } from '@mui/material';
 import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducers'
 
@@ -76,21 +76,16 @@ else{
                 <Tab label="자소서 관리" value={1}  {...a11yProps(1)} onClick={() => { goManage(1);}} />
             </Tabs>
           </Box>
-          <Box sx={{ flexGrow: 1, maxWidth: 1500, marginTop: 5 , mx:15, mb:15 }}>
-            <Typography
-                      sx={{ flex: '1 1 100%' }}
-                      variant="h6"
-                      id="tableTitle"
-                      component="div"
-                      marginLeft={3}
-                      paddingTop={2}
-                      paddingBottom={2} >
-                      북마크 기업
-                    </Typography>
-          <Grid container spacing={{xs: 3, md: 3}} columns={{ xs: 10, sm: 8, md: 10 }}>
+           <Box sx={{ width: '100%' }} >
+             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h5" marginTop={3} marginLeft={3} gutterBottom>
+              북마크 기업
+              </Typography>
+            </Stack>
+          <Grid container spacing={20} columns={{ xs: 10, sm: 8, md: 10 }}>
               {Object.keys(BookmarkReadData).map((result:any, index:any) => (
                   <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(BookmarkReadData[result]['cname']) }}>
-                      <Card style={{ maxHeight:600 }}>
+                      <Card style={{width:250, height:250, marginLeft: 50, marginTop:3, marginBottom: 20}}>
                           <CardActionArea>
                               <CardContent>
                                   <CardMedia
@@ -102,15 +97,15 @@ else{
                               </CardContent>
                               <CardContent>
                                   <Typography gutterBottom variant="h5" component="div" align="center">
-                                      {BookmarkReadData[result]['cname']}
+                                    기업명:  {BookmarkReadData[result]['cname']}
                                   </Typography>
                                   <Typography variant="body2" color="text.secondary">
-                                      {BookmarkReadData[result]['address']}
+                                     주소: {BookmarkReadData[result]['address']}
                                   </Typography>
                                   <Divider/>
                                   <Box sx={{ m: 2 }}>
                                       <Typography gutterBottom variant="body1" sx={{ fontSize:15 }}>
-                                          {BookmarkReadData[result]['form']}
+                                        정보:  {BookmarkReadData[result]['form']}
                                       </Typography>
                                       <Stack direction="row" spacing={3}>
                                           <Box borderRadius={1} sx={{ width:50, height:30, border:"solid 1px black"}}>

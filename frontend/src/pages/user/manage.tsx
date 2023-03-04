@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { BaseUrl } from '../../util/axiosApi';
 import axios from 'axios';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import { useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import { RootState } from '../../reducers'
 import { Box, 
          Tab, 
@@ -23,7 +23,6 @@ import { Box,
          Button,
          CircularProgress,
          Typography } from '@mui/material';
-import BasicModal from '../components/basicModal';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${tableCellClasses.head}`]: {
@@ -61,9 +60,9 @@ const Manage: React.FC = () => {
       navigate('/cl_write')
     };  
 
-    const goClInfo = (data: string) => {
+    const goClInfo = (data: string, data1: string) => {
       navigate('/cl_info',{
-        state: {data: data}
+        state: {data: data, data1: data1}
       })
     }
 
@@ -138,7 +137,7 @@ const Manage: React.FC = () => {
         </TableHead>
         <TableBody>
         {Object.keys(cldata).map((result:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'])}}>
+            <StyledTableRow hover role="checkbox" key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'],cldata[result])}}>
               <StyledTableCell component="th" scope="row">{cldata[result]['cname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['clname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['wdate'].split(',')[0]}</StyledTableCell>
