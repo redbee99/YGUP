@@ -30,7 +30,8 @@ cl_read_all = api.model(
 
 cl_read_one = api.model(
     "Cover_letter_read", {
-       "clno": fields.String
+       "clno": fields.String,
+       "cname": fields.String
     }
 
 )
