@@ -16,28 +16,31 @@ import { set } from '../../reducers/modalReducer';
 type ReadClInfoState = {
     type : String
     clno: String
+    cname : String
 } 
 
 const Cl_Info: React.FC = () => {
-
     const location = useLocation();
     const currentId = useSelector((state: RootState) => state.userReducer.id);
     const [id] = React.useState(currentId);
-    const state = location.state as {data:ReadClInfoState};
+    const state = location.state as {data:ReadClInfoState,data1:ReadClInfoState};
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentModal = useSelector((state: RootState) => state.modalReducer.state);
     const [clno, setClnoValue] = React.useState('');
 
     const Clno = state.data
+    const Cname = state.data1
+
     const goManage = () =>{
     navigate('/manage')
     }
+
     const Clinfo_delete = (_clno: string) => {
-        setClnoValue(_clno)
-        dispatch(set({state:'on', cashe1: clno, cashe2: ''}))
-      }
-  
+      setClnoValue(_clno)
+      dispatch(set({state:'on', cashe1: clno, cashe2: ''}))
+    }
+
     const ModalShow = () => {
       if(currentModal == 'on'){
           return <div className='cl_info_delete_modal'>
@@ -48,7 +51,7 @@ const Cl_Info: React.FC = () => {
         return <div/>
       }
     }
-    
+
   const CompanyName1 = async ()=>{
     const url = BaseUrl + "/cover_letter/read_one"
     const { data } = await axios.post(url, {
@@ -56,7 +59,7 @@ const Cl_Info: React.FC = () => {
          {
             "Content-Type": "application/json"
          },
-          body: {clno: Clno}
+          body: {clno: Clno, cname : Cname}
      })
      return data
 }
@@ -73,17 +76,18 @@ const Cl_Info: React.FC = () => {
          };
     return (
         <div className='predicttest'>
-            <ModalShow/> 
-            <Box height={'40%'} sx={{mb:1}}>
+           <ModalShow/> 
+            <Box height={'40%'} sx={{fontSize: 32,mb:1}}>
                 <Stack
                     direction="column"
                     justifyContent="center"
                     alignItems="center"
-                    spacing={2}
+                    spacing={4}
                     sx={{mt:5}}
                 >
-                    <Typography>합격 예측 기업 : 확률%</Typography>
-                    <Box>키워드 단어들</Box>
+                    <Typography sx={{fontSize: 32}}>{ClData['result']['cover_letter']['cname']} 기업</Typography>
+                    <Typography sx={{fontSize: 32}}> 합격률(키워드 예측): {ClData['cnt1']+'%'}</Typography>
+                    <Typography sx={{fontSize: 32}}>내가 쓴 키워드 : {ClData['new']+' '+ClData['cnt']+'개'} </Typography>
                 </Stack>
             </Box>
             <Box sx={{ display: 'flex',

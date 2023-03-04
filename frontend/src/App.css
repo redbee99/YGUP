@@ -329,7 +329,7 @@ footer {
   width: 100%;
   overflow: scroll;
 }
-.board_MyList {
+.board_cl {
   background-color: #E6EAF3;
   position: fixed;
   height: 100%;
@@ -342,7 +342,7 @@ footer {
   height: 100%;
   width: 100%; 
 }
-.board_mylist_chek{
+.board_cl_chek{
   background-color: #E6EAF3;
   position: fixed;
   height: 100%;

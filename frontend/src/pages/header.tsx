@@ -24,7 +24,17 @@ const Header: React.FC = () => {
   };
   
   const goCllist = () => {
-    navigate('/board_cl')
+    if(currentUser == '0'){
+      alert('관리자는 이용 할 수 없습니다.')
+      navigate('/board_cl')
+    }
+    else if(currentUser == '1'){
+      navigate('/board_cl')
+    }
+    else{
+      alert('로그인 후 이용해주세요.')
+      goLogin()
+    }
   };
 
   const goPredict = () => {

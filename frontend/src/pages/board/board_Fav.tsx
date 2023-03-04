@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Stack } from '@mui/system';
-import SearchIcon from '@mui/icons-material/Search';
 import { Checkbox, CardActionArea, CardContent, CardMedia, CircularProgress, 
         Divider,Tabs, Tab, Card, Grid,Typography } from '@mui/material';
 import { BaseUrl } from '../../util/axiosApi';
@@ -11,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../reducers'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { StarTwoTone } from '@mui/icons-material';
+
 
 const Board_Fav: React.FC = () => {
 
