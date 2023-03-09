@@ -175,16 +175,22 @@ def rank_company(data):
 def read_company(data) :
     """Read Company"""
 
-    company = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
+    companies = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
 
-    if not company:
+    if not companies:
         return 'fail', 502
 
     result = {}
-    for data in company:
-        temp = data.__dict__
+    for company in companies:
+        # Extract company data and remove unnecessary attributes
+        temp = company.__dict__.copy()
         del temp['_sa_instance_state']
         del temp['cno']
+        readcnt = temp['readcnt'] + 1
+        del temp['readcnt']
+        # Update company read count and add to result dictionary
+        company.readcnt = readcnt
+        db.session.commit()
         result['company'] = temp
 
-    return {'result':result}, 200
+    return {'result': result}, 200
