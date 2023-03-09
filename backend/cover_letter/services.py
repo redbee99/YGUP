@@ -52,19 +52,20 @@ def delete_cover_letter(data):
 
 def read_all_cover_letter(data):
     """Read All Company"""
-    user = db.session.query(Cover_letter).filter(Cover_letter.id == data['body'].get(id))
+    user = db.session.query(Cover_letter).filter(Cover_letter.id == data['body'].get('id')).with_entities(Cover_letter.cname, Cover_letter.clname,
+    Cover_letter.wdate, Cover_letter.clno).all()
     if user is None :
         return {"message": "there's no such id of user"}, 501
 
-    cover_letter = db.session.query(Cover_letter).with_entities(Cover_letter.cname, Cover_letter.clname,
-    Cover_letter.wdate, Cover_letter.clno).all()
+   # cover_letter = db.session.query(Cover_letter).with_entities(Cover_letter.cname, Cover_letter.clname,
+   # Cover_letter.wdate, Cover_letter.clno).all()
 
-    if not cover_letter:
-        return 'fail', 505
+   # if not cover_letter:
+   #     return 'fail', 505
 
     result = {}
 
-    for data in cover_letter:
+    for data in user:
         temp = {}
         temp['cname'] = data[0]
         temp['clname'] = data[1]
@@ -79,10 +80,10 @@ def read_cover_letter(data) :
     """Read cover_letter"""
 
     keyword_list = db.session.query(Company.keyword).filter(Company.cname == data['body'].get('cname'))
-    c_lst = str(list(keyword_list)[0]).replace("'", "").replace("(","").replace(")","").split(', ')
+    c_lst = str(list(keyword_list)[0]).replace("'", "").replace("(","").replace(")","").replace(" ","").split(',')
     #c_list2 = keyword_list[0]
     #c_list3 = str(c_list2).replace("'", "").replace("(","").replace(")","")
-    #c_list4 = c_list3.split(', ')
+    #c_lst = c_list3.split(',')
 
 
     cover_letter = db.session.query(Cover_letter).filter(Cover_letter.clno == data['body'].get('clno'))
