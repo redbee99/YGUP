@@ -36,19 +36,18 @@ const Cl_Update: React.FC = () => {
     const cname = state.data.cname
     const clno = state.data.clno
     const clname = state.data.clname
-    const wdate = state.data.wdate
     const content_1 = state.data.content_1
     const content_2 = state.data.content_2
     const content_3 = state.data.content_3
 
     const CompanyName = async ()=>{
-        const url = BaseUrl + "/company/rank"
+        const url = BaseUrl + "/company/readall"
         const { data } = await axios.post(url, {
             headers: 
             {
                 "Content-Type": "application/json"
             },
-            body: {type: 'cname',  f_all: 0  }
+            body: {uno:0  }
         })
         return data
     }
@@ -102,7 +101,7 @@ const Cl_Update: React.FC = () => {
                     }
                 }
             ).then(res => {
-                navigate('/cl_info', {state: {data:clno}})
+                navigate('/cl_info', {state: {data:clno, data1:company}})
             }).catch(err => {
                 alert('정보를 다시 입력해 주세요')
             });

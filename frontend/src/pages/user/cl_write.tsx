@@ -49,13 +49,13 @@ const Cl_Write: React.FC = () => {
     const now =  new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '');
 
     const CompanyName = async ()=>{
-        const url = BaseUrl + "/company/rank"
+        const url = BaseUrl + "/company/readall"
         const { data } = await axios.post(url, {
             headers: 
             {
                 "Content-Type": "application/json"
             },
-            body: {type: 'cname',  f_all: 0  }
+            body: {uno:0}
         })
         return data
     }

@@ -14,14 +14,13 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const Board_Fav: React.FC = () => {
 
-const location = useLocation();
-const navigate = useNavigate();
-const { state } = useLocation();
-const [value, setValue] = React.useState(state);
-const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
-const currentId = useSelector((state: RootState) => state.userReducer.id);
-const [id] = React.useState(currentId);
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const [value, setValue] = React.useState(state);
+  const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
+  const currentId = useSelector((state: RootState) => state.userReducer.id);
+  const [id] = React.useState(currentId);
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const goList = () => {
   navigate('/board_list')

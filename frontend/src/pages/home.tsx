@@ -9,7 +9,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const Home: React.FC = () => {
 
-  const { state } = useLocation();
   const navigate = useNavigate();
 
   const goInfo = (data: string) => {
@@ -54,7 +53,7 @@ const Home: React.FC = () => {
                 <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto' , mx:15, mb:15 }}>
                 <Typography sx={{fontSize:20, my:5}} textAlign='center'>실시간 급상승 검색 기업 top5 !</Typography>
                     <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                    {Object.keys(RankData).map((value:any, index:any) => (
+                    {Object.keys(RankData||{}).map((value:any, index:any) => (
                         <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(RankData[value]['cname']) }}>
                             <Card style={{ maxHeight:400 }}>
                                 <CardActionArea>
@@ -110,7 +109,7 @@ const Home: React.FC = () => {
 
                     <Typography sx={{fontSize:20, my:5}} textAlign='center'>기업 랭킹 top5 !</Typography>
                     <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
-                    {Object.keys(BookData).map((value:any, index:any) => (
+                    {Object.keys(BookData||{}).map((value:any, index:any) => (
                         <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(BookData[value]['cname']) }}>
                             <Card>
                                 <CardActionArea>
