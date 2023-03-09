@@ -14,41 +14,41 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const Board_Like: React.FC = () => {
 
-const location = useLocation();
-const navigate = useNavigate();
-const { state } = useLocation();
-const [value, setValue] = React.useState(state);
-const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
-const currentId = useSelector((state: RootState) => state.userReducer.id);
-const [id] = React.useState(currentId);
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const [value, setValue] = React.useState(state);
+  const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
+  const currentId = useSelector((state: RootState) => state.userReducer.id);
+  const [id] = React.useState(currentId);
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-const goList = () => {
-  navigate('/board_list')
-};
-const goLike = (state: number) => {
-  navigate('/board_like', { state: state })
-};
-const goFav = (state: number) => {
-  navigate('/board_Fav', { state: state })
-};
+  const goList = () => {
+    navigate('/board_list')
+  };
+  const goLike = (state: number) => {
+   navigate('/board_like', { state: state })
+  };
+  const goFav = (state: number) => {
+    navigate('/board_Fav', { state: state })
+  };
 
-const goInfo = (data: string) => {
-  navigate('/info',{
+  const goInfo = (data: string) => {
+   navigate('/info',{
      state :{ data: data }
      })
-};
+  };
 
-function a11yProps(index: number) {
-  return {
+  function a11yProps(index: number) {
+   return {
       id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+   };
+ }
 
-const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-  setValue(newValue);
-};
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
 const CompanyList = async ()=>{
   const url = BaseUrl + "/company/rank"

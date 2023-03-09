@@ -137,7 +137,7 @@ const Manage: React.FC = () => {
         </TableHead>
         <TableBody>
         {Object.keys(cldata).map((result:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'],cldata[result])}}>
+            <StyledTableRow hover role="checkbox" key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'],cldata[result]['cname'])}}>
               <StyledTableCell component="th" scope="row">{cldata[result]['cname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['clname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['wdate'].split(',')[0]}</StyledTableCell>

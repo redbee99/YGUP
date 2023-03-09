@@ -12,14 +12,13 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from "react-query";
 import { BaseUrl } from '../../util/axiosApi';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useSelector,useDispatch } from 'react-redux';
 import { RootState } from '../../reducers'
 import { set } from '../../reducers/modalReducer'
 import BasicModal from '../components/basicModal';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import * as setModal from '../../reducers/modalReducer'
 
 const Item = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -39,7 +38,7 @@ const Info: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const currentId = useSelector((state: RootState) => state.userReducer.id);
-    const [id, setIdValue] = React.useState(currentId);
+    const [id] = React.useState(currentId);
     const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
     const state = location.state as {data:ReadInfoState};
     

@@ -26,7 +26,6 @@ const Header: React.FC = () => {
   const goCllist = () => {
     if(currentUser == '0'){
       alert('관리자는 이용 할 수 없습니다.')
-      navigate('/board_cl')
     }
     else if(currentUser == '1'){
       navigate('/board_cl')

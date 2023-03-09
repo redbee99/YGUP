@@ -1,17 +1,13 @@
 import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import User from '../components/user';
-import SearchIcon from '@mui/icons-material/Search';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import InputBase from '@mui/material/InputBase';
 import { BaseUrl } from '../../util/axiosApi';   
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, 
          Tab, 
          Tabs,
-         IconButton, 
          Paper, 
          Stack,
          styled, 
@@ -24,13 +20,9 @@ import { Box,
          TableRow,
          Button,
          CircularProgress,
-         Typography,
-         alpha} from '@mui/material';
-import { useSelector,useDispatch } from 'react-redux';
+         Typography} from '@mui/material';
+import { useSelector} from 'react-redux';
 import { RootState } from '../../reducers'
-import { set } from '../../reducers/modalReducer'
-import BasicModal from '../components/basicModal';
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
@@ -69,8 +61,6 @@ const Company_Basic_List: React.FC = () => {
   const goWrite = () => {
     navigate('/write')
   }
-
-  const currentModal = useSelector((state: RootState) => state.modalReducer.state);
 
   const goInfo = (data: string) => {
     navigate('/info',{
