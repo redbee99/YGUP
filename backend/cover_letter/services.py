@@ -125,7 +125,7 @@ def read_cover_letter(data) :
                 new.append(i)
                 cnt += 1
     word = list(set(c_lst) - set(new))
-    cnt1 = cnt/3*10
+    cnt1 = int(cnt/3*10)
 
     return {'result':result,'cnt1':cnt1,'c_lst':c_lst,'new':new,'word':word,'cnt':cnt }, 200
 
