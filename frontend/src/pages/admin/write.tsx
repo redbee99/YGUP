@@ -7,7 +7,7 @@ import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import { BaseUrl } from '../../util/axiosApi';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../reducers'
 
 const Write: React.FC = () => {

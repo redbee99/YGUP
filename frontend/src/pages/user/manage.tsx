@@ -48,7 +48,6 @@ const Manage: React.FC = () => {
 
     const navigate = useNavigate();
     const [value, setValue] = React.useState(1);
-    const currentModal = useSelector((state: RootState) => state.modalReducer.state);
   
     const goBookmark = () => {
         navigate('/bookmark')
@@ -137,7 +136,7 @@ const Manage: React.FC = () => {
         </TableHead>
         <TableBody>
         {Object.keys(cldata).map((result:any, index:any) => (
-            <StyledTableRow hover role="checkbox" key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'],cldata[result]['cname'])}}>
+            <StyledTableRow hover key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'],cldata[result]['cname'])}}>
               <StyledTableCell component="th" scope="row">{cldata[result]['cname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['clname']}</StyledTableCell>
               <StyledTableCell>{cldata[result]['wdate'].split(',')[0]}</StyledTableCell>

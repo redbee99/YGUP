@@ -52,10 +52,10 @@ const Home: React.FC = () => {
             <div className='home'>
                 <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto' , mx:15, mb:15 }}>
                 <Typography sx={{fontSize:20, my:5}} textAlign='center'>실시간 급상승 검색 기업 top5 !</Typography>
-                    <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
+                    <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, md: 10 }}>
                     {Object.keys(RankData||{}).map((value:any, index:any) => (
-                        <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(RankData[value]['cname']) }}>
-                            <Card style={{ maxHeight:400 }}>
+                        <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(RankData[value]['cname']) }}>
+                            <Card style={{width:250, height:300, marginLeft: 50, marginTop:20, marginBottom: 20}}>
                                 <CardActionArea>
                                     <CardContent>
                                         <CardMedia
@@ -108,10 +108,10 @@ const Home: React.FC = () => {
                     </Grid>
 
                     <Typography sx={{fontSize:20, my:5}} textAlign='center'>기업 랭킹 top5 !</Typography>
-                    <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, sm: 8, md: 10 }}>
+                    <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, md: 10 }}>
                     {Object.keys(BookData||{}).map((value:any, index:any) => (
-                        <Grid xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(BookData[value]['cname']) }}>
-                            <Card>
+                        <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(BookData[value]['cname']) }}>
+                            <Card style={{width:250, height:300, marginLeft: 50, marginTop:20, marginBottom: 20}}>
                                 <CardActionArea>
                                     <CardContent>
                                     <CardMedia
