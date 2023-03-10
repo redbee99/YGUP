@@ -21,8 +21,7 @@ import { Box,
          Button,
          CircularProgress,
          Typography} from '@mui/material';
-import { useSelector} from 'react-redux';
-import { RootState } from '../../reducers'
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
@@ -47,8 +46,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
          
 const Company_Basic_List: React.FC = () => {
 
-  const { state } = useLocation();
-  const [value, setValue] = React.useState(state);  
+  const [value, setValue] = React.useState(1); 
   
   const navigate = useNavigate();
 
