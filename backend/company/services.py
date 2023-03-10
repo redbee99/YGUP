@@ -1,9 +1,10 @@
 from backend import db
 from backend.company.models import Company
+from backend.bookmark.models import Bookmark
 from backend.company.schemas import company_schema
 import uuid
 from backend.user_type.models import UserType
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 from werkzeug.utils import secure_filename
 from flask import request
 def create_company(data):
@@ -176,6 +177,7 @@ def read_company(data) :
     """Read Company"""
 
     companies = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
+    bookmark_cnt = db.session.query(func.count(Bookmark.id)).filter(Bookmark.cname == data['body'].get('cname')).scalar()
 
     if not companies:
         return 'fail', 502
@@ -188,7 +190,9 @@ def read_company(data) :
         del temp['cno']
         readcnt = temp['readcnt'] + 1
         del temp['readcnt']
+        del temp['bookmarkcnt']
         # Update company read count and add to result dictionary
+        company.bookmarkcnt = bookmark_cnt
         company.readcnt = readcnt
         db.session.commit()
         result['company'] = temp

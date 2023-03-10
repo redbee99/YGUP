@@ -22,6 +22,17 @@ def create_bookmark(data):
     bookmark = Bookmark(bkno=data['body'].get('bkno'), id=data['body'].get('id'),
                         cname=data['body'].get('cname'), state=data['body'].get('state'))
 
+    companies = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
+
+    for company in companies:
+        # Extract company data and remove unnecessary attributes
+        temp = company.__dict__.copy()
+        del temp['_sa_instance_state']
+        bookmark_cnt = temp['bookmarkcnt'] + 1
+        del temp['bookmarkcnt']
+        # Update company read count and add to result dictionary
+        company.bookmarkcnt = bookmark_cnt
+
     db.session.add(bookmark)
     db.session.commit()
 
@@ -34,9 +45,21 @@ def delete_bookmark(data):
     if not res:
         return 'fail', 404
 
+    companies = db.session.query(Company).filter(Company.cname == data['body'].get('cname')).all()
+
+    for company in companies:
+        # Extract company data and remove unnecessary attributes
+        temp = company.__dict__.copy()
+        del temp['_sa_instance_state']
+        bookmark_cnt = temp['bookmarkcnt'] - 1
+        del temp['bookmarkcnt']
+        # Update company read count and add to result dictionary
+        company.bookmarkcnt = bookmark_cnt
+
     for r in res:
         db.session.delete(r)
-        db.session.commit()
+
+    db.session.commit()
 
 def userpage_read_bookmark(data):
     """Userpage Read Bookmark"""
