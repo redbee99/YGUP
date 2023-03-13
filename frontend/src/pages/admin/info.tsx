@@ -44,7 +44,6 @@ const Info: React.FC = () => {
     const [isBookmarkSelected, setisBookmarkSelectedValue] = React.useState(false);
     const state = location.state as {data:ReadInfoState};
     
-    
     const Cname = state.data
     const goAdmin = () => {
         if(currentUser == '0'){
@@ -109,6 +108,7 @@ const Info: React.FC = () => {
         }
         return data
     }
+
     const createBookmark = async ()=>{
         const url = BaseUrl + "/bookmark/create"
         const url2 = BaseUrl + "/bookmark/delete"
@@ -175,79 +175,92 @@ const Info: React.FC = () => {
             })
         }
         else{
-        alert('관리자만 가능합니다')
+           alert('관리자만 가능합니다')
         }
-          };
-   
-        return (
-            <div className='info'>
-                <ModalShow/>
-                <Box sx={{ display: 'flex',position:'relative', width:550, height: 700, margin:'auto', textAlign:'center', border: 1, borderRadius: 5, backgroundColor:'#ffffff', flexDirection: 'column',mt:5, padding: 5 }} >
-                    <Box>
-                        <Checkbox 
-                            sx={{ float: 'right'}} {...label}
-                            icon={<BookmarkBorderIcon />} 
-                            checkedIcon={<BookmarkIcon />}
-                            checked={isBookmarkSelected}
-                            onClick={() => { createBookmark()}}
-                            />  
-                    </Box>
-                    <Stack  direction="row" spacing={2} alignItems="center" >
-                    <Item sx={{margin:'auto'}}>
-                        <Card>
-                            <CardMedia
-                                component="img"
-                                sx={{ height: 80}}
-                                src={CompanyData['result']['company']['logo_url']}
-                                alt="Logo"
-                            />
-                        </Card>
-                    </Item>
-                    </Stack>
-                    <br/>
-                    <Typography>회사명 : { CompanyData['result']['company']['cname'] }</Typography>
-                    <br/>
-                    <Typography>기업규모 : { CompanyData['result']['company']['form'] }</Typography>
-                    <br/>
-                    <Typography>홈페이지 : { CompanyData['result']['company']['courl'] }</Typography>
-                    <hr className='info_underline'/>
-                    <br/>
-                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                    <Typography>매출액 :<AutoGraphIcon/>{CompanyData['result']['company']['sales']}</Typography>
-                    <Typography>평균연봉 : <AttachMoneyIcon/>{CompanyData['result']['company']['pay']}</Typography>
-                    <Typography>퇴사율 : <DirectionsRunIcon/>{CompanyData['result']['company']['resign']}</Typography>
-                    </Stack>
-                    <br/>
-                    <Typography>대표자명 : { CompanyData['result']['company']['owner'] }</Typography>
-                    <br/>
-                    <Typography>기업주소 : { CompanyData['result']['company']['address'] }</Typography>
-                    <br/>
-                    <Typography>기업내용 : { CompanyData['result']['company']['info'] }</Typography>
-                
-                    <hr className='info_underline'/>
-                    <Item sx={{margin:'auto'}}>
-                        <Card>
-                            <CardMedia
-                                component="img"
-                                sx={{ height: 200}}
-                                src={CompanyData['result']['company']['wcloud_url']}
-                                alt="wcloud"
-                            />
-                        </Card>
-                    </Item>
-                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
-                        <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goAdmin() }}>
-                            확인
-                        </Button>
-                        <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goUpdate() }}>
-                            수정
-                        </Button>
-                        <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { info_delete(CompanyData['result']['company']['cname']); }}>
-                            삭제
-                        </Button>
-                    </Stack>
-                </Box>
-            </div>
+    };
+
+    const DynamicContent = () => {
+        if(currentUser == '0') {
+            return (
+              <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
+                <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goAdmin() }}>
+                    확인
+                </Button>
+                <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { goUpdate() }}>
+                    수정
+                </Button>
+                <Button variant="contained" sx={{ color:'#ffff', backgroundColor: '#26a69a', borderColor:'#434343'}} onClick={() => { info_delete(CompanyData['result']['company']['cname']); }}>
+                    삭제
+                </Button>
+               </Stack>
+            );
+        } else {
+             return(
+                <div>
+    
+                </div>
+            );
+        }
+    }
+
+      return (
+        <div className='info'>
+          <ModalShow/>
+            <Box sx={{ display: 'flex',position:'relative', width:550, height: 700, margin:'auto', textAlign:'center', border: 1, borderRadius: 5, backgroundColor:'#ffffff', flexDirection: 'column',mt:5, padding: 5 }} >
+              <Box>
+                <Checkbox 
+                     sx={{ float: 'right'}} {...label}
+                     icon={<BookmarkBorderIcon />} 
+                     checkedIcon={<BookmarkIcon />}
+                     checked={isBookmarkSelected}
+                     onClick={() => { createBookmark()}}
+                />  
+              </Box>
+              <Stack  direction="row" spacing={2} alignItems="center" >
+                <Item sx={{margin:'auto'}}>
+                  <Card>
+                    <CardMedia
+                        component="img"
+                        sx={{ height: 80}}
+                        src={CompanyData['result']['company']['logo_url']}
+                        alt="Logo"
+                    />
+                  </Card>
+                </Item>
+              </Stack>
+                <br/>
+                <Typography>회사명 : { CompanyData['result']['company']['cname'] }</Typography>
+                <br/>
+                <Typography>기업규모 : { CompanyData['result']['company']['form'] }</Typography>
+                <br/>
+                <Typography>홈페이지 : { CompanyData['result']['company']['courl'] }</Typography>
+                <hr className='info_underline'/>
+                <br/>
+                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                  <Typography>매출액 :<AutoGraphIcon/>{CompanyData['result']['company']['sales']}</Typography>
+                  <Typography>평균연봉 : <AttachMoneyIcon/>{CompanyData['result']['company']['pay']}</Typography>
+                  <Typography>퇴사율 : <DirectionsRunIcon/>{CompanyData['result']['company']['resign']}</Typography>
+                </Stack>
+                <br/>
+                <Typography>대표자명 : { CompanyData['result']['company']['owner'] }</Typography>
+                <br/>
+                <Typography>기업주소 : { CompanyData['result']['company']['address'] }</Typography>
+                <br/>
+                <Typography>기업내용 : { CompanyData['result']['company']['info'] }</Typography>
+                <hr className='info_underline'/>
+                <Item sx={{margin:'auto'}}>
+                  <Card>
+                    <CardMedia
+                        component="img"
+                        sx={{ height: 200}}
+                        src={CompanyData['result']['company']['wcloud_url']}
+                        alt="wcloud"
+                    />
+                  </Card>
+                </Item>
+                <DynamicContent/>
+            </Box>
+          </div>
         );
     }
 }

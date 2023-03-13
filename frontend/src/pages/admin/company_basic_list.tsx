@@ -22,7 +22,6 @@ import { Box,
          CircularProgress,
          Typography} from '@mui/material';
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
  [`&.${tableCellClasses.head}`]: {
    backgroundColor: theme.palette.common.black,
@@ -53,9 +52,11 @@ const Company_Basic_List: React.FC = () => {
   const goUser_list = () => {
         navigate('/user_list')
     };
+
   const goCompany_basic_list = (state: number) => {
         navigate('/company_basic_list',  { state: state })
   };
+  
   const goWrite = () => {
     navigate('/write')
   }

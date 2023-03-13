@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
     return(
         <footer className='App-footer'>
             <div>
-                <Typography>yogiup &copy; {thisYear()}</Typography>
+                <Typography variant="body1">yogiup &copy; {thisYear()}</Typography>
             </div>
         </footer>
     );
