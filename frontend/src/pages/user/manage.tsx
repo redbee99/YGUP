@@ -93,19 +93,58 @@ const Manage: React.FC = () => {
   const { isLoading:clisLoading, data: cldata, error: clerror } = useQuery('getCl_List', getCl_List);
 
   if(clisLoading){
-     return <CircularProgress />
+     return <CircularProgress color="success"/>
   } 
   else {
+    const DynamicContent = () => {
+      if(cldata == "" || cldata == null || cldata == undefined || ( cldata != null && typeof cldata == "object" && !Object.keys(cldata).length ) ){
+          return (
+              <div className='my-div'> 
+              작성한 자소서가 없습니다.
+              </div>
+          );
+      } else {
+        return(
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>기업명</StyledTableCell>
+                  <StyledTableCell>제목</StyledTableCell>
+                  <StyledTableCell>작성시간</StyledTableCell>
+                  <StyledTableCell> </StyledTableCell>
+                  <StyledTableCell> </StyledTableCell>
+                  <StyledTableCell> </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody sx={{backgroundColor:'white'}}>
+              {Object.keys(cldata).map((result:any, index:any) => (
+                  <StyledTableRow hover key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'],cldata[result]['cname'])}}>
+                    <StyledTableCell component="th" scope="row">{cldata[result]['cname']}</StyledTableCell>
+                    <StyledTableCell>{cldata[result]['clname']}</StyledTableCell>
+                    <StyledTableCell>{cldata[result]['wdate'].split(',')[0]}</StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                    <StyledTableCell></StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        );
+      }
+    }
     return (
       <div className='manage'>  
             <Stack direction={'row'} spacing={2} className='mypagecontents' >
               <User />
-              <Box sx={{ flexGrow: 1, bgcolor:'#E6EAF3', display: 'flex', height: 224, marginTop: 10}}>
+              <Box sx={{ flexGrow: 1, bgcolor:'#f6f9f6', display: 'flex', height: 224, marginTop: 10}}>
              <Tabs
                orientation="vertical"
                variant="scrollable"
                value={value}
                onChange={handleChange}
+               indicatorColor="secondary"
                aria-label="Vertical tabs example"
                sx={{ borderRight: 1, borderColor: 'divider' }}>
               <Tab label="북마크" value={0}  {...a11yProps(0)} onClick={() => { goBookmark(); }} />
@@ -121,34 +160,7 @@ const Manage: React.FC = () => {
             글쓰기
           </Button>
         </Stack>
-        <Paper sx={{ width: '100%', mb: 2, marginTop:5 ,overflow: 'hidden', elevation:3 }} >
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>기업명</StyledTableCell>
-            <StyledTableCell>제목</StyledTableCell>
-            <StyledTableCell>작성시간</StyledTableCell>
-            <StyledTableCell> </StyledTableCell>
-            <StyledTableCell> </StyledTableCell>
-            <StyledTableCell> </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-        {Object.keys(cldata).map((result:any, index:any) => (
-            <StyledTableRow hover key={cldata[result]['clno']}  onClick={() => { goClInfo(cldata[result]['clno'],cldata[result]['cname'])}}>
-              <StyledTableCell component="th" scope="row">{cldata[result]['cname']}</StyledTableCell>
-              <StyledTableCell>{cldata[result]['clname']}</StyledTableCell>
-              <StyledTableCell>{cldata[result]['wdate'].split(',')[0]}</StyledTableCell>
-              <StyledTableCell></StyledTableCell>
-              <StyledTableCell></StyledTableCell>
-              <StyledTableCell></StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-        </Paper>
+        <DynamicContent/>
       </Box>
       </Stack>  
     </div>

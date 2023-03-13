@@ -1,13 +1,13 @@
 /* header start */
 .App-header {
-  background-color: white;
+  background-color: #ffffff;
   position:fixed;
   height: 60px;
   width: 100%;
   top: 0px;
   left: 0px;
   overflow: hidden;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(234, 237, 234);
 }
 
 .App-header-menu-icon {
@@ -42,23 +42,22 @@
 /* footer start */
 footer {
   width: 100%;  
-  height: 20px;
-  position: relative;
-  border-top:1px solid #434343;
-  margin-top: 'auto';
+  height: 25px;
+  background-color: #f6f9f6;
+  position:  flex;;
+  border-top: 1px solid rgb(220, 223, 220);
+  margin-top: 100px;
   display: flex;
-  align-content: center;
   justify-content: center;
+  overflow: hidden;
 }
-
-
 
 /* footer end */
 
 /* home start */
 
 .home {
-  background-color: #ffffff;
+  background-color: #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -76,7 +75,7 @@ footer {
 }
 
 .info_update {
-  background-color: #ffffff;
+  background-color:  #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -108,6 +107,7 @@ footer {
 }
 
 .company_basic_list {
+  background-color:   #f6f9f6;
   position: fixed;
   height: 650px;
   width: 100%;
@@ -115,6 +115,7 @@ footer {
 }
 
 .user_list {
+  background-color:  #f6f9f6;
   position: fixed;
   height: 650px;
   width: 100%;
@@ -170,12 +171,11 @@ footer {
 }
 /* wirte end*/
 
-
 /*User start*/
 /* login start */
 
 .Login{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -202,14 +202,14 @@ footer {
 
 /* idsearch start */
 .idsearch{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
 }
 
 .idsearch_result{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -217,7 +217,7 @@ footer {
 /* idsearch end */
 /*pwsearch start*/
 .pwsearch{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -225,7 +225,7 @@ footer {
 /*pwsearch end*/
 /*pwupdate start*/
 .pwupdate{
-  background-color: #E6EAF3;
+  background-color: #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -234,14 +234,14 @@ footer {
 
 /* join start */
 .join{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
 }
 
 .idcheck{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -259,7 +259,7 @@ footer {
 }
 
 .userinfo_update{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -267,7 +267,7 @@ footer {
 
 /*user_delete start*/
 .user_delete {
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%; 
@@ -280,7 +280,7 @@ footer {
 
 /*coverletter start*/
 .predicttest{
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -288,14 +288,14 @@ footer {
 }
 
 .coverletter_write {
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .coverletter_update {
-  background-color: #E6EAF3;
+  background-color:   #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -309,62 +309,104 @@ footer {
 
 /*board start*/
 .board_list {
-  background-color: #E6EAF3;
+  background-color:  #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .board_like{
-  background-color: #E6EAF3;
+  background-color:  #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .board_Fav{
-  background-color: #E6EAF3;
+  background-color:  #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .board_cl {
-  background-color: #E6EAF3;
+  background-color: #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
+.my-div{
+  height : 200px;
+  text-align : center;
+  line-height : 200px;
+}
+.box_cl{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 50px 0;
+  border-radius: 48px;
+}
+.body {  
+  height : 200px;
+  text-align : center;
+  line-height : 100px;
+  align-items: center;
+  display: block;
+  user-select: none;
+}
+.card {
+  padding: 30px 20px;
+  background-color: #c8e9be;
+  overflow: hidden;
+  position: relative;
+  margin-left: 50px;
+  border-radius: 48px;
+  width: 400px;
+  height: 100px;
+  padding: 20px;
+  margin-bottom:15px;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  transition: 0.6s ease-in;
+}
+
 .board_Predict{
-  background-color: #E6EAF3;
+  background-color: #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%; 
 }
 .board_cl_chek{
-  background-color: #E6EAF3;
+  background-color:  #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .userinfo {
-  background-color: #E6EAF3;
+  background-color: #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .bookmark {
-  background-color: #E6EAF3;
+  background-color: #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: scroll;
 }
 .manage {
-  background-color: #E6EAF3;
+  background-color:  #f6f9f6;
   position: fixed;
   height: 100%;
   width: 100%;

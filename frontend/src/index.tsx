@@ -10,7 +10,6 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension'
-import Footer from './pages/footer';
 import { QueryClient, QueryClientProvider } from "react-query";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
@@ -49,7 +48,6 @@ root.render(
                 </div>
               </div>
             </main>
-            <Footer/>
           </BrowserRouter>
          </ThemeProvider>
         </PersistGate>

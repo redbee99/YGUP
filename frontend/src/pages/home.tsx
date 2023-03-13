@@ -5,7 +5,8 @@ import Typography from '@mui/material/Typography';
 import { BaseUrl } from '../util/axiosApi';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../pages/footer';
 
 const Home: React.FC = () => {
 
@@ -45,7 +46,7 @@ const Home: React.FC = () => {
     const { isLoading:BookIsLoading, data:BookData, error : BookError } = useQuery('getBookRankCompanyList', getBookRankCompanyList);
 
     if(RankIsLoadaing && BookIsLoading ){
-        return <CircularProgress />
+        return <CircularProgress color="success"/>
     }
     else{
         return (
@@ -53,48 +54,46 @@ const Home: React.FC = () => {
                 <Box sx={{ flexGrow: 1, maxWidth: 1500, margin: 'auto' , mx:15, mb:15 }}>
                 <Typography sx={{fontSize:20, my:5}} textAlign='center'>실시간 급상승 검색 기업 top5 !</Typography>
                     <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, md: 10 }}>
-                    {Object.keys(RankData||{}).map((value:any, index:any) => (
-                        <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(RankData[value]['cname']) }}>
-                            <Card style={{width:250, height:300, marginLeft: 50, marginTop:20, marginBottom: 20}}>
+                    {Object.keys(RankData||{}).map((result:any, index:any) => (
+                        <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(RankData[result]['cname']) }}>
+                            <Card style={{width:250, height:250, marginLeft: 50, marginTop:20, marginBottom: 20}}>
                                 <CardActionArea>
-                                    <CardContent>
                                         <CardMedia
                                             component="img"
                                             sx={{ marginLeft:3, width: 200 , align:'center', maxHeight:50, objectFit:"contain"}}
-                                            src={RankData[value]['logo_url']}
+                                            src={RankData[result]['logo_url']}
                                             alt="logo"/>
-                                    </CardContent>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div" align="center">
-                                            {RankData[value]['cname']}
+                                            {RankData[result]['cname']}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {RankData[value]['address']}
+                                            {RankData[result]['address']}
                                         </Typography>
-                                        <Divider/>
-                                        <Box sx={{ m: 2 }}>
                                             <Typography gutterBottom variant="body1" sx={{ fontSize:15 }}>
-                                                {RankData[value]['form']}
+                                                {RankData[result]['form']}
                                             </Typography>
-                                            <Stack direction="row" spacing={3}>
-                                                <Box borderRadius={1} sx={{ width:50, height:30, border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                            <Divider/>
+                                            <Box sx={{ m: 3}}>
+                                            <Stack direction="row" sx={{flexGrow: 1}} spacing={2}>
+                                                <Box borderRadius={1} sx={{ width:350, height:30, border:"solid 1px #dfdfdf;"}}>
+                                                    <Typography justify-content={'center'} variant="body1" sx={{ fontSize:15, marginLeft:1, marginTop:0.5 }}>
                                                         {
-                                                            RankData[value]['keyword'].split(',')[0]
+                                                            RankData[result]['keyword'].split(',')[0]
                                                         }
                                                     </Typography>
                                                 </Box>
-                                                <Box borderRadius={1} sx={{ padding:'auto', width:50, height:30, border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                                <Box borderRadius={1} sx={{ width:350, height:30, border:"solid 1px #dfdfdf;"}}>
+                                                    <Typography justify-content={'center'} variant="body1" sx={{ fontSize:15, marginLeft:1, marginTop:0.5 }}>
                                                         {
-                                                            RankData[value]['keyword'].split(',')[1]
+                                                            RankData[result]['keyword'].split(',')[1]
                                                         }
                                                     </Typography>
                                                 </Box>
-                                                <Box borderRadius={1} sx={{ width:50, height:30, border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                                <Box borderRadius={1} sx={{ width:350, height:30, border:"solid 1px #dfdfdf;"}}>
+                                                    <Typography justify-content={'center'} variant="body1" sx={{ fontSize:15, marginLeft:1, marginTop:0.5 }}>
                                                         {
-                                                            RankData[value]['keyword'].split(',')[2]
+                                                            RankData[result]['keyword'].split(',')[2]
                                                         }
                                                     </Typography>
                                                 </Box>
@@ -109,59 +108,58 @@ const Home: React.FC = () => {
 
                     <Typography sx={{fontSize:20, my:5}} textAlign='center'>기업 랭킹 top5 !</Typography>
                     <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 10, md: 10 }}>
-                    {Object.keys(BookData||{}).map((value:any, index:any) => (
-                        <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(BookData[value]['cname']) }}>
-                            <Card style={{width:250, height:300, marginLeft: 50, marginTop:20, marginBottom: 20}}>
+                    {Object.keys(BookData||{}).map((result:any, index:any) => (
+                        <Grid item xs={2} sm={2} md={2} key={index} onClick={() => { goInfo(BookData[result]['cname']) }}>
+                            <Card style={{width:250, height:250, marginLeft: 50, marginTop:20, marginBottom: 20}}>
                                 <CardActionArea>
-                                    <CardContent>
-                                    <CardMedia
+                                        <CardMedia
                                             component="img"
                                             sx={{ marginLeft:3, width: 200 , align:'center', maxHeight:50, objectFit:"contain"}}
-                                            src={BookData[value]['logo_url']}
+                                            src={BookData[result]['logo_url']}
                                             alt="logo"/>
-                                    </CardContent>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div" align="center">
-                                            {BookData[value]['cname']}
+                                            {BookData[result]['cname']}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {BookData[value]['address']}
+                                            {BookData[result]['address']}
                                         </Typography>
-                                        <Divider/>
-                                        <Box sx={{ m: 2 }}>
                                             <Typography gutterBottom variant="body1" sx={{ fontSize:15 }}>
-                                                {BookData[value]['form']}
+                                                {BookData[result]['form']}
                                             </Typography>
-                                            <Stack direction="row" spacing={3}>
-                                                <Box borderRadius={1} sx={{ width:50, height:30, border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                            <Divider/>
+                                            <Box sx={{ m: 3}}>
+                                            <Stack direction="row" sx={{flexGrow: 1}} spacing={2}>
+                                                <Box borderRadius={1} sx={{ width:350, height:30, border:"solid 1px #dfdfdf;"}}>
+                                                    <Typography justify-content={'center'} variant="body1" sx={{ fontSize:15, marginLeft:1, marginTop:0.5 }}>
                                                         {
-                                                            BookData[value]['keyword'].split(',')[0]
+                                                            BookData[result]['keyword'].split(',')[0]
                                                         }
                                                     </Typography>
                                                 </Box>
-                                                <Box borderRadius={1} sx={{ padding:'auto', width:50, height:30, border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                                <Box borderRadius={1} sx={{ width:350, height:30, border:"solid 1px #dfdfdf;"}}>
+                                                    <Typography justify-content={'center'} variant="body1" sx={{ fontSize:15, marginLeft:1, marginTop:0.5 }}>
                                                         {
-                                                            BookData[value]['keyword'].split(',')[1]
+                                                            BookData[result]['keyword'].split(',')[1]
                                                         }
                                                     </Typography>
                                                 </Box>
-                                                <Box borderRadius={1} sx={{ width:50, height:30, border:"solid 1px black"}}>
-                                                    <Typography gutterBottom variant="body1" sx={{ fontSize:15, marginLeft:1.5, marginTop:0.5 }}>
+                                                <Box borderRadius={1} sx={{ width:350, height:30, border:"solid 1px #dfdfdf;"}}>
+                                                    <Typography justify-content={'center'} variant="body1" sx={{ fontSize:15, marginLeft:1, marginTop:0.5 }}>
                                                         {
-                                                            BookData[value]['keyword'].split(',')[2]
+                                                            BookData[result]['keyword'].split(',')[2]
                                                         }
                                                     </Typography>
                                                 </Box>
-                                                </Stack>
-                                                </Box>
-                                                </CardContent>
+                                            </Stack>
+                                        </Box>
+                                    </CardContent>
                                 </CardActionArea>
                             </Card>
                         </Grid>
                     ))}
                     </Grid>
+                  <Footer/>
                 </Box>
             </div>
         );
